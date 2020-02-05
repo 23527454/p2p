@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/sys")
 public class SysController {
 
     @RequestMapping(value = "/index")
@@ -69,7 +68,7 @@ public class SysController {
 
     @RequestMapping(value = "/grzx_xtxx")
     public String grzx_xtxx(){
-        return "个人中心-系统信息";
+        return "个人中心-系统消息";
     }
 
     @RequestMapping(value = "/grzx_zhsz")
