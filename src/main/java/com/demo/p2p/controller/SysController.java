@@ -78,6 +78,6 @@ public class SysController {
 
     @RequestMapping(value = "/grzx_zjjl")
     public String grzx_zjjl(){
-        return "个人中心-资金记录 ";
+        return "个人中心-资金记录";
     }
 }
