@@ -1,21 +1,16 @@
-package com.demo.p2p.controller.sys;
+package com.demo.p2p.controller;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class sys {
-
+public class SysController {
 
     @RequestMapping(value = "/index")
     public String index(){
-        System.out.println("index=====");
         return "index";
     }
 
-
-    public int ltx(){
-        return 1;
-    }
 
 }
