@@ -1,4 +1,4 @@
-package com.demo.controller.sys;
+package com.demo.p2p.controller.sys;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
