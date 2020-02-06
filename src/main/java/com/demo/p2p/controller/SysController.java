@@ -11,6 +11,70 @@ public class SysController {
         return "index";
     }
 
+    @RequestMapping(value = "/touzi")
+    public String touzi(){
+        return "list";
+    }
+
+    @RequestMapping(value = "/daikuang")
+    public String daikuang(){
+        return "borrowadd";
+    }
+
+    @RequestMapping(value = "/help")
+    public String anquan(){
+        return "帮助中心";
+    }
+    @RequestMapping(value = "/grzx")
+    public String zhanghu(){
+        return "个人中心首页";
+    }
+    @RequestMapping(value = "/gsjs")
+    public String gyzx(){
+        return "公司简介";
+    }
+
+    @RequestMapping(value = "/zhuce")
+    public String zhuce(){
+        return "register";
+    }
+    @RequestMapping(value = "/denglu")
+    public String denglu(){
+        return "login";
+    }
+
+    /**
+     * 跳转公告详情
+     * @return
+     */
+    @RequestMapping(value = "/xiangqing")
+    public String xiangqing(){
+        return "公司公告详细";
+    }
+
+    /**
+     * 网站公告
+     * @return
+     */
+    @RequestMapping(value = "/gonggao")
+    public String gonggao(){
+        return "网站公告";
+    }
+
+    /**
+     * 推荐项目
+     * @return
+     */
+    @RequestMapping(value = "/tuijian")
+    public String tuijian(){
+        return "list";
+    }
+
+    @RequestMapping(value = "/infor")
+    public String infor() {
+        return "infor";
+    }
+
     @RequestMapping(value = "/grzx_grzxsy")
     public String grzx_grzxsy(){
         return "个人中心首页";
