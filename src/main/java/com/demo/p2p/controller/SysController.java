@@ -195,9 +195,4 @@ public class SysController {
     public String lxwm(){
         return "联系我们";
     }
-
-
-    public void lll(){
-        System.out.println("炸炸了进口的那块");
-    }
 }
