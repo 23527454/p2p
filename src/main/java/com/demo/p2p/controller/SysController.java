@@ -29,10 +29,6 @@ public class SysController {
     public String zhanghu(){
         return "个人中心首页";
     }
-    @RequestMapping(value = "/gsjs")
-    public String gyzx(){
-        return "公司简介";
-    }
 
     @RequestMapping(value = "/zhuce")
     public String zhuce(){
@@ -197,7 +193,7 @@ public class SysController {
 
     @RequestMapping(value = "/lxwm")
     public String lxwm(){
-        return " 联系我们";
+        return "联系我们";
     }
 
 }
