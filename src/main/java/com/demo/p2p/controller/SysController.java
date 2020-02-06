@@ -144,4 +144,60 @@ public class SysController {
     public String grzx_zjjl(){
         return "个人中心-资金记录";
     }
+
+    @RequestMapping(value = "/wzgg")
+    public String wzgg(){
+        return "网站公告";
+    }
+
+    @RequestMapping(value = "/mtbd")
+    public String mtbd(){
+        return "媒体报道";
+    }
+
+    @RequestMapping(value = "/gsjj")
+    public String gsjj(){
+        return "公司简介";
+    }
+
+    @RequestMapping(value = "/gltd")
+    public String gltd(){
+        return "管理团队";
+    }
+
+    @RequestMapping(value = "/hzhb")
+    public String hzhb(){
+        return "合作伙伴";
+    }
+
+    @RequestMapping(value = "/tdfc")
+    public String tdfc(){
+        return "团队风采";
+    }
+
+    @RequestMapping(value = "/flzc")
+    public String flzc(){
+        return "法律政策";
+    }
+
+    @RequestMapping(value = "/flsm")
+    public String flsm(){
+        return "法律声明";
+    }
+
+    @RequestMapping(value = "/zfsm")
+    public String zfsm(){
+        return "资费说明";
+    }
+
+    @RequestMapping(value = "/zxns")
+    public String zxns(){
+        return "招贤纳士";
+    }
+
+    @RequestMapping(value = "/lxwm")
+    public String lxwm(){
+        return " 联系我们";
+    }
+
 }
