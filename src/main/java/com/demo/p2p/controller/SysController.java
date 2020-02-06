@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class SysController {
-
     @RequestMapping(value = "/index")
     public String index(){
         return "index";
@@ -37,6 +36,10 @@ public class SysController {
     @RequestMapping(value = "/denglu")
     public String denglu(){
         return "login";
+    }
+    @RequestMapping(value = "/huankuang")
+    public String huankuang(){
+        return "infor";
     }
 
     /**
@@ -194,10 +197,5 @@ public class SysController {
     @RequestMapping(value = "/lxwm")
     public String lxwm(){
         return "联系我们";
-    }
-
-
-    public void lll(){
-        System.out.println("炸炸了进口的那块");
     }
 }
