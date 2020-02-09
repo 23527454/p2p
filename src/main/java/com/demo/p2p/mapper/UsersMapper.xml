@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.UsersMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Users">
+        <id column="uid" property="uid" />
+        <result column="unickname" property="unickname" />
+        <result column="uname" property="uname" />
+        <result column="umailbox" property="umailbox" />
+        <result column="uphonenumber" property="uphonenumber" />
+        <result column="uregisterdate" property="uregisterdate" />
+        <result column="uflip" property="uflip" />
+        <result column="ufldate" property="ufldate" />
+        <result column="ureferrer" property="ureferrer" />
+        <result column="ureferrername" property="ureferrername" />
+        <result column="userpaytoid" property="userpaytoid" />
+        <result column="ucertnumber" property="ucertnumber" />
+        <result column="upassword" property="upassword" />
+        <result column="ucardid" property="ucardid" />
+        <result column="uhead" property="uhead" />
+        <result column="upwd_zd" property="upwdZd" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        uid, unickname, uname, umailbox, uphonenumber, uregisterdate, uflip, ufldate, ureferrer, ureferrername, userpaytoid, ucertnumber, upassword, ucardid, uhead, upwd_zd
+    </sql>
+
+</mapper>
