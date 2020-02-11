@@ -100,7 +100,7 @@ b,h1,h2,h3,h4,h5{font-size:100%;font-weight:normal}
 .login_name2 i{ color:#323232; font-style:normal; font-size:16px; letter-spacing:1px;}
 .login_account{ margin-top:20px; overflow:hidden;}
 .login_account1{ float:left; line-height:30px; color:#646464; font-size:18px; letter-spacing:1px;}
-.login_account1 span{  background:url(../images/moneybg.png) no-repeat; no-repeat; display:block; width:27px; height:24px; float:left; margin-right:10px;}
+.login_account1 span{  background:url(../images/moneybg.png)  no-repeat; display:block; width:27px; height:24px; float:left; margin-right:10px;}
 .login_account2{ margin-right:20px; float:right; width:80px; height:30px; border-radius:3px; background:#023878;}
 .login_account2 a{ font-size:16px; display:block; width:80px; height:30px; line-height:30px; text-align:center;}
 .login_num2{ padding:10px 0px; text-align:center; text-align:left; font-size:40px; color:#f78600; margin:35px 0; white-space:nowrap; overflow:hidden; text-overflow: ellipsis; }

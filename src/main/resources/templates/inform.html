@@ -1,0 +1,95 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>亿人网--网站公告</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href=" /css/common.css" rel="stylesheet" />
+<link href=" /css/about.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src=" /script/jquery.min.js"></script>
+<script type="text/javascript" src=" /script/common.js"></script>
+</head>
+<body>
+
+<!--header--> <header th:include="common/header :: header"></header>
+
+<!--关于我们-->
+<div class="bg">
+  <div class="contain" id="tabs" style="margin:0 auto;">
+  
+    <!--关于我们-->
+	  <div th:include="common/gywm_left :: gywm_left" class="text-nav"></div>
+    <div class="text-box">
+			<div class="text-content" id="text-content">
+				<h1 class="title">
+					网站公告
+				<!--<c:if test="${idss==1}">网站公告</c:if>-->
+				<!--<c:if test="${idss==2}">媒体报道</c:if>-->
+				<!--<c:if test="${idss==3}">管理团队</c:if>-->
+				<!--<c:if test="${idss==4}">合作伙伴</c:if>-->
+				<!--<c:if test="${idss==5}">团队风采</c:if>-->
+				</h1>
+				<ul class="clearfix mt20 new-list">
+				<!--<c:forEach items="${list }" var="notice">-->
+					<!--<li class="clearfix list-item">-->
+						<!--<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">${notice.noticetitle }</a>-->
+						<!--<span>-->
+							<!--<fmt:formatDate value="${notice.noticelasttime }"/>-->
+<!--</span>-->
+					<!--</li>-->
+				<!--</c:forEach>-->
+					<li class="clearfix list-item">
+						<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">亿人贷第三季度净利润3.443亿元 同比增长308%</a>
+						<span>
+							2017-03-13
+</span>
+					</li>
+					<li class="clearfix list-item">
+						<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">宜人贷产品副总裁宋巍：技术创新是金融变革的驱动力</a>
+						<span>
+							2017-09-15
+</span>
+					</li>
+					<li class="clearfix list-item">
+						<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">亿人贷第三季度净利润3.443亿元 同比增长308%</a>
+						<span>
+							2017-03-13
+</span>
+					</li>
+					<li class="clearfix list-item">
+						<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">宜人贷产品副总裁宋巍：技术创新是金融变革的驱动力</a>
+						<span>
+							2017-09-15
+</span>
+					</li>
+					<li class="clearfix list-item">
+						<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">亿人贷第三季度净利润3.443亿元 同比增长308%</a>
+						<span>
+							2017-03-13
+</span>
+					</li>
+					<li class="clearfix list-item">
+						<a href="${pageContext.request.contextPath}/notice/notget.do?ids=${notice.noticeid }">宜人贷产品副总裁宋巍：技术创新是金融变革的驱动力</a>
+						<span>
+							2017-09-15
+</span>
+					</li>
+				</ul>
+				<div class="page">
+					<span class="count"></span>
+					<div class="fr pages">
+						<span data-page="1" class="currents">1</span>
+						<a data-page="17" class="last" href="#">尾页</a>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+</div>
+ <!--网站底部-->
+ <div th:include="common/footer :: footer" id="footer" class="ft"></div>
+</body>
+</html>

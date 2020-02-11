@@ -7,10 +7,13 @@ import com.demo.p2p.service.UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,18 +30,22 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping(value = "/login")
-    public String login(String j_username, String password, HttpServletRequest request){
+    @ResponseBody
+    public Object login(String username, String password, HttpServletRequest request){
         QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("unickname",j_username).eq("upassword",password);
+        queryWrapper.eq("unickname",username).eq("upassword",password);
         Users users=usersService.login(queryWrapper);
+        Map<String,Object> map=new HashMap<String,Object>();
         if (users!=null){
-            System.out.println("username:"+users.getUnickname());
             HttpSession session=request.getSession();
             session.setAttribute("loginUser",users);
-            return "/个人中心首页";
+            map.put("status",true);
+            map.put("message","登录成功！");
         }else{
-            return "/login";
+            map.put("status",false);
+            map.put("message","登录失败，请检查用户名或密码是否正确！");
         }
+        return map;
     }
 }
 
