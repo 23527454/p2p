@@ -30,7 +30,7 @@
 				<p class="p3">注册成功</p>
 			</div>
 			<div class="registerCont">
-				<form action="register1" method="post">
+				<form action="register1" id="form" method="post" onsubmit="return form_submit()">
 					<ul>
 						<li><span class="dis">用户名:</span> <input type="text"
 							onblur="return checkunickname();" name="unickname" id="userName"
@@ -106,6 +106,30 @@
 <script type="text/javascript"
 	src=" My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
+
+    function form_submit(){
+        var test_name1 = test_name();
+        var test_pwd1 = test_pwd();
+        var test_pwds1 = test_pwds();
+        var test_phone1 = test_phone();
+        var test_protocol1 = test_protocol();
+        if ( test_name1 == false){
+            alert("用户名有误，请重填");
+            return false;
+        }else if ( test_pwd1 == false || test_pwds1 == false){
+            alert("密码有误，请重填");
+            return false;
+        }else if (test_phone1 == false){
+            alert("手机号码有误，请重填");
+            return false;
+        }else if (test_protocol1 == false){
+            alert("请先阅读协议，并勾选我同意");
+            return false;
+		}else {
+            return true;
+		}
+    }
+
 	function checkunickname() {
 		var unickname = document.getElementById("userName").value;
 		var k = new RegExp("^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$");
@@ -184,6 +208,78 @@
 		     return false; 
 		}
 	}
-	
+
+
+
+    function test_name() {
+        var unickname = document.getElementById("userName").value;
+        var k = new RegExp("^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$");
+        if (unickname == "" || unickname == null) {
+            return false;
+        }
+        if (k.test(unickname) != true) {
+            document.getElementById("userName").value = "";
+            return false;
+        }
+        if (unickname.length < 6) {
+            return false;
+        }
+        if (unickname.length > 10) {
+            return false;
+        }
+        $.post('${pageContext.request.contextPath}/users/findByName.do', {
+            "unickname" : unickname
+        }, function(data) {
+            var conent = data;
+            if (conent == 2) {
+                document.getElementById("userName").value = "";
+                return false;
+            }
+        }, "json");
+    }
+    function test_pwd(){
+        var password = document.getElementById("password").value;
+        if (password == "" || password == null) {
+            return false;
+        }
+        if (password.length < 6) {
+            return false;
+        }
+        if (password.length > 16) {
+            return false;
+        }
+    }
+    function test_pwds(){
+        var repeatPassword = document.getElementById("repeatPassword").value;
+        var password = document.getElementById("password").value;
+        if (repeatPassword == "" || repeatPassword == null) {
+            return false;
+        }
+        if (repeatPassword.length < 6) {
+            return false;
+        }
+        if (repeatPassword.length > 16) {
+            return false;
+        }
+        if(password!=repeatPassword){
+            return false;
+        }
+    }
+    function test_phone(){
+        var phone = document.getElementById("phone").value;
+        var e =/^1(3|4|5|7|8)\d{9}$/;
+        if(phone.length!=11){
+            return false;
+        }
+        if(e.test(phone)==false){
+            return false;
+        }
+    }
+    function test_protocol() {
+        var protocol = document.getElementById("protocol").value;
+		if (!protocol.checked) {
+		    return false;
+		}
+    }
 </script>
 </html>
