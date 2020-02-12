@@ -18,4 +18,6 @@ public interface UsersService extends IService<Users> {
     public Users checkUsersByCondition(QueryWrapper<Users> queryWrapper);
 
     public boolean resetPwd(Integer uid,String password);
+
+    public boolean resetPhone(Integer uid,String phone);
 }

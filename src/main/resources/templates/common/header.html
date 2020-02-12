@@ -23,7 +23,13 @@
                     <div class=""><a href="/sys/register" class="c-orange" title="免费注册">免费注册</a></div>
                 </li>
                 <li>
-                    <div class=""><a href="/sys/login" class="js-login" title="登录">登录</a></div>
+                    <div class="">
+                        <a th:if="${session.loginUser ==null}" href="/sys/login" class="js-login" title="登录">登录</a>
+                        <a th:if="${session.loginUser !=null}" href="/sys/grzx" class="js-login" title="个人中心">[[${session.loginUser.unickname}]]</a>
+                    </div>
+                </li>
+                <li th:if="${session.loginUser !=null}">
+                    <div class=""><a href="/users/loginout" class="js-login" title="注销">注销</a></div>
                 </li>
             </ul>
         </div>
