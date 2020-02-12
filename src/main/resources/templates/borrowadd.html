@@ -726,8 +726,13 @@
             if (appname.length == 0) {
                 window.alert('公司名称不能为空');
                 return false;
-            } else if (appusername.length == 0) {
+            }
+            if (appusername.length == 0) {
                 window.alert('姓名不能为空');
+                return false;
+            }
+            if (!myreg.test(appuserphone)) {
+                window.alert('手机号码有误');
                 return false;
             }
 
@@ -764,7 +769,8 @@
             if (appname.length == 0) {
                 window.alert('公司名称不能为空');
                 return false;
-            } else if (appusername.length == 0) {
+            }
+            if (appusername.length == 0) {
                 window.alert('姓名不能为空');
                 return false;
             }
@@ -773,10 +779,10 @@
                 window.alert("还款方式不能为空");
                 return false;
             }
-            /* else if (!myreg.test(appuserphone)) {
+            if (!myreg.test(appuserphone)) {
                  window.alert('手机号码有误');
                  return false;
-            } */
+            }
             /*  `busername` varchar(255) DEFAULT NULL COMMENT '用户名',>>>>>>>>>>>用户id
               `brelname` varchar(255) DEFAULT NULL COMMENT '真实姓名',
               `bpass` varchar(255) DEFAULT NULL COMMENT '通过认证数量',>>>>>>>>>>>>>手机号码
