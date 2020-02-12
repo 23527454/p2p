@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.CertificationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Certification">
+        <id column="id" property="id" />
+        <result column="cserial" property="cserial" />
+        <result column="cusername" property="cusername" />
+        <result column="crealname" property="crealname" />
+        <result column="cbalance" property="cbalance" />
+        <result column="cfreeze" property="cfreeze" />
+        <result column="cdue" property="cdue" />
+        <result column="cpaid" property="cpaid" />
+        <result column="ctotalmoney" property="ctotalmoney" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, cserial, cusername, crealname, cbalance, cfreeze, cdue, cpaid, ctotalmoney
+    </sql>
+
+</mapper>
