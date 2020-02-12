@@ -46,13 +46,12 @@ public class BorrowmoneyController {
         users  = (Users) session.getAttribute("loginUser");
         if(users !=  null ){
             borrowmoney.setBusername(users.getUid().toString());
-            System.out.println("uid"+users.getUid());
             num = borrowmoneyService.addMoney(borrowmoney);
             map.put("jie",true);
             System.out.println(num);
         }else {
             map.put("jie",false);
-            System.out.println(1111);
+            System.out.println(borrowmoney.getBrecommend());
         }
         return map;
     }
