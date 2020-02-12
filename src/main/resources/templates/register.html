@@ -32,30 +32,50 @@
 			<div class="registerCont">
 				<form action="register1" id="form" method="post" onsubmit="return form_submit()">
 					<ul>
-						<li><span class="dis">用户名:</span> <input type="text"
+						<li><span class="dis">*用户名:</span> <input type="text"
 							onblur="return checkunickname();" name="unickname" id="userName"
 							class="input _userName" maxlength="10" tabindex="1"> <span
 							id="userNameAlt" data-info="6-10个字符，字母开头，字母、数字组成">6-10个字符，字母开头，字母、数字组成</span></li>
-						<li><span class="dis">密码:</span> <input type="password"
+						<li><span class="dis">*密码:</span> <input type="password"
 							 onblur="return checkupassword();"
 							 name="upassword" id="password" class="input _password"
 							maxlength="16" tabindex="1"> <span id="passwordAlt"
 							data-info="6-16个字符，英文、数字组成，区分大小写">6-16个字符，英文、数字组成</span></li>
-						<li><span class="dis">确认密码:</span> <input type="password"
+						<li><span class="dis">*确认密码:</span> <input type="password"
 							name="repeatPassword"
 							onblur="return checkupassword1();" id="repeatPassword"
 							class="input _repeatPassword" maxlength="16" tabindex="1">
 							<span id="repeatPasswordAlt" data-info="请再次输入密码">请再次输入密码</span></li>
 
-						<li class="telNumber"><span class="dis">手机号码:</span> <input
+						<li class="xm">
+							<span class="dis">*真实姓名：</span>
+							<input type="text" id="xm" style="width:166px;" class="input" name="xm" maxlength="16" tabindex="1" autocomplete="off">
+						</li>
+						<li class="sfz">
+							<span class="dis">*身份证号：</span>
+							<input type="text" id="sfz" style="width:166px;" class="input" name="sfz" maxlength="18" tabindex="1" autocomplete="off">
+						</li>
+						<li class="yx">
+							<span class="dis">*邮箱：</span>
+							<input type="text" id="yx" style="width:166px;" class="input" name="yx" maxlength="16" tabindex="1" autocomplete="off">
+						</li>
+						<li class="telNumber"><span class="dis">*手机号码:</span> <input
 							type="text" class="input _phoneNum" id="phone"
 							onblur="return phone();"
 							name="uphonenumber" tabindex="1" maxlength="11"><input type="button" onclick="button_ck()" value="发送验证码"/>
 						</li>
 						<li class="yzm">
-							<span class="dis">验证码：</span>
+							<span class="dis">*验证码：</span>
 							<input type="text" id="yzm" style="width:166px;" class="input" name="yzm" data-msg="验证码" maxlength="6" tabindex="1" autocomplete="off">
-							<input type="text" id="yzms">
+							<input type="hidden" id="yzms">
+						</li>
+						<li class="tjr">
+							<span class="dis">推荐人：</span>
+							<input type="text" id="tjr" style="width:166px;" class="input" name="tjr" maxlength="16" tabindex="1" autocomplete="off">
+						</li>
+						<li class="tjrxm">
+							<span class="dis">推荐人姓名：</span>
+							<input type="text" id="tjrxm" style="width:166px;" class="input" name="tjrxm" maxlength="16" tabindex="1" autocomplete="off">
 						</li>
 						<li class="agree"><input name="protocol" id="protocol"
 							type="checkbox" value="" checked="checked"> 我同意《<a
@@ -132,11 +152,23 @@
         var test_phone1 = test_phone();
         var test_protocol1 = test_protocol();
         var test_yzm = yzm1();
+        var test_sfz = sfz1();
+        var test_xm = xm1();
+        var test_yx = yx1();
         if ( test_name1 == false){
             alert("用户名有误，请重填");
             return false;
         }else if ( test_pwd1 == false || test_pwds1 == false){
             alert("密码有误，请重填");
+            return false;
+        }else if (test_xm == false){
+            alert("真实名字有误，请重填");
+            return false;
+		} else if(test_sfz == false){
+            alert("身份证号码有误，请重填");
+            return false;
+        }else if (test_yx == false){
+            alert("邮箱地址有误，请重填");
             return false;
         }else if (test_phone1 == false){
             alert("手机号码有误，请重填");
@@ -230,7 +262,28 @@
 		     return false; 
 		}
 	}
+	function yx1(){
+        var yx = document.getElementById("yx").value;
+	    var zz = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        if(e.test(yx)==false){
+            return false;
+        }
+	}
 
+    function xm1() {
+        var xm = document.getElementById("xm").value;
+        if (xm == "" || xm == null) {
+            return false;
+        }
+    }
+
+    function sfz1(){
+        var sfz = document.getElementById("sfz").value;
+        var e =/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i;
+        if(e.test(sfz)==false){
+            return false;
+        }
+    }
 
 
     function test_name() {
