@@ -50,7 +50,13 @@
 						<li class="telNumber"><span class="dis">手机号码:</span> <input
 							type="text" class="input _phoneNum" id="phone"
 							onblur="return phone();"
-							name="uphonenumber" tabindex="1" maxlength="11">
+							name="uphonenumber" tabindex="1" maxlength="11"><input type="button" onclick="button_ck()" value="发送验证码"/>
+						</li>
+						<li class="yzm">
+							<span class="dis">验证码：</span>
+							<input type="text" id="yzm" style="width:166px;" class="input" name="yzm" data-msg="验证码" maxlength="6" tabindex="1" autocomplete="off">
+							<input type="text" id="yzms">
+						</li>
 						<li class="agree"><input name="protocol" id="protocol"
 							type="checkbox" value="" checked="checked"> 我同意《<a
 							href="#" target="_black">亿人宝注册协议</a>》 <span id="protocolAlt"
@@ -107,12 +113,25 @@
 	src=" My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
 
+	function button_ck(){
+        var phone = document.getElementById("phone").value;
+        var test_phone1 = test_phone();
+        if (test_phone1 == false){
+            alert("手机号码有误，请重填");
+		} else {
+            $.get("/sys/register_ph?phone="+phone, function (data){
+                document.getElementById("yzms").value = data;
+            })
+		}
+    }
+
     function form_submit(){
         var test_name1 = test_name();
         var test_pwd1 = test_pwd();
         var test_pwds1 = test_pwds();
         var test_phone1 = test_phone();
         var test_protocol1 = test_protocol();
+        var test_yzm = yzm1();
         if ( test_name1 == false){
             alert("用户名有误，请重填");
             return false;
@@ -122,10 +141,13 @@
         }else if (test_phone1 == false){
             alert("手机号码有误，请重填");
             return false;
+        }else if (test_yzm == false){
+            alert("验证码有误，请重填");
+            return false;
         }else if (test_protocol1 == false){
             alert("请先阅读协议，并勾选我同意");
             return false;
-		}else {
+		} else{
             return true;
 		}
     }
@@ -276,9 +298,16 @@
         }
     }
     function test_protocol() {
-        var protocol = document.getElementById("protocol").value;
+        var protocol = document.getElementById("protocol");
 		if (!protocol.checked) {
 		    return false;
+		}
+    }
+    function yzm1() {
+        var phone1 = document.getElementById("yzm").value;
+        var phone2 = document.getElementById("yzms").value;
+        if (phone1 != phone2){
+            return false;
 		}
     }
 </script>
