@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.BorrowmoneyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Borrowmoney">
+        <id column="id" property="id" />
+        <result column="bserial" property="bserial" />
+        <result column="busername" property="busername" />
+        <result column="brelname" property="brelname" />
+        <result column="bpass" property="bpass" />
+        <result column="btype" property="btype" />
+        <result column="btitle" property="btitle" />
+        <result column="bmoney" property="bmoney" />
+        <result column="brate" property="brate" />
+        <result column="btimelimit" property="btimelimit" />
+        <result column="blimit" property="blimit" />
+        <result column="bstate" property="bstate" />
+        <result column="brecommend" property="brecommend" />
+        <result column="bleixing" property="bleixing" />
+        <result column="beizhu1" property="beizhu1" />
+        <result column="beizhu2" property="beizhu2" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, bserial, busername, brelname, bpass, btype, btitle, bmoney, brate, btimelimit, blimit, bstate, brecommend, bleixing, beizhu1, beizhu2
+    </sql>
+
+
+</mapper>
