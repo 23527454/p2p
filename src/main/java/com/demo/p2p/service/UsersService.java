@@ -15,9 +15,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UsersService extends IService<Users> {
     public Users login(QueryWrapper<Users> queryWrapper);
 
+
     /**
      * 首页注册人数
      * @return
      */
     public Integer usersNameCount();
+
+    public Users checkUsersByCondition(QueryWrapper<Users> queryWrapper);
+
+    public boolean resetPwd(Integer uid,String password);
+
 }

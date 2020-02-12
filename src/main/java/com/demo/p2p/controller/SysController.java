@@ -3,15 +3,11 @@ package com.demo.p2p.controller;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.InvestinfoService;
 import com.demo.p2p.service.UsersService;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/sys")
@@ -24,7 +20,6 @@ public class SysController {
 
     @Resource
     private InvestinfoService investinfoService;
-
     /**
      * 首页
      * @return

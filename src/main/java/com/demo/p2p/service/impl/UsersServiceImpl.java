@@ -29,9 +29,24 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
+
     public Integer usersNameCount() {
         return this.baseMapper.usersNameCount();
     }
 
+
+
+    public Users checkUsersByCondition(QueryWrapper<Users> queryWrapper) {
+        return usersMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public boolean resetPwd(Integer uid, String password) {
+        Integer result=usersMapper.resetPwd(uid,password);
+        if (result==1){
+            return true;
+        }
+        return false;
+    }
 
 }
