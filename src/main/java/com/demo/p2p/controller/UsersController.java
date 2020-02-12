@@ -29,21 +29,6 @@ public class UsersController {
     @Resource
     private UsersService usersService;
 
-    @RequestMapping(value = "/do_register")
-    public String paaaaa(String unickname,String upassword,String uphonenumber,String xm,String sfz,String yx,String tjr,String tjrxm){
-        Users users = new Users();
-        users.setUnickname(unickname);
-        users.setUpassword(upassword);
-        users.setUphonenumber(uphonenumber);
-        users.setUname(xm);
-        users.setUcardid(sfz);
-        users.setUmailbox(yx);
-        users.setUreferrer(tjr);
-        users.setUreferrername(tjrxm);
-        usersService.saveUser(users);
-        return "redirect:/sys/register1";
-    }
-
     @PostMapping(value = "/resetPwd")
     @ResponseBody
     public Object resetPwd(Integer uid,String password){

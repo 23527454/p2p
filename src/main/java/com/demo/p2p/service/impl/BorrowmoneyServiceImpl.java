@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 public class BorrowmoneyServiceImpl extends ServiceImpl<BorrowmoneyMapper, Borrowmoney> implements BorrowmoneyService {
     @Resource
     private  BorrowmoneyMapper borrowmoneyMapper;
+
     @Override
     public int addMoney(Borrowmoney borrowmoney) {
         return borrowmoneyMapper.addMoney(borrowmoney);

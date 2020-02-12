@@ -35,6 +35,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
+
+    public Integer usersNameCount() {
+        return this.baseMapper.usersNameCount();
+    }
+
+
+
     public Users checkUsersByCondition(QueryWrapper<Users> queryWrapper) {
         return usersMapper.selectOne(queryWrapper);
     }
@@ -47,4 +54,5 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
         return false;
     }
+
 }

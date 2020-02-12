@@ -737,10 +737,14 @@
             }
 
             if(bserial == "0"){
-                window.alert("还款方式不能为空");
+                window.alert("请选择还款方式");
                 return false;
             }
             var dq = $("#province").val();
+            if(dq == "未选择"){
+                 window.alert("请选择所在区域")
+                return false;
+            }
             $.post("/brower/toaddborr.do", {
                 bserial:bserial,
                 btitle: appname,
@@ -753,9 +757,13 @@
                 beizhu1: beizhu1,
                 beizhu2: beizhu2
             }, function (data) {
-
+                if(data.jie){
+                    alert("申请成功!保存手机通畅,请等待工作人员答复");
+                }else {
+                    alert("用户还未登录!!!")
+                }
             }, "json");
-            alert("申请成功!保存手机通畅,请等待工作人员答复");
+            // alert("申请成功!保存手机通畅,请等待工作人员答复");
         } else if (i == 1) {
             //alert(i);
             var  bserial = $("#bserials").val();
@@ -792,6 +800,11 @@
                  beizhu1 备注1(房屋面积or车辆品牌)
                  beizhu2 备注2(房龄/所属车型) */
             var dq = $("#provincenews").val();
+            if(dq == "未选择"){
+                window.alert("请选择所在区域")
+                return false;
+            }
+            alert(dq)
             $.post("/brower/toaddborr.do", {
                 bserial:bserial,
                 btitle: appname,
@@ -804,8 +817,13 @@
                 beizhu1: beizhu1,
                 beizhu2: beizhu2
             }, function (data) {
+                if(data.jie){
+                    alert("申请成功!保存手机通畅,请等待工作人员答复");
+                }else {
+                    alert("用户还未登录!!!")
+                }
             }, "json");
-            alert("申请成功!保存手机通畅,请等待工作人员答复");
+
         }
     }
 </script>
