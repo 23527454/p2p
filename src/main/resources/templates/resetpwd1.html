@@ -1,0 +1,62 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>p2p网贷平台</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="/css/common.css" rel="stylesheet" />
+<link href="/css/register.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/script/jquery.min.js"></script>
+<script type="text/javascript" src="/script/common.js"></script>
+<script src="/script/login.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <!--header--> <header th:include="common/header :: header"></header>
+	 
+	<!--注册-->
+	<div class="wrap">
+		<form id="LonginForm" name="LonginForm" action="#" method="post">
+			<div class="tdbModule loginPage">
+				<div class="registerTitle">重置密码</div>
+				<div class="registerCont">
+					<ul>
+						<li class="error">
+							<span id="prrintInfo" data-info=""><span></span></span>
+						</li>
+						<li>
+							<span class="dis">用户名：</span><input class="input" type="text" onblur="userNameJy()" name="j_username" id="userName" maxlength="24" tabindex="1" autocomplete="off">
+						</li>
+						<li class="btn">
+							<input type="button" class="radius1" value="下一步" id="submitBtn" onclick="resetPwd_1()">
+						</li>
+					</ul>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+<!--网站底部-->
+	<div th:include="common/footer :: footer" id="footer" class="ft"></div>
+
+<script>
+    function resetPwd_1(){
+        var userName=$("#userName").val();
+        var manage=$("#prrintInfo");
+        if(userName==null || userName==""){
+            alert("用户名不能为空！");
+        }else{
+            $.post("/users/checkUnickname","username="+userName,function (data) {
+				if (!data.status) {
+				    alert(data.message);
+				}else{
+				    window.location="/sys/resetPwd2?uid="+data.users.uid+"&phone="+data.users.uphonenumber;
+				}
+            });
+        }
+    }
+</script>
+ </body>
+</html>

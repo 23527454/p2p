@@ -14,4 +14,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UsersService extends IService<Users> {
     public Users login(QueryWrapper<Users> queryWrapper);
+
+    public Users checkUsersByCondition(QueryWrapper<Users> queryWrapper);
+
+    public boolean resetPwd(Integer uid,String password);
 }
