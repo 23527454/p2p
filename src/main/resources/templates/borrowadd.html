@@ -753,9 +753,13 @@
                 beizhu1: beizhu1,
                 beizhu2: beizhu2
             }, function (data) {
-
+                if(data.jie){
+                    alert("申请成功!保存手机通畅,请等待工作人员答复");
+                }else {
+                    alert("用户还未登录!!!")
+                }
             }, "json");
-            alert("申请成功!保存手机通畅,请等待工作人员答复");
+            // alert("申请成功!保存手机通畅,请等待工作人员答复");
         } else if (i == 1) {
             //alert(i);
             var  bserial = $("#bserials").val();
@@ -804,8 +808,13 @@
                 beizhu1: beizhu1,
                 beizhu2: beizhu2
             }, function (data) {
+                if(data.jie){
+                    alert("申请成功!保存手机通畅,请等待工作人员答复");
+                }else {
+                    alert("用户还未登录!!!")
+                }
             }, "json");
-            alert("申请成功!保存手机通畅,请等待工作人员答复");
+
         }
     }
 </script>

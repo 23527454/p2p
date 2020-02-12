@@ -16,8 +16,8 @@ public interface BorrowmoneyMapper extends BaseMapper<Borrowmoney> {
 
     //房贷车贷的添加
     @Insert("INSERT INTO credit.borrowmoney \n" +
-            "\t(brelname,bpass,btitle, bmoney,bserial, bstate, brecommend, bleixing, beizhu1, beizhu2)\n" +
-            "\tVALUES(#{brelname}, #{bpass},#{btitle}, #{bmoney},#{bserial}, \n" +
+            "\t(busername,brelname,bpass,btitle, bmoney,bserial, bstate, brecommend, bleixing, beizhu1, beizhu2)\n" +
+            "\tVALUES(#{busername},#{brelname}, #{bpass},#{btitle}, #{bmoney},#{bserial}, \n" +
             "\t#{bstate}, #{brecommend}, #{bleixing}, #{beizhu1}, #{beizhu2});")
     public int addMoney(Borrowmoney borrowmoney);
 }
