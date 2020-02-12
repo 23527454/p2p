@@ -23,6 +23,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     @Resource
     private UsersMapper usersMapper;
 
+
+    @Override
+    public int saveUser(Users users) {
+        return usersMapper.insert(users);
+    }
+
     @Override
     public Users login(QueryWrapper<Users> queryWrapper) {
         return usersMapper.selectOne(queryWrapper);

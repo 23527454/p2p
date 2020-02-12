@@ -28,7 +28,7 @@
 				<p class="p1">填写账户信息</p>
 				<p class="p2">验证手机信息</p>
 				<p class="p3">注册成功</p>
-			</div>
+			</div>../users/do_register
 			<div class="registerCont">
 				<form action="register1" id="form" method="post" onsubmit="return form_submit()">
 					<ul>
@@ -57,7 +57,7 @@
 						</li>
 						<li class="yx">
 							<span class="dis">*邮箱：</span>
-							<input type="text" id="yx" style="width:166px;" class="input" name="yx" maxlength="16" tabindex="1" autocomplete="off">
+							<input type="text" id="yx" style="width:166px;" class="input" name="yx" maxlength="20" tabindex="1" autocomplete="off">
 						</li>
 						<li class="telNumber"><span class="dis">*手机号码:</span> <input
 							type="text" class="input _phoneNum" id="phone"
@@ -164,7 +164,7 @@
         }else if (test_xm == false){
             alert("真实名字有误，请重填");
             return false;
-		} else if(test_sfz == false){
+		}else if(test_sfz == false){
             alert("身份证号码有误，请重填");
             return false;
         }else if (test_yx == false){
@@ -265,7 +265,7 @@
 	function yx1(){
         var yx = document.getElementById("yx").value;
 	    var zz = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-        if(e.test(yx)==false){
+        if(zz.test(yx)==false){
             return false;
         }
 	}
@@ -279,7 +279,7 @@
 
     function sfz1(){
         var sfz = document.getElementById("sfz").value;
-        var e =/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i;
+        var e =/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/;
         if(e.test(sfz)==false){
             return false;
         }

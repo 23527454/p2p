@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-02-09
  */
 public interface UsersService extends IService<Users> {
+    public int saveUser(Users users);
+
     public Users login(QueryWrapper<Users> queryWrapper);
 
     public Users checkUsersByCondition(QueryWrapper<Users> queryWrapper);
