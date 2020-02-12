@@ -27,4 +27,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public Users login(QueryWrapper<Users> queryWrapper) {
         return usersMapper.selectOne(queryWrapper);
     }
+
+    @Override
+    public Integer usersNameCount() {
+        return this.baseMapper.usersNameCount();
+    }
+
+
 }

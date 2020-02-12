@@ -29,6 +29,7 @@ public class UsersController {
     @Resource
     private UsersService usersService;
 
+
     @PostMapping(value = "/login")
     @ResponseBody
     public Object login(String username, String password, HttpServletRequest request){
@@ -47,5 +48,6 @@ public class UsersController {
         }
         return map;
     }
+
 }
 

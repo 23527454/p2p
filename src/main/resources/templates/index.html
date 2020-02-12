@@ -1,5 +1,5 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html >
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -45,7 +45,6 @@
 </script>
 </head>
 <body>
-
 	<!--header-->
 	<header th:include="common/header :: header"></header>
 	<!--banner-->
@@ -197,20 +196,15 @@
 			href="${pageContext.request.contextPath}/notice/notlist.do?ids=1">更多</a>
 	</div>
 	<div class="ipubs">
-		<span class="o1">累计投资金额:<strong>
-				<!--<fmt:formatNumber value="${ztz}" pattern="#.##" />&lt;!&ndash; 1,047,288,128.79 &ndash;&gt;-->
-				1,047,288,128.79
+		<span class="o1">累计投资金额:
+			<strong th:text="${#numbers.formatDecimal(sumInmoney,0,'COMMA',2,'POINT')}">
 		</strong>元
-		</span> <span class="o2">累积收益:<strong>
-				<!--<fmt:formatNumber value="${ztz*0.3}" pattern="#.##" />&lt;!&ndash; 1,047,288,128.79 &ndash;&gt;-->
-				1,047,288,128.79
+		</span> <span class="o2">累积收益:<strong th:text="${#numbers.formatDecimal(sumInmoney,0,'COMMA',2,'POINT')}">
+		</span><span class="o2">总余额:<strong th:text="${#numbers.formatDecimal(sumprofitmoney,0,'COMMA',2,'POINT')}">
 		</strong>元
-		</span><span class="o2">网站已运行:<strong>
-				765
-		</strong>天
 		</span><span class="o4">注册人数:
 		<!--<strong>${size}</strong>-->
-		<strong>90000</strong>人
+		<strong th:text="${sumuserscount}"></strong>人
 		</span>
 	</div>
 	<div class="feature">

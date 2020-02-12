@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.InvestinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Investinfo">
+        <id column="inid" property="inid" />
+        <result column="userid" property="userid" />
+        <result column="brrowid" property="brrowid" />
+        <result column="inmoney" property="inmoney" />
+        <result column="instatus" property="instatus" />
+        <result column="instyle" property="instyle" />
+        <result column="brrowstatus" property="brrowstatus" />
+        <result column="interest" property="interest" />
+        <result column="profitmodel" property="profitmodel" />
+        <result column="profitmoney" property="profitmoney" />
+        <result column="indate" property="indate" />
+        <result column="replaydate" property="replaydate" />
+        <result column="markstatus" property="markstatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        inid, userid, brrowid, inmoney, instatus, instyle, brrowstatus, interest, profitmodel, profitmoney, indate, replaydate, markstatus
+    </sql>
+
+</mapper>
