@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -39,6 +42,11 @@ public class UsersController {
     @RequestMapping(value = "/do_register")
     public String paaaaa(String unickname,String upassword,String uphonenumber,String xm,String sfz,String yx,String tjr,String tjrxm){
         Users users = new Users();
+        Date date = new Date();
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
+
         users.setUnickname(unickname);
         users.setUpassword(upassword);
         users.setUphonenumber(uphonenumber);
@@ -47,6 +55,7 @@ public class UsersController {
         users.setUmailbox(yx);
         users.setUreferrer(tjr);
         users.setUreferrername(tjrxm);
+        users.setUregisterdate(localDateTime);
         usersService.saveUser(users);
         return "redirect:/sys/register1";
     }
