@@ -1,6 +1,5 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -45,7 +44,7 @@
 		} 
 	</style>
       <div class="pmain-profile">
-        <div class="pmain-welcome"> <span class="fl"><span id="outLogin">晚上好，</span>老壳疼 喝一杯下午茶，让心情放松一下~</span>
+        <div class="pmain-welcome"> <span class="fl"><span id="outLogin">晚上好，</span><span th:text="${session.loginUser.unickname}"></span> 喝一杯下午茶，让心情放松一下~</span>
 	        <span class="fr">注册时间：
 	         <!--<fmt:formatDate value="${user.uregisterdate}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>-->
               2017-12-12

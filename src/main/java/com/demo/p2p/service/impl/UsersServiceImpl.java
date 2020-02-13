@@ -55,4 +55,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         return false;
     }
 
+    @Override
+    public boolean resetPhone(Integer uid, String phone) {
+        Integer result=usersMapper.resetPhone(uid,phone);
+        if (result==1){
+            return true;
+        }
+        return false;
+    }
 }

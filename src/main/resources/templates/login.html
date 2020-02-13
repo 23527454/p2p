@@ -81,11 +81,10 @@
         }else if(password==null || password==""){
             manage.html("<span>密码不可为空!</span>");
         }else{
-            //$("#LonginForm").submit();
             $.post("/users/login",{"username":userName,"password":password},function(data){
                 if (data.status){
                     alert(data.message);
-                    location.href="/sys/grzx";
+                    location.href="/sys/index";
                 }else{
                     alert(data.message);
                     $("#password").val("");

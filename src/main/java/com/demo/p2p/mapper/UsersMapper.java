@@ -26,4 +26,7 @@ public interface UsersMapper extends BaseMapper<Users> {
     @Update("update users set upassword=#{password} where uid=#{uid}")
     public Integer resetPwd(@Param("uid") Integer uid, @Param("password") String password);
 
+
+    @Update("update users set uphonenumber=#{phone} where uid=#{uid}")
+    public Integer resetPhone(@Param("uid") Integer uid, @Param("phone") String phone);
 }

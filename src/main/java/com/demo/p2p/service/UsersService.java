@@ -28,4 +28,6 @@ public interface UsersService extends IService<Users> {
 
     public boolean resetPwd(Integer uid,String password);
 
+
+    public boolean resetPhone(Integer uid,String phone);
 }

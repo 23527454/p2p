@@ -1,6 +1,5 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>p2p网贷平台</title>
@@ -29,7 +28,7 @@
       <div th:include="common/left :: left"></div>
 
     <script type="text/javascript">
-			//<![CDATA[
+			//<![CDATA[   alert-checkOldMobile
 				function showSpan(op){
 					$("#updateMonbileForm\\:updateMonbileFormauthCode").val(""); 
 					if(op=='alert-updateEmail'){
@@ -275,68 +274,55 @@
         </div>
         <ul>
           <li><i class="grzxbg p-right"></i><span class="zhsz-span1">手机号</span>
-          <span  id="pone" class="zhsz-span2">
-         	 <%
-         		String newstr=(String)request.getAttribute("num");
-         		String	str =newstr.substring(0, 3)+"****"+newstr.substring(7);	
-         	 %>
-         	<%=str %>
-          </span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-checkOldMobile')">更改</a></span></li>
+          <span id="pone" class="zhsz-span2" th:text="${session.loginUser.uphonenumber}"></span>
+          <span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-checkOldMobile')">更改</a></span></li>
           <input type="hidden" value="false" id="authenticationMobile">
           <li>
-         
-          	<c:if test="${user.ucardid==null}"> 
-          		 	<i class="grzxbg p-danger"></i>
-          		 	<input type="hidden" value="${list.aiid}"/>
-          		 	<span class="zhsz-span1">${list.ainame}</span>
-		          	<span class="zhsz-span2">未认证</span><span class="zhsz-span3">
-		          	<a href="#" onclick="showSpan('alert-identity')">认证</a></span>	
-          	</c:if>
-	         <c:if test="${user.ucardid!=null}">
-	         	<i class="grzxbg p-right"></i>
-	         	<span class="zhsz-span1">身份认证</span>
-	         	<span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
-	         </c:if>
+            <div th:if="${session.loginUser.ucardid==null}">
+              <i class="grzxbg p-danger"></i>
+              <input type="hidden" value="${list.aiid}"/>
+              <span class="zhsz-span1">${list.ainame}</span>
+              <span class="zhsz-span2">未认证</span><span class="zhsz-span3">
+              <a href="#" onclick="showSpan('alert-identity')">认证</a></span>
+            </div>
+            <div th:if="${session.loginUser.ucardid!=null}">
+              <i class="grzxbg p-right"></i>
+              <span class="zhsz-span1">身份认证</span>
+              <span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
+             </div>
           </li>
           <li>
-          	<c:if test="${user.ucertnumber==null}"> 
-	          <i class="grzxbg p-danger"></i>
-	          <span class="zhsz-span1">第三方支付</span>
-	          <span class="zhsz-span2">未开通</span>
-	          <span class="zhsz-span3">
+            <div th:if="${session.loginUser.ucertnumber==null}">
+              <i class="grzxbg p-danger"></i>
+              <span class="zhsz-span1">第三方支付</span>
+              <span class="zhsz-span2">未开通</span>
+              <span class="zhsz-span3">
 	          <a href="<%=basePath %>thirdparty.jsp">开通</a>
 	          </span>
-	         </c:if>
-	         <c:if test="${user.ucertnumber!=null}"> 
-	          <i class="grzxbg p-right"></i>
-	          <span class="zhsz-span1">第三方支付</span>
-	          <span class="zhsz-span2">已开通</span>
-	          <span class="zhsz-span3"></span>
-	         </c:if>
+            </div>
+            <div th:if="${session.loginUser.ucertnumber!=null}">
+              <i class="grzxbg p-right"></i>
+              <span class="zhsz-span1">第三方支付</span>
+              <span class="zhsz-span2">已开通</span>
+              <span class="zhsz-span3"></span>
+            </div>
           </li>
-          <li> 
-	           
-	           	<c:if test="${user.umailbox!=null}">
-	           		 <i class="grzxbg p-right"></i>
-	           		 <span class="zhsz-span1">电子邮箱</span> 
-			         <span class="zhsz-span2">
-			         <%
-			         	String mailbox=(String)request.getAttribute("mailbox");
-			         	String mail=mailbox.substring(0,3)+"****"+mailbox.substring(7);
-			         %>
-			         <%= mail%>
+          <li>
+            <div th:if="${session.loginUser.umailbox!=null}">
+              <i class="grzxbg p-right"></i>
+              <span class="zhsz-span1">电子邮箱</span>
+              <span class="zhsz-span2" th:text="${session.loginUser.umailbox}"></span>
+              <span class="zhsz-span3">
+			        	 <a href="#" onclick="showSpan('alert-updateEmail')">更改</a>
 			         </span>
-			         <span class="zhsz-span3">
-			        	 <a href="#" onclick="showSpan('alert-updateEmail')">更改</a> 
-			         </span>
-	           	</c:if>
-	          	<c:if test="${user.umailbox==null }">
-	          		<i class="grzxbg p-danger"></i>
-	          		 <span class="zhsz-span1">电子邮箱</span>
-	          		 <span class="zhsz-span3">
-			        	 <a href="#" onclick="showSpan('alert-updateEmail')">认证</a> 
-			         </span>
-	          	</c:if>
+            </div>
+            <div th:if="${session.loginUser.umailbox==null}">
+              <i class="grzxbg p-danger"></i>
+              <span class="zhsz-span1">电子邮箱</span>
+              <span class="zhsz-span3">
+			    <a href="#" onclick="showSpan('alert-updateEmail')">认证</a>
+			  </span>
+            </div>
            </li>
           <li><i class="grzxbg p-right"></i><span class="zhsz-span1">登录密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePass')">更改</a></span></li>
           <li><i class="grzxbg p-right"></i><span class="zhsz-span1">支付密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePass')">更改</a></span></li>
@@ -541,14 +527,13 @@
 			}
 		});
 			function check(){
-				$.getJSON('identifying.do',null,function(data){
-					var conent=data;
-					
-					alert("验证码已发送");
-					document.getElementById("yan").value=conent;
-				});
+			    $.post("/users/sendMessages","phone="+[[${session.loginUser.uphonenumber}]],function (data) {
+                    alert("验证码已发送");
+                    document.getElementById("yan").value=data.yzm;
+                });
 			}
 			function yanzhen(){
+                var e =/^1(3|4|5|7|8)\d{9}$/;
 				var i= $("#yan").val();
 				 var cont=$("#yanzhenma").val();
 				 var phones=$("#newPhone").val();
@@ -564,7 +549,7 @@
 				}else if(phones.length>11||phones.length<11){
 					 document.getElementById("a").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;请输入11位数的手机号";
 					 return false;
-				}else if(isNaN(phones)){
+				}else if(e.test(phones)==false){
 					 document.getElementById("a").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;请输入正确的手机号";
 				       return false;
 			    }else{
@@ -582,19 +567,13 @@
         <h3>修改手机</h3>
         <span class="alert-close" onclick="displaySpan('alert-checkOldMobile')"></span></div>
       <div class="alert-main">
-        <form id="checkOldMobileForm" name="checkOldMobileForm" method="post" action=" updphone.do" enctype="application/x-www-form-urlencoded">
+        <form id="checkOldMobileForm" name="checkOldMobileForm" method="post" action="/users/modifyPhone" enctype="application/x-www-form-urlencoded">
           <input type="hidden" name="checkOldMobileForm" value="checkOldMobileForm">
-           <input type="hidden" value="${user.uid }" id="id" name="id">
+           <input type="hidden" th:value="${session.loginUser.uid }" id="id" name="id">
           <ul> 
             <li>
               <label class="txt-name">原手机号</label>
-              <label id="checkOldMobileForm:oldMobileNumber" class="txt240"> 
-              <%
-         		String newstrs=(String)request.getAttribute("num");
-         		String	strs=newstr.substring(0, 3)+"****"+newstr.substring(7);	
-         	 %>
-         	<%=strs %>
-              </label>
+              <label id="checkOldMobileForm:oldMobileNumber" class="txt240" th:text="${session.loginUser.uphonenumber}"></label>
             </li>
             <li>
               <label class="txt-name">验证码</label>
