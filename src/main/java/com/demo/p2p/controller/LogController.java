@@ -16,6 +16,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequestMapping("/log")
 public class LogController {
-
+    @RequestMapping(value = "/index")
+    public String Test3(){
+        return "Test3";
+    }
 }
 
