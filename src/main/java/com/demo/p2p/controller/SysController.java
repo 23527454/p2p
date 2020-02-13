@@ -1,8 +1,11 @@
 package com.demo.p2p.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
+import com.demo.p2p.entity.Notice;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.InvestinfoService;
+import com.demo.p2p.service.NoticeService;
 import com.demo.p2p.service.UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -30,13 +34,27 @@ public class SysController {
      * 首页
      * @return
      */
+    @Resource
+    private NoticeService noticeService;
     @RequestMapping(value = "/index")
-    public String index(HttpServletRequest request){
-        System.out.println("sumCertification==================");
+    public String index(HttpServletRequest request,Model mode){
+        QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<Notice> queryWrapper1=new QueryWrapper<>();
+        QueryWrapper<Notice> queryWrapper2=new QueryWrapper<>();
+        int i = 1;
+        queryWrapper.eq("noticetype",i);
+        queryWrapper1.eq("noticetype",i+1);
+        queryWrapper2.eq("noticetype",i+5);
+        List<Notice> list = noticeService.select1(queryWrapper);
+        List<Notice> list1 = noticeService.select2(queryWrapper1);
+        List<Notice> list2 = noticeService.select2(queryWrapper2);
         Integer certification = certificationService.certification();
         Integer usersnamecount = usersService.usersNameCount();
         Integer sumInmoney = investinfoService.sumInmoney();
         Integer sumprofitmoney = investinfoService.sumProfitmoney();
+        mode.addAttribute("list",list);
+        mode.addAttribute("list1",list1);
+        mode.addAttribute("list2",list2);
         request.setAttribute("sumcertification",certification);
         request.setAttribute("sumuserscount",usersnamecount);
         request.setAttribute("sumInmoney",sumInmoney);
