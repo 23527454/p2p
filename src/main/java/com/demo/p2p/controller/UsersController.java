@@ -39,14 +39,31 @@ public class UsersController {
     @Resource
     private LogService logService;
 
+    @RequestMapping(value = "/do_insertucertnum")
+    public String insertucertnum(Integer id, String uname, String ucardid, String umailbox, String uphonenumber, String upwd_zd, HttpServletResponse response,HttpSession session) throws Exception{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        Users users= new Users();
+        users.setUid(id);
+        users.setUname(uname);
+        users.setUcardid(ucardid);
+        users.setUmailbox(umailbox);
+        users.setUphonenumber(uphonenumber);
+        users.setUpwdZd(upwd_zd);
+        users.setUcertnumber("526485");
+        usersService.insertucertnum(users);
+        session.setAttribute("loginUser",users);
+        return "redirect:/sys/grzx_ktdsf";
+}
     @RequestMapping(value = "/do_register")
-    public String paaaaa(String unickname,String upassword,String uphonenumber,String xm,String sfz,String yx,String tjr,String tjrxm){
+    public String paaaaa(String unickname,String upassword,String uphonenumber,String xm,String sfz,String yx,String tjr,String tjrxm, HttpServletResponse response) throws Exception{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
         Users users = new Users();
         Date date = new Date();
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
         LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
-
         users.setUnickname(unickname);
         users.setUpassword(upassword);
         users.setUphonenumber(uphonenumber);
@@ -56,9 +73,28 @@ public class UsersController {
         users.setUreferrer(tjr);
         users.setUreferrername(tjrxm);
         users.setUregisterdate(localDateTime);
-        usersService.saveUser(users);
-        return "redirect:/sys/register1";
+        int num = usersService.saveUser(users);
+        PrintWriter out=response.getWriter();
+        if (num > 0){
+            out.print("<script>alert('开通成功！');</script>");
+        }else{
+            out.print("<script>alert('开通失败，请与管理员联系！');</script>");
+        }
+        return "redirect:/sys/grzx_ktdsf";
     }
+    @RequestMapping(value = "/findByName")
+    @ResponseBody
+    public String findByName(String unickname){
+        QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("unickname",unickname);
+        Users users=usersService.login(queryWrapper);
+        if (users != null){
+            return "2";
+        }else {
+            return "1";
+        }
+    }
+
 
     @RequestMapping(value = "/modifyPhone")
     @ResponseBody
@@ -254,6 +290,7 @@ public class UsersController {
             logService.addLog(log);
             HttpSession session=request.getSession();
             session.setAttribute("loginUser",users);
+            System.out.println(users.getUcardid());
             map.put("status",true);
             map.put("message","登录成功！");
         }else{
