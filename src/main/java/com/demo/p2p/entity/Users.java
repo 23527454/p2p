@@ -2,8 +2,9 @@ package com.demo.p2p.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -46,7 +47,7 @@ private static final long serialVersionUID=1L;
     /**
      * 注册时间
      */
-    private LocalDateTime uregisterdate;
+    private Date uregisterdate;
 
     /**
      * 最后登录ip
@@ -56,7 +57,7 @@ private static final long serialVersionUID=1L;
     /**
      * 最后登录时间
      */
-    private LocalDateTime ufldate;
+    private Date ufldate;
 
     /**
      * 推荐人
@@ -139,11 +140,11 @@ private static final long serialVersionUID=1L;
         this.uphonenumber = uphonenumber;
     }
 
-    public LocalDateTime getUregisterdate() {
+    public Date getUregisterdate() {
         return uregisterdate;
     }
 
-    public void setUregisterdate(LocalDateTime uregisterdate) {
+    public void setUregisterdate(Date uregisterdate) {
         this.uregisterdate = uregisterdate;
     }
 
@@ -155,11 +156,11 @@ private static final long serialVersionUID=1L;
         this.uflip = uflip;
     }
 
-    public LocalDateTime getUfldate() {
+    public Date getUfldate() {
         return ufldate;
     }
 
-    public void setUfldate(LocalDateTime ufldate) {
+    public void setUfldate(Date ufldate) {
         this.ufldate = ufldate;
     }
 

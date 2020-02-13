@@ -243,6 +243,8 @@ public class UsersController {
             //添加登录日志信息
             Log log=new Log(users.getUnickname(),"进入系统","进入系统",new Date());
             logService.addLog(log);
+            users.setUfldate(new Date());
+            usersService.resetUfldate(users);
             HttpSession session=request.getSession();
             session.setAttribute("loginUser",users);
             map.put("status",true);
