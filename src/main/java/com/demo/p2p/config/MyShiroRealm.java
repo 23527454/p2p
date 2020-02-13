@@ -45,7 +45,6 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         System.out.println("2：权限认证-->MyShiroRealm.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();//授权信息
-        Users loginUser = (Users) SecurityUtils.getSubject().getSession().getAttribute("loginUser");
         authorizationInfo.addStringPermission("login");
         return authorizationInfo;
     }
