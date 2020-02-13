@@ -1,10 +1,10 @@
 package com.demo.p2p.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.mapper.UsersMapper;
 import com.demo.p2p.service.UsersService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -68,6 +68,15 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     @Override
     public boolean resetPhone(Integer uid, String phone) {
         Integer result=usersMapper.resetPhone(uid,phone);
+        if (result==1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean resetUfldate(Users users) {
+        int result=usersMapper.updateById(users);
         if (result==1){
             return true;
         }
