@@ -17,10 +17,5 @@ import org.springframework.stereotype.Controller;
 @RequestMapping("/log")
 public class LogController {
 
- @RequestMapping(value = "Test3")
-    public String Test(){
-     return "Test";
- }
-
 }
 

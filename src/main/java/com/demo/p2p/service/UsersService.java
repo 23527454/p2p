@@ -1,8 +1,8 @@
 package com.demo.p2p.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.demo.p2p.entity.Users;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.demo.p2p.entity.Users;
 
 /**
  * <p>
@@ -17,7 +17,6 @@ public interface UsersService extends IService<Users> {
 
     public Users login(QueryWrapper<Users> queryWrapper);
 
-
     /**
      * 首页注册人数
      * @return
@@ -28,6 +27,7 @@ public interface UsersService extends IService<Users> {
 
     public boolean resetPwd(Integer uid,String password);
 
-
     public boolean resetPhone(Integer uid,String phone);
+
+    public boolean resetUfldate(Users users);
 }
