@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.TradeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Trade">
+        <id column="tID" property="tID" />
+        <result column="uID" property="uID" />
+        <result column="uname" property="uname" />
+        <result column="zname" property="zname" />
+        <result column="jymoney" property="jymoney" />
+        <result column="what" property="what" />
+        <result column="jytime" property="jytime" />
+        <result column="other" property="other" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        tID, uID, uname, zname, jymoney, what, jytime, other
+    </sql>
+
+</mapper>
