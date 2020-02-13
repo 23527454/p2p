@@ -7,6 +7,10 @@ import com.demo.p2p.entity.Log;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.LogService;
 import com.demo.p2p.service.UsersService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.DisabledAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -244,23 +248,28 @@ public class UsersController {
     @PostMapping(value = "/login")
     @ResponseBody
     public Object login(String username, String password, HttpServletRequest request){
-        QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("unickname",username).eq("upassword",password);
-        Users users=usersService.login(queryWrapper);
+
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Map<String,Object> map=new HashMap<String,Object>();
-        if (users!=null){
-            //添加登录日志信息
+        try {
+            SecurityUtils.getSubject().login(token);//调用Shiro认证
+            Users users = (Users) SecurityUtils.getSubject().getPrincipal();
             Log log=new Log(users.getUnickname(),"进入系统","进入系统",new Date());
             logService.addLog(log);
             users.setUfldate(new Date());
             usersService.resetUfldate(users);
-            HttpSession session=request.getSession();
-            session.setAttribute("loginUser",users);
-            map.put("status",true);
-            map.put("message","登录成功！");
-        }else{
-            map.put("status",false);
-            map.put("message","登录失败，请检查用户名或密码是否正确！");
+            map.put("message", "登录成功！");
+            map.put("status", true);
+        } catch (UnknownAccountException uae) {
+            map.put("message", "登录失败请检查用户名或密码是否正确！");
+            map.put("status", false);
+        } catch (DisabledAccountException de) {
+            map.put("message", de.getMessage());
+            map.put("status", false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("message", "系统错误，请联系管理员！");
+            map.put("status", false);
         }
         return map;
     }
