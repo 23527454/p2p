@@ -25,7 +25,7 @@
                 <li>
                     <div class="">
                         <a th:if="${session.loginUser ==null}" href="/sys/login" class="js-login" title="登录">登录</a>
-                        <a th:if="${session.loginUser !=null}" href="/sys/grzx" class="js-login" title="个人中心">[[${session.loginUser.unickname}]]</a>
+                        <a th:if="${session.loginUser !=null}" href="/grzx/grzx" class="js-login" title="个人中心">[[${session.loginUser.unickname}]]</a>
                     </div>
                 </li>
                 <li th:if="${session.loginUser !=null}">
@@ -42,7 +42,7 @@
                 <li> <a href="/sys/touzi" class="">我要投资</a> </li>
                 <li> <a href="/sys/daikuang" class="">我要借款</a> </li>
                 <li> <a href="/sys/help">安全保障</a> </li>
-                <li class="top-nav-safe"> <a href="/sys/grzx">我的账户</a> </li>
+                <li class="top-nav-safe"> <a href="/grzx/grzx">我的账户</a> </li>
                 <li> <a href="/sys/gsjj">关于我们</a> </li>
             </ul>
         </div>
