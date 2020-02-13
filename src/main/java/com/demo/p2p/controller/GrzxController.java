@@ -1,7 +1,11 @@
 package com.demo.p2p.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/grzx")
@@ -21,7 +25,11 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zhsz")
-    public String grzx_zhsz(){
+    public String grzx_zhsz(Model model){
+        Map<String,Object> map=new HashMap<>();
+        map.put("aiid","1");
+        map.put("ainame","身份认证");
+        model.addAttribute("list",map);
         return "account";
     }
 

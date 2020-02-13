@@ -3,24 +3,33 @@ package com.demo.p2p.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
+import com.demo.p2p.entity.Approveitem;
+import com.demo.p2p.entity.Certifrecord;
 import com.demo.p2p.entity.Log;
 import com.demo.p2p.entity.Users;
+import com.demo.p2p.service.ApproveitemService;
+import com.demo.p2p.service.CertifrecordService;
 import com.demo.p2p.service.LogService;
 import com.demo.p2p.service.UsersService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -42,6 +51,90 @@ public class UsersController {
     private UsersService usersService;
     @Resource
     private LogService logService;
+    @Resource
+    private ApproveitemService approveitemService;
+    @Resource
+    private CertifrecordService certifrecordService;
+
+    //发邮件
+    @Autowired
+    JavaMailSenderImpl mailSender;
+
+    @RequestMapping(value = "/sendEmail")
+    @ResponseBody
+    public Object sendEmail(String email,String name){
+        System.out.println("sendEmail......");
+        Map<String,Object> map=new HashMap<>();
+
+        //验证码
+        Random rd=new Random();
+        int sjs=(int)rd.nextInt(9999);
+        String yzm=String.valueOf(sjs);
+        System.out.println("验证码："+yzm);
+        try{
+            //创建一个复杂的消息邮件
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            //设置邮件的内容
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setSubject("您正在修改亿人宝绑定邮箱");
+            helper.setText("尊敬的"+name+"，您好！<br><br>这是您本次修改所需的验证码："+yzm+"<br><br>该邮件为系统自动发出，请勿回复!<br>"+new Date(), true);
+            //收件人
+            helper.setTo(email);
+            //发件人
+            helper.setFrom("23527454@qq.com");
+            //发送邮件
+            mailSender.send(mimeMessage);
+            map.put("result",true);
+            map.put("yzm",yzm);
+        }catch (Exception e){
+            map.put("result",false);
+            map.put("messages",e.getMessage());
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/modifyEmail")
+    @ResponseBody
+    public void modifyEmail(String newEmail,HttpServletResponse response,HttpSession session) throws IOException{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        Users users=(Users)session.getAttribute("loginUser");
+        users.setUmailbox(newEmail);
+        PrintWriter out=response.getWriter();
+        boolean result=usersService.updateById(users);
+        if (result){
+            out.print("<script>alert('修改成功！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }else{
+            out.print("<script>alert('修改失败！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping(value = "/modifyIdentity")
+    @ResponseBody
+    public void modifyIdentity(Users users, Approveitem approveitem,HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
+
+        String name=users.getUname();
+        String sfz=users.getUcardid();
+        approveitem=approveitemService.getById(approveitem.getAiid());
+        Certifrecord certifrecord=new Certifrecord(users.getUid(),users.getUnickname(),approveitem.getAiid(),approveitem.getAiname(),approveitem.getAitype(),approveitem.getAistate(),new Date());
+        boolean result1=certifrecordService.save(certifrecord);
+        users=usersService.getById(users.getUid());
+        users.setUname(name);
+        users.setUcardid(sfz);
+        boolean result2=usersService.updateById(users);
+        if (result1==result2 && result1==true){
+            out.print("<script>alert('认证成功！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }else{
+            out.print("<script>alert('认证失败！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }
+        out.flush();
+        out.close();
+    }
 
     @RequestMapping(value = "/do_register")
     public String paaaaa(String unickname,String upassword,String uphonenumber,String xm,String sfz,String yx,String tjr,String tjrxm){
@@ -75,9 +168,9 @@ public class UsersController {
         boolean result=usersService.resetPhone(id,newPhone);
         if (result){
             users.setUphonenumber(newPhone);
-            out.print("<script>alert('修改成功！');window.location.href='/sys/grzx_zhsz';</script>");
+            out.print("<script>alert('修改成功！');window.location.href='/grzx/grzx_zhsz';</script>");
         }else{
-            out.print("<script>alert('修改失败！');window.location.href='/sys/grzx_zhsz';</script>");
+            out.print("<script>alert('修改失败！');window.location.href='/grzx/grzx_zhsz';</script>");
         }
         out.flush();
         out.close();
@@ -155,7 +248,8 @@ public class UsersController {
             //异常返回输出错误码和错误信息
             System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
             map.put("result",false);
-            map.put("messages",result.get("statusMsg"));
+            map.put("messages",result.get("statusMsg"));map.put("result",true);
+            map.put("yzm",yzm);
         }
         return map;
     }
