@@ -17,5 +17,12 @@ import org.springframework.stereotype.Controller;
 @RequestMapping("/log")
 public class LogController {
 
+    public void test2(){
+        System.out.println("test2");
+    }
+
+    public void tese1(){
+        System.out.println("test1");
+    }
 }
 
