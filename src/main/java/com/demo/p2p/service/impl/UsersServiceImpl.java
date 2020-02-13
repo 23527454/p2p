@@ -25,6 +25,16 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
 
     @Override
+    public Users getUsersById(int id) {
+        return usersMapper.selectById(id);
+    }
+
+    @Override
+    public int insertucertnum(Users users) {
+        return usersMapper.updateById(users);
+    }
+
+    @Override
     public int saveUser(Users users) {
         return usersMapper.insert(users);
     }

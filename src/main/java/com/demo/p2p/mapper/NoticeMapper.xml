@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.NoticeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Notice">
+        <id column="noticeid" property="noticeid" />
+        <result column="noticetitle" property="noticetitle" />
+        <result column="noticetype" property="noticetype" />
+        <result column="noticepicture" property="noticepicture" />
+        <result column="noticecontent" property="noticecontent" />
+        <result column="noticelasttime" property="noticelasttime" />
+        <result column="noticelastmodifier" property="noticelastmodifier" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        noticeid, noticetitle, noticetype, noticepicture, noticecontent, noticelasttime, noticelastmodifier
+    </sql>
+
+</mapper>

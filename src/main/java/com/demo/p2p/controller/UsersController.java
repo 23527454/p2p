@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
@@ -241,34 +242,29 @@ public class UsersController {
      * 登录
      * @param username
      * @param password
-     * @param session
+     * @param request
      * @return
      */
-    @RequestMapping(value = "/login")
+    @PostMapping(value = "/login")
     @ResponseBody
-    public Object login(String username, String password, HttpSession session){
-        UsernamePasswordToken token=new UsernamePasswordToken(username,password);
+    public Object login(String username, String password, HttpServletRequest request){
+        QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("unickname",username).eq("upassword",password);
+        Users users=usersService.login(queryWrapper);
         Map<String,Object> map=new HashMap<String,Object>();
-        try {
-            SecurityUtils.getSubject().login(token);//调用Shiro认证
-            Users users = (Users) SecurityUtils.getSubject().getPrincipal();
+        if (users!=null){
             //添加登录日志信息
             Log log=new Log(users.getUnickname(),"进入系统","进入系统",new Date());
             logService.addLog(log);
             users.setUfldate(new Date());
             usersService.resetUfldate(users);
-            map.put("message", "登录成功！");
-            map.put("status", true);
-        } catch (UnknownAccountException uae) {
-            map.put("message", "登录失败请检查用户名或密码是否正确！");
-            map.put("status", false);
-        } catch (DisabledAccountException de) {
-            map.put("message", de.getMessage());
-            map.put("status", false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("message", "系统错误，请联系管理员！");
-            map.put("status", false);
+            HttpSession session=request.getSession();
+            session.setAttribute("loginUser",users);
+            map.put("status",true);
+            map.put("message","登录成功！");
+        }else{
+            map.put("status",false);
+            map.put("message","登录失败，请检查用户名或密码是否正确！");
         }
         return map;
     }

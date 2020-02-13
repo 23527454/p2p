@@ -164,7 +164,7 @@
         }else if (test_xm == false){
             alert("真实名字有误，请重填");
             return false;
-		}else if(test_sfz == false){
+        }else if(test_sfz == false){
             alert("身份证号码有误，请重填");
             return false;
         }else if (test_yx == false){
@@ -179,9 +179,9 @@
         }else if (test_protocol1 == false){
             alert("请先阅读协议，并勾选我同意");
             return false;
-		} else{
+        } else{
             return true;
-		}
+        }
     }
 
 	function checkunickname() {
@@ -204,7 +204,7 @@
 			alert("用户名过长!!!");
 			return false;
 		}
-		$.post('${pageContext.request.contextPath}/users/findByName.do', {
+		$.post('../users/findByName', {
 			"unickname" : unickname
 		}, function(data) {
 			var conent = data;
