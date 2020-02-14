@@ -60,6 +60,42 @@ public class UsersController {
     @Autowired
     JavaMailSenderImpl mailSender;
 
+    @RequestMapping(value = "/modifyPayPwd")
+    @ResponseBody
+    public void modifyPayPwd(String paypassword,HttpServletResponse response,HttpSession session) throws IOException{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        Users users=(Users)session.getAttribute("loginUser");
+        users.setUpwdZd(paypassword);
+        PrintWriter out=response.getWriter();
+        boolean result=usersService.updateById(users);
+        if (result){
+            out.print("<script>alert('修改成功！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }else{
+            out.print("<script>alert('修改失败！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping(value = "/modifyPwd")
+    @ResponseBody
+    public void modifyPwd(String password,HttpServletResponse response,HttpSession session) throws IOException{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        Users users=(Users)session.getAttribute("loginUser");
+        users.setUpassword(password);
+        PrintWriter out=response.getWriter();
+        boolean result=usersService.updateById(users);
+        if (result){
+            out.print("<script>alert('修改成功！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }else{
+            out.print("<script>alert('修改失败！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }
+        out.flush();
+        out.close();
+    }
+
     @RequestMapping(value = "/sendEmail")
     @ResponseBody
     public Object sendEmail(String email,String name){
