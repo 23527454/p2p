@@ -46,13 +46,15 @@ public class SysController {
         QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
         QueryWrapper<Notice> queryWrapper1=new QueryWrapper<>();
         QueryWrapper<Notice> queryWrapper2=new QueryWrapper<>();
-        int i = 1;
-        queryWrapper.eq("noticetype",i);
-        queryWrapper1.eq("noticetype",i+1);
-        queryWrapper2.eq("noticetype",i+5);
+        QueryWrapper<Notice> queryWrapper3=new QueryWrapper<>();
+        queryWrapper.eq("noticetype",1);
+        queryWrapper1.eq("noticetype",2);
+        queryWrapper2.eq("noticetype",6);
+        queryWrapper3.eq("noticeid",43);
         List<Notice> list = noticeService.select1(queryWrapper);
-        List<Notice> list1 = noticeService.select2(queryWrapper1);
-        List<Notice> list2 = noticeService.select2(queryWrapper2);
+        List<Notice> list1 = noticeService.select1(queryWrapper1);
+        List<Notice> list2 = noticeService.select1(queryWrapper2);
+        List<Notice> list3 = noticeService.select1(queryWrapper3);
         Integer certification = certificationService.certification();
         Integer usersnamecount = usersService.usersNameCount();
         Integer sumInmoney = investinfoService.sumInmoney();
@@ -60,6 +62,7 @@ public class SysController {
         mode.addAttribute("list",list);
         mode.addAttribute("list1",list1);
         mode.addAttribute("list2",list2);
+        mode.addAttribute("list3",list3);
         request.setAttribute("sumcertification",certification);
         request.setAttribute("sumuserscount",usersnamecount);
         request.setAttribute("sumInmoney",sumInmoney);
@@ -332,23 +335,7 @@ public class SysController {
         return "informhzhb";
     }
 
-    /**
-     * 网站公告
-     * @return
-     */
-    @RequestMapping(value = "/wzgg")
-    public String wzgg(){
-        return "inform";
-    }
 
-    /**
-     * 公告详情
-     * @return
-     */
-    @RequestMapping(value = "/xiangqing")
-    public String xiangqing(){
-        return "informsel";
-    }
 
     /**
      * 管理团队
@@ -404,23 +391,6 @@ public class SysController {
         return "recruit";
     }
 
-    /**
-     * 媒体报道
-     * @return
-     */
-    @RequestMapping(value = "/mtbd")
-    public String mtbd(){
-        return "reportlist";
-    }
-
-    /**
-     * 媒体报道详情
-     * @return
-     */
-    @RequestMapping(value = "/mtbdxq")
-    public String mtbdxq(){
-        return "reportsel";
-    }
 
     /**
      * 法律声明

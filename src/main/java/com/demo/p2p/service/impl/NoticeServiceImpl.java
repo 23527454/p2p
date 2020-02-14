@@ -24,13 +24,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
    @Resource
    public NoticeMapper noticeMapper;
     @Override
-    public List<Notice> select1(QueryWrapper<Notice> queryWrapper) {
-        return noticeMapper.selectList(queryWrapper);
-    }
-    public List<Notice> select2(QueryWrapper<Notice> queryWrapper){
-        return noticeMapper.selectList(queryWrapper);
-    }
-    public List<Notice> select3(QueryWrapper<Notice> queryWrapper){
+    public List<Notice> select1(QueryWrapper<Notice> queryWrapper)
+    {
         return noticeMapper.selectList(queryWrapper);
     }
 }

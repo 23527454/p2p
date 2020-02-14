@@ -4,14 +4,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>亿人网--媒体报道</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<link href=" /css/common.css" rel="stylesheet" />
-<link href=" /css/about.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src=" /script/jquery.min.js"></script>
-<script type="text/javascript" src=" /script/common.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>亿人网--媒体报道</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link href=" /css/common.css" rel="stylesheet" />
+	<link href=" /css/about.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src=" /script/jquery.min.js"></script>
+	<script type="text/javascript" src=" /script/common.js"></script>
 </head>
 <body>
 
@@ -20,25 +20,21 @@
 
 <!--关于我们-->
 <div class="bg">
-  <div class="contain" id="tabs" style="margin:0 auto;">
-  
-    <!--关于我们-->
-	  <div th:include="common/gywm_left :: gywm_left" class="text-nav"></div>
-	  <div class="text-box">
+	<div class="contain" id="tabs" style="margin:0 auto;">
+		<!--关于我们-->
+		<div th:include="common/gywm_left :: gywm_left" class="text-nav"></div>
+		<div class="text-box">
 			<div class="text-content" id="text-content">
 				<h1 class="title">媒体报道</h1>
-				<ul class="clearfix mt20 new-list">
-				<c:forEach items="${list }" var="notice">
+				<ul class="clearfix mt20 new-list"  th:each="pps:${list}">
 					<li class="clearfix list-item">
-						<a href="${notice.noticeid }">${notice.noticetitle }</a>
-						<span>
-							<fmt:formatDate value="${notice.noticelasttime }"/>
-						</span>
+						<a href="" th:href="@{'/notice/mtbdxq?ids='+${pps.noticeid}}"><td th:text="${pps.noticetitle}"></td></a>
+						<span th:text="${pps.noticelasttime}">
+							</span>
 					</li>
-				</c:forEach>
 				</ul>
 				<div class="page">
-					<span class="all">共有163条信息</span>
+					<span class="all">共有n条信息</span>
 					<span class="count"></span>
 					<div class="fr pages">
 						<span data-page="1" class="currents">1</span>
@@ -56,7 +52,7 @@
 				</div>
 			</div>
 		</div>
-  </div>
+	</div>
 </div>
 <!--网站底部-->
 <div th:include="common/footer :: footer" id="footer" class="ft"></div>
