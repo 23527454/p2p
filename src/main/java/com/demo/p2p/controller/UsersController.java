@@ -178,7 +178,6 @@ public class UsersController {
         Date date = new Date();
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
-        LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
 
         users.setUnickname(unickname);
         users.setUpassword(upassword);
@@ -188,7 +187,7 @@ public class UsersController {
         users.setUmailbox(yx);
         users.setUreferrer(tjr);
         users.setUreferrername(tjrxm);
-        users.setUregisterdate(localDateTime);
+        users.setUregisterdate(date);
         usersService.saveUser(users);
         return "redirect:/sys/register1";
     }
