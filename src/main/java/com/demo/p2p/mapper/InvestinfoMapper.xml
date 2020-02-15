@@ -24,4 +24,14 @@
         inid, userid, brrowid, inmoney, instatus, instyle, brrowstatus, interest, profitmodel, profitmoney, indate, replaydate, markstatus
     </sql>
 
+    <select id="sumMoney" parameterType="map" resultType="Double"><!-- ${tableName} 不能用#{}-->
+        select sum(${rowName}) from ${tableName} where 1 = 1
+        <if test="uid != null">
+            and userid = #{uid}
+        </if>
+        <if test="bid != null">
+            and brrowid = #{bid}
+        </if>
+    </select>
+
 </mapper>

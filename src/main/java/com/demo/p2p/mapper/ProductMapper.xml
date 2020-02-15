@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.ProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Product">
+        <id column="id" property="id" />
+        <result column="pmoney" property="pmoney" />
+        <result column="pincome" property="pincome" />
+        <result column="ptime" property="ptime" />
+        <result column="ptype" property="ptype" />
+        <result column="pway" property="pway" />
+        <result column="pcount" property="pcount" />
+        <result column="progress" property="progress" />
+        <result column="psaveway" property="psaveway" />
+        <result column="prateben" property="prateben" />
+        <result column="ppublishtime" property="ppublishtime" />
+        <result column="pname" property="pname" />
+        <result column="ptotalmoney" property="ptotalmoney" />
+        <result column="prange" property="prange" />
+        <result column="puse" property="puse" />
+        <result column="pstate" property="pstate" />
+        <result column="picture" property="picture" />
+        <result column="pproduce" property="pproduce" />
+        <result column="pdesc" property="pdesc" />
+        <result column="psafe" property="psafe" />
+        <result column="did" property="did" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pmoney, pincome, ptime, ptype, pway, pcount, progress, psaveway, prateben, ppublishtime, pname, ptotalmoney, prange, puse, pstate, picture, pproduce, pdesc, psafe, did
+    </sql>
+
+</mapper>

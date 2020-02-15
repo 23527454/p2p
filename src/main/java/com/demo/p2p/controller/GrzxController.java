@@ -39,7 +39,7 @@ public class GrzxController {
      */
     @RequestMapping(value = "/grzx_tzjl")
     public String grzx_tzjl(){
-        return "accounts";
+        return "redirect:/investinfo/toInvestcordPage";
     }
 
     /**
