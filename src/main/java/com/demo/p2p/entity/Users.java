@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -48,7 +47,7 @@ private static final long serialVersionUID=1L;
     /**
      * 注册时间
      */
-    private LocalDateTime uregisterdate;
+    private Date uregisterdate;
 
     /**
      * 最后登录ip
@@ -141,11 +140,11 @@ private static final long serialVersionUID=1L;
         this.uphonenumber = uphonenumber;
     }
 
-    public LocalDateTime getUregisterdate() {
+    public Date getUregisterdate() {
         return uregisterdate;
     }
 
-    public void setUregisterdate(LocalDateTime uregisterdate) {
+    public void setUregisterdate(Date uregisterdate) {
         this.uregisterdate = uregisterdate;
     }
 

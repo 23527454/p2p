@@ -1,10 +1,14 @@
 package com.demo.p2p.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.p2p.entity.Investinfo;
 import com.demo.p2p.mapper.InvestinfoMapper;
 import com.demo.p2p.service.InvestinfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,6 +20,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investinfo> implements InvestinfoService {
+    @Resource
+    private InvestinfoMapper investinfoMapper;
 
     @Override
     public Integer sumInmoney() {
@@ -25,6 +31,22 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     @Override
     public Integer sumProfitmoney() {
         return this.baseMapper.sumProfitmoney();
+    }
+
+    @Override
+    public Page<Investinfo> selInvestinfoPageByUId(Integer uid,Page<Investinfo> page) {
+        page.setRecords(investinfoMapper.selInvestinfoPage(uid,page));
+        return page;
+    }
+
+    @Override
+    public Double sumMoney(Map<String, Object> map) {
+        return investinfoMapper.sumMoney(map);
+    }
+
+    @Override
+    public Integer getMoney(Integer uid) {
+        return investinfoMapper.getMoney(uid);
     }
 
 }

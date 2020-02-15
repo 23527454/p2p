@@ -1,7 +1,10 @@
 package com.demo.p2p.mapper;
 
-import com.demo.p2p.entity.Trade;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.demo.p2p.entity.Trade;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TradeMapper extends BaseMapper<Trade> {
 
+    @Select("select jymoney from trade where uID = #{userid} and what like '%退回本金%'")
+    public List<Trade> selectMoney(Integer uid);
 }
