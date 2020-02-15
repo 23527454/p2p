@@ -2,6 +2,7 @@ package com.demo.p2p.mapper;
 
 import com.demo.p2p.entity.Certification;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -19,4 +20,10 @@ public interface CertificationMapper extends BaseMapper<Certification> {
      */
     @Select("SELECT SUM(ctotalmoney) FROM certification")
     public Integer certification();
+
+    /**
+     * 个人中心显示账户余额
+     */
+    @Select("SELECT * FROM certification WHERE cserial = #{cserial}")
+    public Certification getcserial(@Param("cserial") String cserial);
 }
