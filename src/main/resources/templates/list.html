@@ -47,10 +47,8 @@
             <dt>项目类型</dt>
             <dd>
               <ul id="items">
-                <!--<li class="n1"><a id="post_type_" <c:if test="${biaoId == null}">class="active"</c:if> style="cursor:pointer;" onclick="Select('itemtype','-1');">不限</a></li>-->
-                <!--<c:forEach items="${biao }" var="biao">-->
-                	<!--<li class="n2"><a <c:if test="${biaoId==biao.id }">class="active"</c:if> style="cursor:pointer;" onclick="Select('itemtype','${biao.id}');" id="post_type_car${biao.id}">${biao.bname }</a></li>-->
-                <!--</c:forEach>-->
+                <li class="n1"><a id="post_type_" th:class="${biaoId == null}?'':'active'"style="cursor:pointer;'" onclick="Select('itemtype','-1');">不限</a></li>
+                	<li th:each="${biao}" class="n2"><a th:if=""th:class="${biaoId==biao.id }?'':'active'" style="cursor:pointer;" th:onclick="'javascript:Select(itemtype,\''+${user.id}+'\');'"  th:id="post_type_car${biao.id}" th:value="${biao.bname }"></a></li>
                 <li class="n1"><a id="post_type_" class="active" style="cursor:pointer;" onclick="Select('itemtype','-1');">不限</a></li>
                  <li class="n2"><a href="javascript:url('post_type','car');" id="post_type_car">多金保</a></li>
                 <li class="n3"><a href="javascript:url('post_type','house');" id="post_type_house">普金包</a></li>
@@ -63,11 +61,11 @@
             <dt>年利率</dt>
             <dd>
               <ul id="rate">
-                <!--<li class="n1"><a <c:if test="${startR=='-1' || startR == null}">class="active"</c:if> id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>-->
-                <!--<li class="n2"><a <c:if test="${startR=='0' }">class="active"</c:if> id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>-->
-                <!--<li class="n3"><a <c:if test="${startR=='12' }">class="active"</c:if> id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>-->
-                <!--<li class="n4"><a <c:if test="${startR=='14' }">class="active"</c:if> id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>-->
-                <!--<li class="n5"><a <c:if test="${startR=='16' }">class="active"</c:if> id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>-->
+                <li class="n1"><a th:class="${startR=='-1' || startR == null}?'':'active'" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
+                <li class="n2"><a th:class="${startR=='0' }?'':'active'" id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
+                <li class="n3"><a th:class="${startR=='12' }?'':'active'" id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
+                <li class="n4"><a th:class="${startR=='14' }?'':'active'" id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>
+                <li class="n5"><a th:class="${startR=='16' }?'':'active'" id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>
                 <li class="n1"><a class="active" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
                 <li class="n2"><a  id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
                 <li class="n3"><a  id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
@@ -121,7 +119,7 @@
           <li class="line">散标投资交易金额&nbsp;&nbsp;<span class="f20 bold">73.54亿元</span></li>
           <li>累计赚取收益&nbsp;&nbsp;<span class="f20 bold">2.52亿元</span></li>
         </ul>
-      </div> -->
+      </div>
     </div>
     <div class="bd">
       <div class="invest-table clearfix">
@@ -136,52 +134,52 @@
             <li class="col-120-t">操作</li>
           </ul>
         </div>
-        <!------------投资列表-------------->
-        <!--<c:forEach items="${list }" var="invest" varStatus="status">-->
-<!--&lt;!&ndash;         <form action="investInfo.do" method="post" onsubmit="">investAdd.do-->
-        <!--<input type="hidden" name="" value=""/> 控制层要获取一个对象要不就在页面上用form表单传要不传一个条件到控制层查出来&ndash;&gt;-->
-        <!--<div class="item">-->
-          <!--<ul>-->
-            <!--<li class="col-330 col-t">-->
-            	<!--<a href="investInfo.do?bmid=${invest.id }" target="_blank">-->
-            		<!--<i class="icon icon-xin" title="类型"></i>-->
-            	<!--</a>-->
-            	<!--<a class="f18" href="investInfo.do?bmid=${invest.id }" title="${invest.pname }" target="_blank"> ${ft:substring(invest.pname,0,8) } -->
-            	<!--</a>-->
-            <!--</li>-->
-            <!--<li class="col-180"><span class="f20 c-333">${invest.ptotalmoney }</span>元</li>-->
-            <!--<li class="col-110 relative"><span class="f20 c-orange">${invest.pincome }%<%&#45;&#45; ${invest.brate } &#45;&#45;%></span></li>-->
-            <!--<li class="col-150"><span class="f20 c-333"><fmt:formatDate value="${invest.pcount }" pattern="yyyy-MM-dd "/></span></li>-->
-            <!--<li class="col-150">${invest.pway }</li>-->
-            <!--<li class="col-120">-->
-              <!--<div class="circle">-->
-                <!--<div class="left progress-bar">-->
-                  <!--<div class="progress-bgPic progress-bfb<fmt:formatNumber value="${(invest.pmoney/invest.ptotalmoney)*10<1?1:(invest.pmoney/invest.ptotalmoney)*10}" pattern="#"/>">-->
-                    <!--<div class="show-bar"> <fmt:formatNumber value="${(invest.pmoney/invest.ptotalmoney)*(100)}" pattern="#.0" /> % </div>&lt;!&ndash; pattern="#.00"表示规定必须保存2位小数，如果最多保存2位，使用 pattern="#.##" &ndash;&gt;-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</li>-->
-            <!--<li class="col-120-2"> -->
-            	<!--<a class="ui-btn btn-gray"  href="investInfo.do?bmid=${invest.id }"> -->
-            		<!--<c:if test="${invest.pstate=='1' }">立即投标</c:if>-->
-            		<!--<c:if test="${invest.pstate=='2' }">募集完成</c:if>-->
-            		<!--<c:if test="${invest.pstate=='3' }">还款中</c:if>-->
-            	<!--</a> -->
-            <!--</li>&lt;!&ndash; -&#45;&#45;&#45;&#45;&#45;&#45;onClick=test('${invest }');-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;investInfo.do"?bm=${invest }"-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;注意此处是按照表中的字符串类型字段来判断的 &ndash;&gt;-->
-            <!---->
-          <!--</ul>-->
-        <!--</div>-->
-         <!--&lt;!&ndash; </form>  &ndash;&gt;-->
-        <!--</c:forEach>-->
+        ----------投资列表------------
+        <c:forEach items="${list }" var="invest" varStatus="status">
+<!--         <form action="investInfo.do" method="post" onsubmit="">investAdd.do
+        <input type="hidden" name="" value=""/> 控制层要获取一个对象要不就在页面上用form表单传要不传一个条件到控制层查出来-->
+        <div class="item">
+          <ul>
+            <li class="col-330 col-t">
+            	<a th:href="@{'investInfo_do?bmid='+${invest.id}}" target="_blank">
+            		<i class="icon icon-xin" title="类型"></i>
+            	</a>
+            	<a class="f18" th:href="@{'investInfo_do?bmid='+${invest.id}}" th:title="${invest.pname }" target="_blank" th:value="${ft:substring(invest.pname,0,8) }">
+            	</a>
+            </li>
+            <li class="col-180"><span class="f20 c-333" th:text="${invest.ptotalmoney }"></span>元</li>
+            <li class="col-110 relative"><span class="f20 c-orange" th:text="${invest.pincome }%<%-- ${invest.brate } --%>"></span></li>
+            <li class="col-150"><span class="f20 c-333" th:text="${invest.pcount }"></span></li>
+            <li class="col-150"><spam th:text="${invest.pway }"></spam></li>
+            <li class="col-120">
+              <div class="circle">
+                <div class="left progress-bar">
+                  <div class="progress-bgPic progress-bfb">
+                    <div class="show-bar"> <span class="f20 c-333" th:value="${(invest.pmoney/invest.ptotalmoney)*(100)}"></span> % </div><!-- pattern="#.00"表示规定必须保存2位小数，如果最多保存2位，使用 pattern="#.##" -->
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="col-120-2">
+            	<a class="ui-btn btn-gray"  th:href="@{'investInfo_do?bmid='+${invest.id}}">
+                  <span th:if="${invest.pstate=='1' }">立即投标</span>>
+                  <span th:if="${invest.pstate=='2' }">募集完成</span>>
+                  <span th:if="${invest.pstate=='3' }">还款中</span>>
+            	</a>
+            </li><!-- -------onClick=test('${invest }');-----------investInfo.do"?bm=${invest }"-----------------------------注意此处是按照表中的字符串类型字段来判断的 -->
+
+          </ul>
+        </div>
+         <!-- </form>  -->
+        </c:forEach>
 
           <div class="item">
             <ul>
               <li class="col-330 col-t">
-                <a href="investInfo.do?bmid=${invest.id }" target="_blank">
+                <a th:href="@{'investInfo_do?bmid='+${invest.id}}" target="_blank">
                   <i class="icon icon-xin" title="类型"></i>
                 </a>
-                  <a class="f18" href="investInfo.do?bmid=${invest.id }" title="${invest.pname }" target="_blank"> 唐先生宝马318
+                  <a class="f18" th:href="@{'investInfo_do?bmid='+${invest.id}}" th:title="${invest.pname }" target="_blank"> 唐先生宝马318
                 </a>
               </li>
               <li class="col-180"><span class="f20 c-333">30000</span>元</li>
@@ -198,19 +196,19 @@
           </div>
           </li>
           <li class="col-120-2">
-            <a class="ui-btn btn-gray"  href="investInfo.do?bmid=${invest.id }">
-              <!--<c:if test="${invest.pstate=='1' }">立即投标</c:if>-->
-              <!--<c:if test="${invest.pstate=='2' }">募集完成</c:if>-->
-              <!--<c:if test="${invest.pstate=='3' }">还款中</c:if>-->
+            <a class="ui-btn btn-gray"  th:href="@{'investInfo_do?bmid='+${invest.id}}">
+              <span th:if="${invest.pstate=='1' }">立即投标</span>
+              <span th:if="${invest.pstate=='2' }">募集完成</span>>
+              <span th:if="${invest.pstate=='3' }">还款中</span>>
               还款中
             </a>
           </li>
 
               <li class="col-330 col-t">
-                <a href="investInfo.do?bmid=${invest.id }" target="_blank">
+                <a th:href="@{'investInfo_do?bmid='+${invest.id}}" target="_blank">
                   <i class="icon icon-xin" title="类型"></i>
                 </a>
-                <a class="f18" href="investInfo.do?bmid=${invest.id }" title="${invest.pname }" target="_blank"> 唐先生宝马318
+                <a class="f18" th:href="@{'investInfo_do?bmid='+${invest.id}}" th:title="${invest.pname}" target="_blank"> 唐先生宝马318
                 </a>
               </li>
               <li class="col-180"><span class="f20 c-333">30000</span>元</li>
@@ -227,7 +225,7 @@
                 </div>
               </li>
               <li class="col-120-2">
-                <a class="ui-btn btn-gray"  href="investInfo.do?bmid=${invest.id }">
+                <a class="ui-btn btn-gray"  th:href="@{'investInfo_do?bmid='+${invest.id}}">
                   <!--<c:if test="${invest.pstate=='1' }">立即投标</c:if>-->
                   <!--<c:if test="${invest.pstate=='2' }">募集完成</c:if>-->
                   <!--<c:if test="${invest.pstate=='3' }">还款中</c:if>-->
@@ -239,13 +237,13 @@
         <!------------投资列表-------------->
       </div>
       <div class="pagination clearfix mrt30"> <span class="page">
-        <a href="investSel.do?currpage=1" onclick=""><!-- javascript:void(0); -->首页</a>
-        <a href="investSel.do?currpage=${currpages-1 }" onclick="">上一页</a>
+        <a href="investSel_do?currpage=1" onclick=""><!-- javascript:void(0); -->首页</a>
+        <a th:href="@{'investSel_do?currpage='+${currpages-1 }}" onclick="">上一页</a>
         <!--<c:forEach begin="1" end="${totalpage }" step="1" varStatus="bindex">&nbsp;<a class="curr" onclick="" href="investSel.do?currpage=${bindex.count }">1</a></c:forEach>-->
-        <a class="curr" onclick="" href="investSel.do?currpage=${bindex.count }">1</a>
-        <a class="curr" onclick="" href="investSel.do?currpage=${bindex.count }">2</a>
-        <a href="investSel.do?currpage=${currpages+1 }" onclick="">下一页</a>
-        <a href="investSel.do?currpage=${totalpage }" onclick="">尾页</a>&nbsp;<em>共1页&nbsp;</em></span>
+        <a class="curr" onclick="" th:href="@{'investSel_do?currpage='+${bindex.count}}">1</a>
+        <a class="curr" onclick="" th:href="@{'investSel_do?currpage='+${bindex.count}}">2</a>
+        <a th:href="@{'investSel_do?currpage='+${currpages+1 }}" onclick="">下一页</a>
+        <a th:href="@{'investSel_do?currpage='+${totalpage }}" onclick="">尾页</a>&nbsp;<em>共1页&nbsp;</em></span>
       </div>
     </div>
   </div>
