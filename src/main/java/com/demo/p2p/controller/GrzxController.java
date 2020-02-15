@@ -43,15 +43,6 @@ public class GrzxController {
     }
 
     /**
-     * 个人中心——系统消息
-     * @return
-     */
-    @RequestMapping(value = "/grzx_xtxx")
-    public String grzx_xtxx(){
-        return "messages";
-    }
-
-    /**
      * 个人中心——资金记录
      * @return
      */

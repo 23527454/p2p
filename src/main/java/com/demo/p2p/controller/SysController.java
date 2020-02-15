@@ -49,7 +49,7 @@ public class SysController {
         QueryWrapper<Notice> queryWrapper3=new QueryWrapper<>();
         queryWrapper.eq("noticetype",1);
         queryWrapper1.eq("noticetype",2);
-        queryWrapper2.eq("noticetype",6);
+        queryWrapper2.eq("noticetype",1);
         queryWrapper3.eq("noticeid",43);
         List<Notice> list = noticeService.select1(queryWrapper);
         List<Notice> list1 = noticeService.select1(queryWrapper1);
