@@ -171,7 +171,7 @@
 		<div class="new-announcement-content">
 			<div id="scrollDiv">
 				<ul style="margin-top: 0px;" th:each="user:${list}">
-					<li><a class="black-link" href="xiangqing" target="_blank">
+					<li><a class="black-link" href="" th:href="@{'/notice/xiangqing?ids='+${user.noticeid}}" target="_blank">
 						<td th:text="${user.noticetitle}"></td>
 					</a>
 					</li>
@@ -630,7 +630,7 @@
 						<div class="article-list clearfix">
 							<ul th:each="mapp:${list2}">
 								<li><a
-										href="#"><td th:text="${mapp.noticetitle}"></td>
+										href="" th:href="@{'/notice/xiangqing?ids='+${mapp.noticeid}}"><td th:text="${mapp.noticetitle}"></td>
 									&nbsp;&nbsp;&nbsp;
 									<td th:text="${mapp.getNoticelasttime()}"/>
 								</a>
@@ -696,16 +696,16 @@
 					<div class="bd">
 						<div class="ui-tab-cont">
 							<div class="ui-tab-item active">
-								<div class="headlines">
-									<img src=" /images/news.jpg"> <a title="平台遭遇P2P滑稽抄袭"
-										target="_blank" href="#">平台遭遇P2P滑稽抄袭</a><br> <span
-										class="des">抄袭者居然把被抄袭者的名字一起抄下来，这样的乌龙抄袭你见过没...</span>
-
+									<div class="headlines" th:each="userss:${list3}">
+										<img src=" /file/1113364.jpg"><a
+											href="" th:href="@{'/notice/mtbdxq?ids='+${userss.noticeid}}"><td th:text="${userss.noticetitle}"></td></a><br> <span
+											class="des"><td th:text="${userss.noticecontent}"></td>></span>
+									</div>
 								</div>
 								<div class="article-list">
 									<ul th:each="users:${list1}">
 										<li><a
-												href="#"
+												href=""th:href="@{'/notice/mtbdxq?ids='+${users.noticeid}}"
 												title =""  target="_blank">
 											<td th:text="${users.noticetitle}"></td>
 										</a></li>

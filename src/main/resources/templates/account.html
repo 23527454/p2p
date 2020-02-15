@@ -280,8 +280,8 @@
           <li>
             <div th:if="${session.loginUser.ucardid==null}">
               <i class="grzxbg p-danger"></i>
-              <input type="hidden" value="${list.aiid}"/>
-              <span class="zhsz-span1">${list.ainame}</span>
+              <input type="hidden" th:value="${list.aiid}"/>
+              <span class="zhsz-span1">[[${list.ainame}]]</span>
               <span class="zhsz-span2">未认证</span><span class="zhsz-span3">
               <a href="#" onclick="showSpan('alert-identity')">认证</a></span>
             </div>
@@ -297,7 +297,7 @@
               <span class="zhsz-span1">第三方支付</span>
               <span class="zhsz-span2">未开通</span>
               <span class="zhsz-span3">
-	          <a href="<%=basePath %>thirdparty.jsp">开通</a>
+	          <a href="/grzx/grzx_ktdsf">开通</a>
 	          </span>
             </div>
             <div th:if="${session.loginUser.ucertnumber!=null}">
@@ -320,12 +320,12 @@
               <i class="grzxbg p-danger"></i>
               <span class="zhsz-span1">电子邮箱</span>
               <span class="zhsz-span3">
-			    <a href="#" onclick="showSpan('alert-updateEmail')">认证</a>
+			    <a href="#" onclick="showSpan('alert-updateEmail')">更改</a>
 			  </span>
             </div>
            </li>
           <li><i class="grzxbg p-right"></i><span class="zhsz-span1">登录密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePass')">更改</a></span></li>
-          <li><i class="grzxbg p-right"></i><span class="zhsz-span1">支付密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePass')">更改</a></span></li>
+          <li><i class="grzxbg p-right"></i><span class="zhsz-span1">支付密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePayPass')">更改</a></span></li>
         </ul>
       </div>
     </div>
@@ -709,55 +709,46 @@
 			           //验证手机号是否为空
 			           function checkchangeEmailFormNewEmail()
 			           {
-			        	   var email=$("#changeEmailForm\\:newEmail").val();
-			        	   var nullFlag=(email=="");
-			        	   if(nullFlag)
-				   			{
-				   				$("#changeEmailForm\\:newEmail_message").remove();
-				   				var $span = $("<span id=changeEmailForm\:newEmail_message class=error>请输入新邮箱</span>");
-				   				$("#newEmailErrorDiv").append($span);
-				   				return false;
-				   			}
-				   			else
-				   			{
-				   				var emailError=$("#newEmailErrorDiv").text();
-				   				if(emailError=='请输入新邮箱')
-				   				{
-				   					$("#changeEmailForm\\:newEmail_message").remove();
-				   				}
-				   			}
+                           var email=$("#newEmail").val();
+                           if($.trim(email)==''||$.trim(email)==null){
+                               alert('邮箱不能为空！');
+                               return false;
+                           }
+                           //验证邮箱
+                           var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+                           if(!reg.test(email))
+                           {
+                               alert("邮箱格式不对");
+                               return false;
+                           }
 			        	   return true;
 			           }
 			           //验证验证码是否为空
 			           function checkchangeEmailFormAuthCode()
 			           {
-			        	   var mobile=$("#changeEmailForm\\:changeEmailFormauthCode").val();
-			        	   var nullFlag=(mobile=="");
-			        	   if(nullFlag)
-				   			{
-				   				$("#changeEmailForm\\:changeEmailFormauthCode_message").remove();
-				   				var $span = $("<span id=changeEmailForm\:changeEmailFormauthCode_message class=error>请输入验证码</span>");
-				   				$("#changeEmailFormauthCodeErrorDiv").append($span);
-				   				return false;
-				   			}
-				   			else
-				   			{
-				   				var mobileError=$("#changeEmailFormauthCodeErrorDiv").text();
-				   				if(mobileError=='请输入验证码')
-				   				{
-				   					$("#changeEmailForm\\:changeEmailFormauthCode_message").remove();
-				   				}
-				   			}
-			        	   return true;
+			               var yzm=$("#yan").val();
+			        	   var mobile=$("#yanzm").val();
+			        	   if(mobile=="" || mobile==null){
+                                alert("请输入验证码！");
+                               return false;
+				   			}else if(mobile!=yzm){
+                               alert("请输入正确验证码！");
+                               return false;
+				   			}else{
+                               return true;
+                           }
 			           }
 			           //验证所有
 			           function changeEmailFormAll()
 			           {
-			        	   checkchangeEmailFormNewEmail();
-			        	   checkchangeEmailFormAuthCode();
-			        	   var emailErrorFlag=$("#newEmailErrorDiv").text()=="";
-			        	   var authCodeErrorFlag=$("#changeEmailFormauthCodeErrorDiv").text()=="";
-			        	   return emailErrorFlag&&authCodeErrorFlag;
+                           var c=checkchangeEmailFormAuthCode();
+                           if(c){
+                               var e=checkchangeEmailFormNewEmail();
+                               if(e){
+                                   return true;
+                               }
+                           }
+                           return false;
 			           }
 			           $(document).ready(function(){
 			   			var valiChangeEamilError = $("#valiChangeEamilError").val();
@@ -797,13 +788,20 @@
 			        			   document.getElementById("idcarid").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;身份证输入不合法";
 				        	   	   return false; 
 			        		   }else {
-			        			   document.getElementById("idcarid").innerHTML = "";   
-			        		 		
+			        			   document.getElementById("idcarid").innerHTML = "";
 			        		   }
 			        		   return true;
 			        	   }
-			        	 
 			           }
+			           
+			           function renzheng() {
+                           var n=identity('1');
+                           var f=idcarid('2');
+                           if(n==f && n==true){
+                                return true;
+                           }
+                           return false;
+                       }
 			   	 //]]>
 			   </script>
 	<input id="valiCodeError" type="hidden" name="valiCodeError">
@@ -812,29 +810,29 @@
         <h3>身份验证</h3>
         <span class="alert-close" onclick="displaySpan('alert-identity')"></span></div>
       <div class="alert-main">
-        <form id="checkOldMobileForm" name="checkOldMobileForm" method="post" action=" insertUsercre.do" enctype="application/x-www-form-urlencoded">
-           <input type="hidden" value="${user.uid }" id="uid" name="uid"><!-- 用户编号 -->
-           <input type="hidden" value="${user.unickname}" name="unickname"><!-- 用户姓名 -->
-           <input type="hidden" value="${list.aiid}" name="aiid"/><!-- 认证编号 -->
-           <input type="hidden" value="${list.ainame}" name="ainame"><!-- 认证项名称 -->
+        <form id="checkOldMobileForm" name="checkOldMobileForm" method="post" action="/users/modifyIdentity" enctype="application/x-www-form-urlencoded">
+           <input type="hidden" th:value="${session.loginUser.uid }" id="uid" name="uid"><!-- 用户编号 -->
+           <input type="hidden" th:value="${session.loginUser.unickname}" name="unickname"><!-- 用户姓名 -->
+           <input type="hidden" th:value="${list.aiid}" name="aiid"/><!-- 认证编号 -->
+           <input type="hidden" th:value="${list.ainame}" name="ainame"><!-- 认证项名称 -->
           <ul>
             <li>
               <label class="txt-name">请输入真实姓名</label>
-              <input id="realname" type="text" onblur="identity('1')" name="realname" class="txt235"  placeholder="请输入真实姓名">  
+              <input id="realname" type="text" onblur="identity('1')" name="uname" class="txt235"  placeholder="请输入真实姓名">
             </li> 
             <li >
             	<div id="unumname" class="alert-error120" style="color: red;"></div>
             </li>  
             <li>
               <label class="txt-name">请输入身份证号</label>
-              <input id="idnumber" type="text" onblur="idcarid('2')" name="idnumbers" class="txt235"  placeholder="请输入身份证号">              
+              <input id="idnumber" type="text" onblur="idcarid('2')" name="ucardid" class="txt235"  placeholder="请输入身份证号">
             </li>
             <li>	
             	<div id="idcarid" class="alert-error120" style="color: red;"></div>
             </li>
             <li><span class="txt-right" style="display:none;"><i class="error-icon"></i><i class="error-tip">验证码错误请重新输入</i></span><br>
               <input type="submit" name="checkOldMobileForm:j_idt129" value="确 认" class="btn-ok txt-right"
-              onclick="return identity('1');return idcarid('2');" >
+              onclick="return renzheng();" >
             </li>
           </ul>
           <input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="6247899183375709698:8256389782682127070" autocomplete="off">
@@ -847,23 +845,57 @@
         <h3>修改邮箱</h3>
         <span class="alert-close" onclick="displaySpan('alert-updateEmail')"></span></div>
       <div class="alert-main" id="alert-main">
-        <form id="changeEmailForm" name="changeEmailForm" method="post" action="/user/managemyInfo" enctype="application/x-www-form-urlencoded">
+        <form id="changeEmailForm" name="changeEmailForm" method="post" action="/users/modifyEmail" enctype="application/x-www-form-urlencoded">
           <input type="hidden" name="changeEmailForm" value="changeEmailForm">
           <ul>
-            <li>
-              <label class="txt-name">请输入新邮箱</label>
-              <input type="hidden" value="15055100139" id="mobile">
-              <input id="changeEmailForm:newEmail" type="text" name="changeEmailForm:newEmail" class="txt235" onblur="jsf.util.chain(this,event,'return checkchangeEmailFormNewEmail()','mojarra.ab(this,event,\'blur\',0,0)')" placeholder="请输入邮箱">
+            <div th:if="${session.loginUser.umailbox!=null}">
+              <li>
+                <input type="hidden" name="email" id="_email" th:value="${session.loginUser.umailbox}">
+                <input type="hidden" name="name" id="_name" th:value="${session.loginUser.unickname}">
+                <label class="txt-name">原邮箱</label>
+                <label id="oldMobileNumber" class="txt240" th:text="${session.loginUser.umailbox}"></label>
+              </li>
+              <li>
+                <label class="txt-name">验证码</label>
+                <input id="yanzm" type="text" name="changeEmailForm:changeEmailFormauthCode" class="txt110" maxlength="8" onblur="mojarra.ab(this,event,'blur',0,0)" placeholder="请输入邮箱验证码">
+                <span id="sendCode2">
+                  <input type="button" value="获取验证码" onclick="sendEmail1();"  class="btn-code">
+                  <!--<a id="sendAuthCodeBtn" href="#" onclick="sendEmail1();" class="btn-code">获取校验码</a>-->
+                  <a id="changeEmailForm:sendAuthCodeBtn6" href="#" style="display:none;" onclick="mojarra.ab(this,event,'action','@this changeEmailForm:newEmail',0,{'onevent':sCode3});return false" class="btn-code">获取校验码</a> </span> <span id="sendCodeGrey2" style="display:none;"> <a href="#" id="sendAuthCodeBtn3" class="btn-codeAfter" style="cursor:default;">获取校验码</a>
+                </span>
+              </li>
+              <li>
+                <label class="txt-name">请输入新邮箱</label>
+                <input type="hidden" value="15055100139" id="mobile">
+                <!--name="changeEmailForm:newEmail"-->
+                <input id="newEmail" type="text" name="newEmail" class="txt235" onblur="checkchangeEmailFormNewEmail();" placeholder="请输入新邮箱">
               <div id="newEmailErrorDiv" class="alert-error120"></div>
             </li>
+            </div>
+
+
+            <div th:if="${session.loginUser.umailbox==null}">
             <li>
-              <label class="txt-name">手机验证码</label>
-              <input id="changeEmailForm:changeEmailFormauthCode" type="text" name="changeEmailForm:changeEmailFormauthCode" class="txt110" maxlength="8" onblur="mojarra.ab(this,event,'blur',0,0)" placeholder="请输入手机验证码">
-              <span id="sendCode2"><a id="changeEmailForm:sendAuthCodeBtn" href="#" onclick="jsf.util.chain(this,event,'return validateMailSMS(\'15055100139\');','PrimeFaces.ab({source:this,event:\'action\',process:\'changeEmailForm:sendAuthCodeBtn changeEmailForm:newEmail\',oncomplete:function(xhr,status,args){s3Code(xhr, status, args, \'dx\');}}, arguments[1]);');return false" class="btn-code">免费获取校验码</a><a id="changeEmailForm:sendAuthCodeBtn6" href="#" style="display:none;" onclick="mojarra.ab(this,event,'action','@this changeEmailForm:newEmail',0,{'onevent':sCode3});return false" class="btn-code">免费获取校验码</a> </span> <span id="sendCodeGrey2" style="display:none;"> <a href="#" id="sendAuthCodeBtn3" class="btn-codeAfter" style="cursor:default;">免费获取校验码</a> </span> </li>
+              <input type="hidden" name="name" id="_name" th:value="${session.loginUser.unickname}">
+              <label class="txt-name">请输入新邮箱</label>
+              <input type="hidden" value="15055100139" id="mobile">
+              <!--name="changeEmailForm:newEmail"-->
+              <input id="newEmail" type="text" name="newEmail" class="txt235" placeholder="请输入新邮箱">
+              <div id="newEmailErrorDiv" class="alert-error120"></div>
+            </li>
+              <li>
+                <label class="txt-name">验证码</label>
+                <input id="yanzm" type="text" name="changeEmailForm:changeEmailFormauthCode" class="txt110" maxlength="8" onblur="mojarra.ab(this,event,'blur',0,0)" placeholder="请输入邮箱验证码">
+                <span id="sendCode2">
+                  <a id="changeEmailForm:sendAuthCodeBtn" href="#" onclick="sendEmail2();" class="btn-code">获取校验码</a>
+                  <a id="changeEmailForm:sendAuthCodeBtn6" href="#" style="display:none;" onclick="mojarra.ab(this,event,'action','@this changeEmailForm:newEmail',0,{'onevent':sCode3});return false" class="btn-code">获取校验码</a> </span> <span id="sendCodeGrey2" style="display:none;"> <a href="#" id="sendAuthCodeBtn3" class="btn-codeAfter" style="cursor:default;">获取校验码</a>
+                </span>
+              </li>
+          </div>
             <li>
               <div id="changeEmailFormauthCodeErrorDiv" class="errorplace"></div>
-              <div id="authCodeMsg5" style="display:none;" class="yzmplace1"> 验证码已发送到您手机<span id="mobileMsg5"></span>，如果收不到短信，请 <a id="changeEmailForm:sendAuthCodeBtn4" href="#" style="color:blue;" onclick="PrimeFaces.ab({source:this,event:'action',process:'changeEmailForm:sendAuthCodeBtn4 changeEmailForm:newEmail',oncomplete:function(xhr,status,args){s3Code(xhr, status, args, 'yy');}}, arguments[1]);;return false">语音获取</a> </div>
-              <div id="authCodeMsg6" style="display:none;" class="yzmplace1"> 您的手机<span id="mobileMsg6"></span>将在60秒内收到语音电话，请接听！ </div>
+              <div id="authCodeMsg5" style="display:none;" class="yzmplace1"> 验证码已发送到您邮箱<span id="mobileMsg5"></span>，如果收不到邮件，请 <a id="changeEmailForm:sendAuthCodeBtn4" href="#" style="color:blue;" onclick="PrimeFaces.ab({source:this,event:'action',process:'changeEmailForm:sendAuthCodeBtn4 changeEmailForm:newEmail',oncomplete:function(xhr,status,args){s3Code(xhr, status, args, 'yy');}}, arguments[1]);;return false">再次获取</a> </div>
+              <div id="authCodeMsg6" style="display:none;" class="yzmplace1"> 您的邮箱<span id="mobileMsg6"></span>将在60秒内收到邮件，请查收！ </div>
               <input type="submit" name="changeEmailForm:j_idt150" value="确　认" class="btn-ok txt-right" onclick="return changeEmailFormAll()">
             </li>
           </ul>
@@ -882,8 +914,32 @@
         </div>
       </div>
     </div>
+
+
     <script type="text/javascript">
 			//<![CDATA[
+
+            function sendEmail1() {
+                var email=$("#_email").val();
+                var name=$("#_name").val();
+                $.post("/users/sendEmail",{"email":email,"name":name},function (data) {
+                    alert("验证码已发送！");
+                    document.getElementById("yan").value=data.yzm;
+                });
+            }
+
+            function sendEmail2() {
+                var email=$("#newEmail").val();
+                var name=$("#_name").val();
+                var e=checkchangeEmailFormNewEmail();
+                if(e){
+                    $.post("/users/sendEmail",{"email":email,"name":name},function (data) {
+                        alert("验证码已发送！");
+                        document.getElementById("yan").value=data.yzm;
+                    });
+                }
+
+            }
 			           //验证邮箱是否为空
 			           function checkbandingEmailFormEmail()
 			           {
@@ -999,7 +1055,7 @@
 			           //验证原密码
 			           function checkupdatePassFormOldPassword()
 			           {
-			        	   var oldPassword=$("#updatePassForm\\:oldPassword").val();
+			        	   var oldPassword=$("#oldPassword").val();
 			        	   var nullFlag=(oldPassword=="");
 			        	   if(nullFlag)
 				   			{
@@ -1019,9 +1075,9 @@
 			        	   return true;
 			           }
 			           //验证输入密码框
-			           function checkPassword()
+			           function checkPassword2()
 			           {
-			        	   var password=$("#updatePassForm\\:password").val();
+			        	   var password=$("#password").val();
 			        	   var nullFlag=(password=="");
 			        	   if(nullFlag)
 				   			{
@@ -1032,7 +1088,12 @@
 				   			}
 				   			else
 				   			{
-				   				var oldpassword=$("#updatePassForm\\:oldPassword").val();
+				   			    if(password.length<6){
+                                    var $span = $("<span id=updatePassForm\:password_message class=error>密码不能小于6个字符</span>");
+                                    $("#passwordErrorDiv").append($span);
+                                    return false;
+                                }
+				   				var oldpassword=$("#oldPassword").val();
 				   				var errorMessage=$("#oldPasswordErrorDiv").text();
 				   				
 				   				var nullOldFlag=(oldpassword=="");
@@ -1045,18 +1106,15 @@
 					   				return false;
 				   				}
 				   				var nullerror=$("#passwordErrorDiv").text();
-				   				if(nullerror=="请输入密码")
-				   				{
-				   					$("#updatePassForm\\:password_message").remove();
-				   				} 
+                                $("#updatePassForm\\:password_message").remove();
 				   			}
 			        	   return true;
 			           }
 			           //验证重输密码框
-			           function checkRepassword()
+			           function checkRepassword2()
 			   		   {
-				   			var password=$("#updatePassForm\\:password").val();
-				   			var repassword=$("#updatePassForm\\:repassword").val();
+				   			var password=$("#password").val();
+				   			var repassword=$("#repassword").val();
 				   			var flag=(password==repassword);
 				   			var nullFlag=(repassword=="");
 				   			if(nullFlag)
@@ -1085,16 +1143,17 @@
 			   		   }
 			           function checkupdatePassFormAll()
 			           {
-			        	   checkupdatePassFormOldPassword();
-			        	   checkPassword();
-			        	   checkRepassword();
+			        	   //checkupdatePassFormOldPassword();
+                           password2();
+			        	   checkPassword2();
+			        	   checkRepassword2();
 			        	   var oldPasswordFlag=$("#oldPasswordErrorDiv").text()=="";
 			        	   var passwordFlag=$("#passwordErrorDiv").text()=="";
 			        	   var repasswordFlag=$("#repasswordErrorDiv").text()=="";
 			        	   return oldPasswordFlag&&passwordFlag&&repasswordFlag;
 			           }
-			          function password(){
-			        	  var upwd=${user.upassword};
+			          function password2(){
+			               var upwd=[[${session.loginUser.upassword}]];
 			        	  var password=$("#oldPassword").val();
 			        	  if(password!=upwd){
 			        		  document.getElementById("upassword").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;密码错误";
@@ -1107,6 +1166,101 @@
 			        	  }
 			        	  return true;
 			          }
+
+            //验证输入密码框
+            function checkPayPassword2()
+            {
+                var password=$("#paypassword").val();
+                var nullFlag=(password=="");
+                if(nullFlag)
+                {
+                    $("#updatePassForm\\:password_message").remove();
+                    var $span = $("<span id=updatePassForm\:password_message class=error>请输入新密码</span>");
+                    $("#paypasswordErrorDiv").append($span);
+                    return false;
+                }
+                else
+                {
+                    if(password.length<6){
+                        var $span = $("<span id=updatePassForm\:password_message class=error>密码不能小于6个字符</span>");
+                        $("#paypasswordErrorDiv").append($span);
+                        return false;
+                    }
+                    var oldpassword=$("#oldPayPassword").val();
+                    var errorMessage=$("#oldPayPasswordErrorDiv").text();
+
+                    var nullOldFlag=(oldpassword=="");
+                    var errorFlag=(errorMessage=="");
+                    if(!nullOldFlag&&errorFlag&&(oldpassword==password))
+                    {
+                        $("#updatePassForm\\:password_message").remove();
+                        var $span = $("<span id=updatePassForm\:password_message class=error>输入密码不能与原密码相同</span>");
+                        $("#paypasswordErrorDiv").append($span);
+                        return false;
+                    }
+                    var nullerror=$("#paypasswordErrorDiv").text();
+                    $("#updatePassForm\\:password_message").remove();
+                }
+                return true;
+            }
+            //验证重输密码框
+            function checkPayRepassword2()
+            {
+                var password=$("#paypassword").val();
+                var repassword=$("#payrepassword").val();
+                var flag=(password==repassword);
+                var nullFlag=(repassword=="");
+                if(nullFlag)
+                {
+                    $("#repassword_message").remove();
+                    var $span = $("<span id=repassword_message class=error>请输入确认密码</span>");
+                    $("#repasswordErrorDiv").append($span);
+                    return false;
+                }
+                else
+                {
+                    $("#repassword_message").remove();
+                }
+                if(flag==false)
+                {
+                    $("#repassword_message").remove();
+                    var $span = $("<span id=repassword_message class=error>两次密码不同</span>");
+                    $("#repaypasswordErrorDiv").append($span);
+                    return false;
+                }
+                else
+                {
+                    $("#repassword_message").remove();
+                }
+                return true;
+            }
+            function checkPayupdatePassFormAll()
+            {
+                var upwd=[[${session.loginUser.upwdZd}]];
+                if(upwd!=null){
+                    payPassword2();
+                }
+                checkPayPassword2();
+                checkPayRepassword2();
+                var oldPasswordFlag=$("#oldPayPasswordErrorDiv").text()=="";
+                var passwordFlag=$("#paypasswordErrorDiv").text()=="";
+                var repasswordFlag=$("#repaypasswordErrorDiv").text()=="";
+                return oldPasswordFlag&&passwordFlag&&repasswordFlag;
+            }
+            function payPassword2(){
+                var upwd=[[${session.loginUser.upwdZd}]];
+                var password=$("#oldPayPassword").val();
+                if(password!=upwd){
+                    document.getElementById("payupassword").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;密码错误";
+                    return false;
+                }else if(password==""){
+                    document.getElementById("payupassword").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;请输入原密码";
+                    return false;
+                }else{
+                    document.getElementById("payupassword").innerHTML = "";
+                }
+                return true;
+            }
 			//]]>
 		</script>
     <div class="alert-450" id="alert-updatePass" style="display: none;">
@@ -1114,13 +1268,13 @@
         <h3>修改密码</h3>
         <span class="alert-close" onclick="displaySpan('alert-updatePass')"></span></div>
       <div class="alert-main">
-        <form id="updatePassForm" name="updatePassForm" method="post" action=" updpassword.do" enctype="application/x-www-form-urlencoded">
+        <form id="updatePassForm" name="updatePassForm" method="post" action="/users/modifyPwd" enctype="application/x-www-form-urlencoded">
           <input type="hidden" name="updatePassForm" value="updatePassForm">
-          <input type="hidden" name="id" value="${user.uid}">
+          <input type="hidden" name="id" th:value="${session.loginUser.uid}">
           <ul>
             <li>
               <label class="txt-name">请输入原密码</label>
-              <input id="oldPassword" type="password" name="updatePassForm:oldPassword" value="" maxlength="20" onblur="password();" class="txt235">
+              <input id="oldPassword" type="password" name="oldPassword" maxlength="20" class="txt235" onblur="password2()" >
               <div id="oldPasswordErrorDiv" class="alert-error120"></div>
             </li>
             <li>
@@ -1128,12 +1282,12 @@
             </li>
             <li>
               <label class="txt-name">请输入新密码</label>
-              <input id="updatePassForm:password" type="password" name="updatePassForm:password" value="" maxlength="20" onblur="jsf.util.chain(this,event,'return checkPassword()','mojarra.ab(this,event,\'blur\',0,0)')" class="txt235">
+              <input id="password" type="password" name="password" value="" maxlength="20" onblur="checkPassword2()" class="txt235">
               <div id="passwordErrorDiv" class="alert-error120"></div>
             </li>
             <li>
               <label class="txt-name">请确认新密码</label>
-              <input id="updatePassForm:repassword" type="password" name="updatePassForm:repassword" value="" maxlength="20" onblur="return checkRepassword()" class="txt235">
+              <input id="repassword" type="password" name="updatePassForm:repassword" value="" maxlength="20" onblur="return checkRepassword2()" class="txt235">
               <div id="repasswordErrorDiv" class="alert-error120"></div>
             </li>
             <li>
@@ -1422,6 +1576,319 @@
 		        //]]>
 		    </script>
     </div>
+      <div class="alert-450" id="alert-updatePayPass" style="display: none;">
+        <div class="alert-title">
+          <h3>修改交易密码</h3>
+          <span class="alert-close" onclick="displaySpan('alert-updatePass')"></span></div>
+        <div class="alert-main">
+          <form id="updatePassForm" name="updatePassForm" method="post" action="/users/modifyPayPwd" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="updatePassForm" value="updatePassForm">
+            <input type="hidden" name="id" th:value="${session.loginUser.uid}">
+            <ul>
+              <li th:if="${session.loginUser.upwdZd != null}">
+                <label class="txt-name">请输入原支付密码</label>
+                <input id="oldPayPassword" type="password" name="oldPayPassword" maxlength="20" class="txt235" onblur="payPassword2()" >
+                <div id="oldPayPasswordErrorDiv" class="alert-error120"></div>
+              </li>
+              <li>
+                <div id="payupassword" class="alert-error120" style="color: red;"></div>
+              </li>
+              <li>
+                <label class="txt-name">请输入新支付密码</label>
+                <input id="paypassword" type="password" name="paypassword" value="" maxlength="20" onblur="checkPayPassword2()" class="txt235">
+                <div id="paypasswordErrorDiv" class="alert-error120"></div>
+              </li>
+              <li>
+                <label class="txt-name">请确认新支付密码</label>
+                <input id="payrepassword" type="password" name="updatePassForm:repassword" value="" maxlength="20" onblur="return checkPayRepassword2()" class="txt235">
+                <div id="repaypasswordErrorDiv" class="alert-error120"></div>
+              </li>
+              <li>
+                <input type="submit" name="updatePassForm:j_idt174" value="确 认" class="btn-ok btn-235 txt-right" onclick="return checkPayupdatePassFormAll()">
+              </li>
+            </ul>
+          </form>
+        </div>
+        <script type="text/javascript">
+            //<![CDATA[
+            if(window.ActiveXObject)
+            {
+                var browser=navigator.appName;
+                var b_version=navigator.appVersion;
+                var version=b_version.split(";");
+                var trim_Version=version[1].replace(/[ ]/g,"");
+
+                if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE7.0")
+                {
+                    $("#checkMonbileForm\\:sendAuthCodeBtn4").css("display","block");
+                    $("#checkMonbileForm\\:sendAuthCodeBtn").css("display","none");
+                    $("#updateMonbileForm\\:sendAuthCodeBtn5").css("display","block");
+                    $("#updateMonbileForm\\:sendAuthCodeBtn").css("display","none");
+                    $("#changeEmailForm\\:sendAuthCodeBtn6").css("display","block");
+                    $("#changeEmailForm\\:sendAuthCodeBtn").css("display","none");
+                    $("#checkOldMobileForm\\:sendAuthCodeBtn7").css("display","block");
+                    $("#checkOldMobileForm\\:sendAuthCodeBtn").css("display","none");
+                }
+            }
+            function sCode2(){
+                var mobile = $("#checkMonbileForm\\:mobileNumber").val();
+                var mobileRegex="^1[3|4|5|7|8][0-9]{9}$";
+                var mobilePattern = new RegExp(mobileRegex);
+                var mobileFlag=mobilePattern.test(mobile);
+
+                if(!mobileFlag){
+                    return;
+                }
+                $("#sendCode").hide();
+                $("#sendCodeGrey").show();
+                if(flag && $("#sendCode").is(":hidden")){
+                    return;
+                }
+                flag = true;
+                timer("sendAuthCodeBtn1", {
+                    "count" : 60,
+                    "animate" : true,
+                    initTextBefore : "后可重新操作",
+                    initTextAfter : "秒",
+                    callback:function(){
+                        $("#sendCode").show();
+                        $("#sendCodeGrey").hide();
+                        flag = false;
+                    }
+                }).begin();
+            }
+            function sCode3(){
+                var email = $("#changeEmailForm\\:newEmail").val();
+                if(email=="") {
+                    return;
+                }
+                var emailRegex="^([a-zA-Z0-9]+[_|\-|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$";
+                var emailPattern = new RegExp(emailRegex);
+                var emailFlag=emailPattern.test(email);
+                if(!emailFlag){
+                    return;
+                }
+
+                $("#sendCode2").hide();
+                $("#sendCodeGrey2").show();
+                if(flag && $("#sendCode2").is(":hidden")){
+                    return;
+                }
+                flag = true;
+                timer("sendAuthCodeBtn3", {
+                    "count" : 60,
+                    "animate" : true,
+                    initTextBefore : "后可重新操作",
+                    initTextAfter : "秒",
+                    callback:function(){
+                        $("#sendCode2").show();
+                        $("#sendCodeGrey2").hide();
+                        flag = false;
+                    }
+                }).begin();
+            }
+            function sCode4(){
+                var mobile = $("#updateMonbileForm\\:mobileNumber2").val();
+                var mobileRegex="^1[3|4|5|7|8][0-9]{9}$";
+                var mobilePattern = new RegExp(mobileRegex);
+                var mobileFlag=mobilePattern.test(mobile);
+
+                if(!mobileFlag){
+                    return;
+                }
+                $("#sendCode1").hide();
+                $("#sendCodeGrey1").show();
+                if(flag && $("#sendCode1").is(":hidden")){
+                    return;
+                }
+                flag = true;
+                timer("sendAuthCodeBtn2", {
+                    "count" : 60,
+                    "animate" : true,
+                    initTextBefore : "后可重新操作",
+                    initTextAfter : "秒",
+                    callback:function(){
+                        $("#sendCode1").show();
+                        $("#sendCodeGrey1").hide();
+                        flag = false;
+                    }
+                }).begin();
+            }
+            function sCode7()
+            {
+                $("#sendCode7").hide();
+                $("#sendCodeGrey7").show();
+                if(flag && $("#sendCode7").is(":hidden")){
+                    return;
+                }
+                flag = true;
+                timer("sendAuthCodeBtn7", {
+                    "count" : 60,
+                    "animate" : true,
+                    initTextBefore : "后可重新操作",
+                    initTextAfter : "秒",
+                    callback:function(){
+                        $("#sendCode7").show();
+                        $("#sendCodeGrey7").hide();
+                        flag = false;
+                    }
+                }).begin();
+            }
+            var ua = navigator.userAgent;
+            if(ua.indexOf("Windows NT 5")!=-1) {
+                if(window.ActiveXObject)
+                {
+                    var browser=navigator.appName
+                    var b_version=navigator.appVersion
+                    var version=b_version.split(";");
+                    var trim_Version=version[1].replace(/[ ]/g,"");
+                    if(browser=="Microsoft Internet Explorer" && (trim_Version=="MSIE8.0" || trim_Version=="MSIE7.0"))
+                    {
+                        $("#checkMonbileForm\\:sendAuthCodeBtn4").css("display","block");
+                        $("#checkMonbileForm\\:sendAuthCodeBtn").css("display","none");
+                        $("#updateMonbileForm\\:sendAuthCodeBtn5").css("display","block");
+                        $("#updateMonbileForm\\:sendAuthCodeBtn").css("display","none");
+                        $("#changeEmailForm\\:sendAuthCodeBtn6").css("display","block");
+                        $("#changeEmailForm\\:sendAuthCodeBtn").css("display","none");
+                        $("#checkOldMobileForm\\:sendAuthCodeBtn7").css("display","block");
+                        $("#checkOldMobileForm\\:sendAuthCodeBtn").css("display","none");
+                    }
+                }
+            }
+
+
+            var second = 0;
+            var internal;
+            /** 校验修改手机验证码 */
+            function validateModifyPhoneSMS(mobileNumber){
+                $("#checkOldMobileForm\\:checkOldMobileFormauthCode_message").remove();
+                if(mobileNumber == '请输入手机号'){
+                    return;
+                }
+                var returnResult = false;
+                $.ajax({
+                    url: "/valiSms",
+                    async:false,
+                    data:{
+                        mobileNumber:mobileNumber
+                    },
+                    success: function(data){
+                        if(data.flag == 'NO'){
+                            $("#checkOldMobileForm\\:checkOldMobileFormauthCode_message").remove();
+                            var $span = $("<span id=checkOldMobileForm\:checkOldMobileFormauthCode_message class=alerterror>点击过于频繁,请<b>"+data.second+"</b>秒后重试</span>");
+                            $("#checkOldMobileFormauthCodeErrorDiv").append($span);
+                            second = data.second;
+                            clearInterval(internal);
+                            internal = setInterval(function(){
+                                if(second == 0){
+                                    $("#checkOldMobileForm\\:checkOldMobileFormauthCode_message").remove();
+                                }else{
+                                    second = second -1;
+                                    $("#checkOldMobileForm\\:checkOldMobileFormauthCode_message").find('b').html(second);
+                                }
+                            },1000);
+                            returnResult = false;
+                        }else if(data.flag == 'NO1'){
+                            $("#checkOldMobileForm\\:checkOldMobileFormauthCode_message").remove();
+                            var $span = $("<span id=checkOldMobileForm\:checkOldMobileFormauthCode_message class=alerterror>"+data.smsVali+"</span>");
+                            $("#checkOldMobileFormauthCodeErrorDiv").append($span);
+                            returnResult = false;
+                        }else{
+                            returnResult = true;
+                        }
+                    }
+                });
+                return returnResult;
+            }
+            /** 校验修改邮箱验证码 */
+            function validateMailSMS(mobileNumber){
+                $("#changeEmailForm\\:changeEmailFormauthCode_message").remove();
+                if(mobileNumber == '请输入手机号'){
+                    return;
+                }
+                var returnResult = false;
+                $.ajax({
+                    url: "/valiSms",
+                    async:false,
+                    data:{
+                        mobileNumber:mobileNumber
+                    },
+                    success: function(data){
+                        if(data.flag == 'NO'){
+                            $("#changeEmailForm\\:changeEmailFormauthCode_message").remove();
+                            var $span = $("<span id=changeEmailForm\:changeEmailFormauthCode_message class=alerterror>点击过于频繁,请<b>"+data.second+"</b>秒后重试</span>");
+                            $("#changeEmailFormauthCodeErrorDiv").append($span);
+                            second = data.second;
+                            clearInterval(internal);
+                            internal = setInterval(function(){
+                                if(second == 0){
+                                    $("#changeEmailForm\\:changeEmailFormauthCode_message").remove();
+                                }else{
+                                    second = second -1;
+                                    $("#changeEmailForm\\:changeEmailFormauthCode_message").find('b').html(second);
+                                }
+                            },1000);
+                            returnResult = false;
+                        }else if(data.flag == 'NO1'){
+                            $("#changeEmailForm\\:changeEmailFormauthCode_message").remove();
+                            var $span = $("<span id=changeEmailForm\:changeEmailFormauthCode_message class=alerterror>"+data.smsVali+"</span>");
+                            $("#changeEmailFormauthCodeErrorDiv").append($span);
+                            returnResult = false;
+                        }else{
+                            returnResult = true;
+                        }
+                    }
+                });
+                return returnResult;
+            }
+
+            /** 绑定手机 */
+            function validateBindPhoneSMS(){
+
+                $("#checkMonbileForm\\:authCode_message").remove();
+                var mobileNumber = $("#checkMonbileForm\\:mobileNumber").val();
+                if(mobileNumber == '请输入手机号'){
+                    return;
+                }
+                var returnResult = false;
+                $.ajax({
+                    url: "/valiSms",
+                    async:false,
+                    data:{
+                        mobileNumber:mobileNumber
+                    },
+                    success: function(data){
+                        if(data.flag == 'NO'){
+                            $("#checkMonbileForm\\:authCode_message").remove();
+                            var $span = $("<span id=checkMonbileForm\:authCode_message class=alerterror>点击过于频繁,请<b>"+data.second+"</b>秒后重试</span>");
+                            $("#authCodeErrorDiv").append($span);
+                            second = data.second;
+                            clearInterval(internal);
+                            internal = setInterval(function(){
+                                if(second == 0){
+                                    $("#checkMonbileForm\\:authCode_message").remove();
+                                }else{
+                                    second = second -1;
+                                    $("#checkMonbileForm\\:authCode_message").find('b').html(second);
+                                }
+                            },1000);
+                            returnResult = false;
+                        }else if(data.flag == 'NO1'){
+                            $("#checkMonbileForm\\:authCode_message").remove();
+                            var $span = $("<span id=checkMonbileForm\:authCode_message class=alerterror>"+data.smsVali+"</span>");
+                            $("#authCodeErrorDiv").append($span);
+                            returnResult = false;
+                        }else{
+                            returnResult = true;
+                        }
+                    }
+                });
+                return returnResult;
+            }
+
+            //]]>
+        </script>
+      </div>
     <div class="clear"></div>
   </div>
 </div>

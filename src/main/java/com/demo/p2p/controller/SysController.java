@@ -30,6 +30,11 @@ public class SysController {
     @Resource
     private InvestinfoService investinfoService;
 
+    @RequestMapping(value = "/403")
+    public String wqx(){
+        return "page/403";
+    }
+
     /**
      * 首页
      * @return
@@ -41,13 +46,15 @@ public class SysController {
         QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
         QueryWrapper<Notice> queryWrapper1=new QueryWrapper<>();
         QueryWrapper<Notice> queryWrapper2=new QueryWrapper<>();
-        int i = 1;
-        queryWrapper.eq("noticetype",i);
-        queryWrapper1.eq("noticetype",i+1);
-        queryWrapper2.eq("noticetype",i+5);
+        QueryWrapper<Notice> queryWrapper3=new QueryWrapper<>();
+        queryWrapper.eq("noticetype",1);
+        queryWrapper1.eq("noticetype",2);
+        queryWrapper2.eq("noticetype",1);
+        queryWrapper3.eq("noticeid",43);
         List<Notice> list = noticeService.select1(queryWrapper);
-        List<Notice> list1 = noticeService.select2(queryWrapper1);
-        List<Notice> list2 = noticeService.select2(queryWrapper2);
+        List<Notice> list1 = noticeService.select1(queryWrapper1);
+        List<Notice> list2 = noticeService.select1(queryWrapper2);
+        List<Notice> list3 = noticeService.select1(queryWrapper3);
         Integer certification = certificationService.certification();
         Integer usersnamecount = usersService.usersNameCount();
         Integer sumInmoney = investinfoService.sumInmoney();
@@ -55,6 +62,7 @@ public class SysController {
         mode.addAttribute("list",list);
         mode.addAttribute("list1",list1);
         mode.addAttribute("list2",list2);
+        mode.addAttribute("list3",list3);
         request.setAttribute("sumcertification",certification);
         request.setAttribute("sumuserscount",usersnamecount);
         request.setAttribute("sumInmoney",sumInmoney);
@@ -310,24 +318,6 @@ public class SysController {
     }
 
     /**
-     * 个人中心——账户总览
-     * @return
-     */
-    @RequestMapping(value = "/grzx")
-    public String zhanghu(){
-        return "personalpage";
-    }
-
-    /**
-     * 个人中心——账户设置
-     * @return
-     */
-    @RequestMapping(value = "/grzx_zhsz")
-    public String grzx_zhsz(){
-        return "account";
-    }
-
-    /**
      * 联系我们
      * @return
      */
@@ -345,23 +335,7 @@ public class SysController {
         return "informhzhb";
     }
 
-    /**
-     * 网站公告
-     * @return
-     */
-    @RequestMapping(value = "/wzgg")
-    public String wzgg(){
-        return "inform";
-    }
 
-    /**
-     * 公告详情
-     * @return
-     */
-    @RequestMapping(value = "/xiangqing")
-    public String xiangqing(){
-        return "informsel";
-    }
 
     /**
      * 管理团队
@@ -391,42 +365,6 @@ public class SysController {
     }
 
     /**
-     * 个人中心——投资记录
-     * @return
-     */
-    @RequestMapping(value = "/grzx_tzjl")
-    public String grzx_tzjl(){
-        return "accounts";
-    }
-
-    /**
-     * 个人中心——系统消息
-     * @return
-     */
-    @RequestMapping(value = "/grzx_xtxx")
-    public String grzx_xtxx(){
-        return "messages";
-    }
-
-    /**
-     * 个人中心——资金记录
-     * @return
-     */
-    @RequestMapping(value = "/grzx_zjjl")
-    public String grzx_zjjl(){
-        return "moneyrecord";
-    }
-
-    /**
-     * 个人中心——充值
-     * @return
-     */
-    @RequestMapping(value = "/grzx_cz")
-    public String grzx_cz(){
-        return "pay";
-    }
-
-    /**
      * 法律政策
      * @return
      */
@@ -453,23 +391,6 @@ public class SysController {
         return "recruit";
     }
 
-    /**
-     * 媒体报道
-     * @return
-     */
-    @RequestMapping(value = "/mtbd")
-    public String mtbd(){
-        return "reportlist";
-    }
-
-    /**
-     * 媒体报道详情
-     * @return
-     */
-    @RequestMapping(value = "/mtbdxq")
-    public String mtbdxq(){
-        return "reportsel";
-    }
 
     /**
      * 法律声明
@@ -480,66 +401,5 @@ public class SysController {
         return "statement";
     }
 
-    /**
-     * 开通第三方
-     * @return
-     */
-    @RequestMapping(value = "/grzx_ktdsf")
-    public String grzx_ktdsf(){
-        return "thirdparty";
-    }
 
-    /**
-     * 提现
-     * @return
-     */
-    @RequestMapping(value = "/grzx_tx")
-    public String grzx_tx(){
-        return "Withdraw";
-    }
-
-    /**
-     * 未开通第三方账户时充值
-     * @return
-     */
-    @RequestMapping(value = "/grzx_cz1")
-    public String grzx_cz1(){
-        return "Payno";
-    }
-
-    /**
-     * 未开通第三方账户时提现
-     * @return
-     */
-    @RequestMapping(value = "/grzx_tx1")
-    public String grzx_tx1(){
-        return "Withdrawno";
-    }
-
-    /**
-     * 个人中心——回款计划
-     * @return
-     */
-    @RequestMapping(value = "/grzx_hkjh")
-    public String grzx_hkjh(){
-        return "个人中心-回款计划";
-    }
-
-    /**
-     * 个人中心——兑换历史
-     * @return
-     */
-    @RequestMapping(value = "/grzx_dhls")
-    public String grzx_dhls(){
-        return "个人中心-兑换历史";
-    }
-
-    /**
-     * 个人中心——我的红包
-     * @return
-     */
-    @RequestMapping(value = "/grzx_wdhb")
-    public String grzx_wdhb(){
-        return "个人中心-我的红包";
-    }
 }

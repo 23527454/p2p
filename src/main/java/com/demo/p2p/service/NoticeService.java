@@ -16,6 +16,5 @@ import java.util.List;
  */
 public interface NoticeService extends IService<Notice> {
    public List<Notice> select1(QueryWrapper<Notice> queryWrapper);
-   public List<Notice> select2(QueryWrapper<Notice> queryWrapper);
-   public List<Notice> select3(QueryWrapper<Notice> queryWrapper);
+
 }
