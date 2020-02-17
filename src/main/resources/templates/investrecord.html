@@ -1,99 +1,127 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>p2p网贷平台</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<link href=" /css/common.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href=" /css/user.css" />
-<script type="text/javascript" src=" /script/jquery.min.js"></script>
-<script type="text/javascript" src=" /script/common.js"></script>
-<script src=" /script/user.js" type="text/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>p2p网贷平台</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link href=" /css/common.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href=" /css/user.css" />
+    <script type="text/javascript" src=" /script/jquery.min.js"></script>
+    <script type="text/javascript" src=" /script/common.js"></script>
+    <script src=" /script/user.js" type="text/javascript"></script>
 </head>
 <body>
+<!--header-->
+<header th:include="common/header :: header"></header>
 
-<!--header--> <header th:include="common/header :: header"></header>
 <!--个人中心-->
 <div class="wrapper wbgcolor">
-  <div class="w1200 personal">
-      <!--上方图片+左侧导航栏-->
-      <div th:include="common/left :: left"></div>
-    <style type="text/css">
-		.invest-tab .on  a{color:#fff;}
-	</style>
-    <div class="personal-main">
-      <div class="personal-investnote">
-        <h3><i>投资记录</i></h3>
-        <div class="investnote-money"> <span><b class="fb">累计投资</b><br/>
-          <i><fmt:formatNumber value="${tm == null ? '0.00' : tm }" pattern="#.##"/></i> 元 </span> <span><b class="fb">累计收益</b><br/>
-          <i class="c-pink"><fmt:formatNumber value="${gm == null ? '0.00' : gm }" pattern="#.##"/></i> 元 </span> <span><b class="fb">待收本金</b><br/>
-          <i><fmt:formatNumber value="${tm == null && thm == null ? '0.00' : (tm - thm)}" pattern="#.##"/></i> 元 </span> <span class="none"><b class="fb">待收收益</b><br/>
-          <i><fmt:formatNumber value="${gtm == null && gm == null ? '0.00' : (gtm - gm)}" pattern="#.##"/></i> 元 </span> </div>
-        <form id="form" name="form" method="post" action="">
-          <script type="text/javascript">clearPage = function() {PrimeFaces.ab({source:'form:j_idt82',formId:'form',process:'form:j_idt82',params:arguments[0]});}</script>
-          <span id="form:dataTable">
+    <div class="w1200 personal">
+        <!--上方图片+左侧导航栏-->
+        <div th:include="common/left :: left"></div>
+        <style type="text/css">
+            .invest-tab .on  a{color:#fff;}
+        </style>
+        <div class="personal-main">
+            <div class="personal-investnote">
+                <h3><i>投资记录</i></h3>
+                <div class="investnote-money">
+                    <span>
+                        <b class="fb">累计投资</b><br/>
+                        <i th:text="${#numbers.formatDecimal((tm == null ? 0.00: tm),1,2) }"></i> 元
+                    </span>
+                    <span>
+                        <b class="fb">累计收益</b><br/>
+                        <i class="c-pink" th:text="${#numbers.formatDecimal((gm == null ? 0.00: gm),1,2) }"></i> 元
+                    </span>
+                    <span>
+                        <b class="fb">待收本金</b><br/>
+                        <i th:text="${#numbers.formatDecimal((tm == null && thm == null ? 0.00 : (tm - thm)),1,2) }"></i> 元
+                    </span>
+                    <span class="none">
+                        <b class="fb">待收收益</b><br/>
+                        <i th:text="${#numbers.formatDecimal((gtm == null && gm == null ? '0.00' : (gtm - gm)),1,2)}"></i> 元
+                    </span>
+                </div>
+                <form id="form" name="form" method="post" action="">
+                    <script type="text/javascript">
+                        clearPage = function() {
+                            PrimeFaces.ab({source:'form:j_idt82',formId:'form',process:'form:j_idt82',params:arguments[0]});
+                        }
+                    </script>
+                    <span id="form:dataTable">
           <div class="invest-tab">
-            <ul>
+            <!--<ul>
               <li class="on"><span><a href="#" title="投标中">已投标 </a> </span> </li>
               <li><a href="#" title="回款中">回款中 </a> </li>
               <li><a href="#" title="已结束">已结束 </a> </li>
-            </ul>
+            </ul>-->
           </div>
-          
-          <c:if test="${record.size() <= 0 }"><!-- 无投资记录 -->
+
+          <div th:if="${list.size() <= 0 }"><!-- 无投资记录 -->
           	<div style=" width:760px;height:200px;padding-top:100px; text-align:center;color:#d4d4d4; font-size:16px;">
-			<img src="<%=basePath %>/images/nondata.png" width="60" height="60" />
+			<img src="/images/nondata.png" width="60" height="60" />
 			<br/><br/>
 			暂无投资记录</div>
-          </c:if>
-          
-          <c:if test="${record.size() > 0 }">
-          <div class="investnote-list">
-            <div class="investnote-contitle"> 
-            	<span class="investnote-w1 fb">标题</span> 
-            	<span class="investnote-w2 fb">类型</span> 
-            	<span class="investnote-w3 fb">利率</span> 
-            	<span class="investnote-hbw4 fb">截止期限</span> 
-            	<span class="investnote-hbw5 fb">还款方式</span> 
-            	<span class="investnote-hbw6 fb">金额</span> 
-            </div>
-            <ul>
-            	<c:forEach items="${record }" var="recordList" varStatus="idnum">
-              		<li>
-              			<span class="investnote-w1" title="${recordList.title }">${ft:substring(recordList.title,0,8) }</span>
-              			<span class="investnote-w2">
-              				<c:forEach items="${biao }" var="b">
-              					<c:if test="${recordList.type == b.id }">${b.bname }</c:if>
-<%--               					<c:if test="${recordList.type != b.id }">${recordList.instyle }</c:if>
- --%>              				</c:forEach>
-              			</span>
-              			<span class="investnote-w3">${recordList.interest }%</span>
-              			<span class="investnote-hbw4">${recordList.replaydate }</span> <%-- <fmt:formatDate value="${recordList.replaydate }" pattern="yyyy-MM-dd HH:mm:ss"/> --%>
-              			<span class="investnote-hbw5">${recordList.profitmodel }</span> 
-              			<span class="investnote-hbw6">${recordList.inmoney }</span> 
-              		</li>
-				</c:forEach>
-					<li>
-					
-						<div align="center"> <span class="page"><a href="investRecord.do?currpage=1" onclick=""><!-- javascript:void(0); -->首页</a><a href="investRecord.do?currpage=${currpages-1 }" onclick="">上一页</a><c:forEach begin="1" end="${totalpage > 6 ? 6 : totalpage}" step="1" varStatus="bindex">&nbsp;<a class="curr" onclick="" href="investRecord.do?currpage=${bindex.count }">${bindex.count }</a></c:forEach><a href="investRecord.do?currpage=${currpages+1 }" onclick="">下一页</a><a href="investRecord.do?currpage=${totalpage }" onclick="">尾页</a>&nbsp;<em>共${totalpage }页&nbsp;</em></span></div>
-					
-					</li>
-            </ul>
           </div>
-          </c:if>
-          
+
+          <div th:if="${list.size() > 0 }">
+              <div class="investnote-list">
+                    <div class="investnote-contitle">
+            	        <span class="investnote-w1 fb">标题</span>
+            	        <span class="investnote-w2 fb">类型</span>
+            	        <span class="investnote-w3 fb">利率</span>
+            	        <span class="investnote-hbw4 fb">截止期限</span>
+            	        <span class="investnote-hbw5 fb">还款方式</span>
+            	        <span class="investnote-hbw6 fb">金额</span>
+                    </div>
+
+                    <ul>
+                        <li th:each="investinfo,recordListStat:${list}">
+                            <span class="investnote-w1" th:title="${investinfo.title}" th:text="${#strings.abbreviate(investinfo.title,8)}"></span>
+                            <span class="investnote-w2" th:text="${investinfo.instyle}">
+              				    <!--<div th:each="b,bStat:${biao}">
+                                    <span th:if="${investinfo.type == b.id }" th:text="${b.bname}"></span>
+                                    &lt;!&ndash;<div th:switch="${investinfo.type == b.id }">
+                                        <span th:case="true" th:text="${b.bname}"></span>
+                                        <span th:case="false" th:text="${investinfo.instyle}"></span>
+                                    </div>&ndash;&gt;
+             		            </div>-->
+              			    </span>
+                            <span class="investnote-w3" th:text="${investinfo.interest!=null?investinfo.interest:'' }"></span>
+              			    <span class="investnote-hbw4" th:text="${investinfo.replaydate }"></span>
+              			    <span class="investnote-hbw5"th:text="${investinfo.profitmodel }"></span>
+              			    <span class="investnote-hbw6"th:text="${investinfo.inmoney }"></span>
+                        </li>
+                        <li>
+                            <div align="center">
+                                <span class="page">
+                                    <a th:href="@{'/investinfo/toInvestcordPage?current=1'}" onclick=""><!-- javascript:void(0); -->首页</a>
+                                    <a th:href="@{/investinfo/toInvestcordPage(current=${page.current-1 })}" onclick="">上一页</a>
+                                    <span th:each="p:${#numbers.sequence(1,page.pages)}">&nbsp;
+                                        <a class="curr" onclick="" th:href="@{/investinfo/toInvestcordPage(current=${p })}">[[${p }]]</a>
+                                    </span>
+                                    <a th:href="@{/investinfo/toInvestcordPage(current=${page.current+1 })}" onclick="">下一页</a>
+                                    <a th:href="@{/investinfo/toInvestcordPage(current=${page.pages })}" onclick="">尾页</a>&nbsp;
+                                    <em>当前[[${page.current}]]页 / 共[[${page.pages }]]页&nbsp;</em>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+              </div>
+          </div>
+
           </span>
-        </form>
-      </div>
+                </form>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
     </div>
-    <div class="clear">
-    </div>
-  </div>
 </div>
+
 <!--网站底部-->
 <div th:include="common/footer :: footer" id="footer" class="ft"></div>
 </body>
 </html>
-

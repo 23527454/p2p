@@ -57,16 +57,7 @@ public class GrzxController {
      */
     @RequestMapping(value = "/grzx_tzjl")
     public String grzx_tzjl(){
-        return "accounts";
-    }
-
-    /**
-     * 个人中心——系统消息
-     * @return
-     */
-    @RequestMapping(value = "/grzx_xtxx")
-    public String grzx_xtxx(){
-        return "messages";
+        return "redirect:/investinfo/toInvestcordPage";
     }
 
     /**

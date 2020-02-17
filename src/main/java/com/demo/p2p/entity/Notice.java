@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -47,7 +48,7 @@ private static final long serialVersionUID=1L;
     /**
      * 公告最后修改时间,发布时间
      */
-    private LocalDateTime noticelasttime;
+    private Date noticelasttime;
 
     /**
      * 公告最后发布人,操作人.
@@ -95,11 +96,11 @@ private static final long serialVersionUID=1L;
         this.noticecontent = noticecontent;
     }
 
-    public LocalDateTime getNoticelasttime() {
+    public Date getNoticelasttime() {
         return noticelasttime;
     }
 
-    public void setNoticelasttime(LocalDateTime noticelasttime) {
+    public void setNoticelasttime(Date noticelasttime) {
         this.noticelasttime = noticelasttime;
     }
 

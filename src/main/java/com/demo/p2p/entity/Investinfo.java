@@ -1,10 +1,12 @@
 package com.demo.p2p.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -84,6 +86,38 @@ private static final long serialVersionUID=1L;
      */
     private Integer markstatus;
 
+
+    //自定义属性
+    @TableField(exist = false)
+    private String title;
+    @TableField(exist = false)
+    private String type;
+    @TableField(exist = false)
+    private String uname;
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Integer getInid() {
         return inid;
