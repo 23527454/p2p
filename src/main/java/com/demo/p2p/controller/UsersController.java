@@ -402,5 +402,17 @@ public class UsersController {
         }
         return map;
     }
+
+    @RequestMapping(value = "/do_insertucertnum")
+    @ResponseBody
+    public void do_insertucertnum(String uname, String ucardid,String umailbox,String uphonenumber,String upwd_zd,String id,HttpSession session) throws IOException {
+        Users users = (Users)session.getAttribute("loginUser");
+        users.setUname(uname);
+        users.setUcardid(ucardid);
+        users.setUphonenumber(uphonenumber);
+        users.setUpwdZd(upwd_zd);
+        users.setUmailbox(umailbox);
+        usersService.insertucertnum(users);
+    }
 }
 
