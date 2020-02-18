@@ -28,9 +28,8 @@
 				<ul class="clearfix mt20 new-list"  th:each="pp:${list}">
 					<li class="clearfix list-item">
 						<a href="" th:href="@{'/notice/xiangqing?ids='+${pp.noticeid}}">
-
 							<td th:text="${pp.noticetitle}"></td></a>
-						<span th:text="${pp.noticelasttime}">
+						<span th:text="${#dates.format(pp.noticelasttime,'yyyy-MM-dd')}">
 							</span>
 					</li>
 				</ul>

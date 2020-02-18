@@ -1,6 +1,5 @@
+<!DOCTYPE html >
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>p2p网贷平台</title>
@@ -159,23 +158,20 @@ $(document).ready(function(){
 								<span class="pxtxx-type ml46">消息标题</span> 
 								<span class="pxtxx-con">内容</span> 
 								<span class="pxxtx-date">执行时间</span>
+								</span>
 							</div>
 							<div id="pxtxx-list" class="pxtxx-list">
-								<ul>
-									
-										<c:forEach items="${list}" var="dope">
+								<ul th:each="dope:${list}">
 											<li>
 												<span class="pxtxx-check">
 													<input type="checkbox" name="chkSon" id="chkSon" style="margin-left: -740px;" value="${dope.did}"/>
 												</span>
-												<span class="pxtxx-type ml46">${dope.dtitle}</span>
-												<span class="pxtxx-con">${dope.details}</span>
-												<span class="pxxtx-date"><fmt:formatDate
-														value="${dope.dtime}" pattern="yyyy-MM-dd"></fmt:formatDate>
+
+												<span class="pxtxx-type ml46" th:if="${dope.dprimkey} eq '1'">公司公告</span>
+												<span class="pxtxx-con" th:text="${dope.details}"></span>
+												<span class="pxxtx-date" th:text="${#dates.format(dope.dtime,'yyyy-MM-dd')}">
 												</span>
 											</li>
-										</c:forEach>
-									
 								</ul>
 							</div>
 						</span>
@@ -186,9 +182,7 @@ $(document).ready(function(){
 					<div class="btn-group" align="center">
 						共${totalPage}/${currpage}页    <a href=" queryDope.do?currpage=1">首页</a>
 						<a href=" queryDope.do?currpage=${currpage-1}">上一页</a>
-							<c:forEach begin="1" end="${totalPage}" var="i">
-	  							<font size="1"><a href=" queryDope.do?currpage=${i}">${i}</a></font>
-	  						</c:forEach>
+
 						<a href=" queryDope.do?currpage=${currpage-1}">下一页</a>
 						     <a href=" queryDope.do?currpage=${totalPage}">末页</a>
 					</div>

@@ -179,7 +179,7 @@
 			</div>
 		</div>
 		<a class="more"
-			href="${pageContext.request.contextPath}/notice/notlist.do?ids=1">更多</a>
+			href="/sys/gsjj">更多</a>
 	</div>
 	<div class="ipubs">
 		<span class="o1">累计投资金额:
@@ -624,15 +624,16 @@
 				<div class="mod mod-notice mrt20">
 					<div class="hd">
 						<h3>网站公告</h3>
-						<a href="/p2p/notice/notlist.do?ids=1" class="fn-right">更多&gt;</a>
+						<a href="/sys/gsjj" class="fn-right">更多&gt;</a>
 					</div>
 					<div class="bd">
 						<div class="article-list clearfix">
 							<ul th:each="mapp:${list2}">
 								<li><a
-										href="" th:href="@{'/notice/xiangqing?ids='+${mapp.noticeid}}"><td th:text="${mapp.noticetitle}"></td>
+										href="" th:href="@{'/notice/xiangqing?ids='+${mapp.noticeid}}">
+									<td th:text="${mapp.noticetitle}"></td>
 									&nbsp;&nbsp;&nbsp;
-									<td th:text="${mapp.getNoticelasttime()}"/>
+									<td th:text="${#dates.format(mapp.noticelasttime,'yyyy-MM-dd')}"></td>
 								</a>
 								</li>
 							</ul>
