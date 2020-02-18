@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -39,7 +38,7 @@ private static final long serialVersionUID=1L;
     /**
      * 投资金额
      */
-    private BigDecimal inmoney;
+    private double inmoney;
 
     /**
      * 投资状态 0 收益中的投资  1已完成的投资
@@ -69,12 +68,12 @@ private static final long serialVersionUID=1L;
     /**
      * 盈利金额
      */
-    private BigDecimal profitmoney;
+    private double profitmoney;
 
     /**
      * 投资时间，可为空
      */
-    private LocalDateTime indate;
+    private Date indate;
 
     /**
      * 还款期限单位天
@@ -143,11 +142,11 @@ private static final long serialVersionUID=1L;
         this.brrowid = brrowid;
     }
 
-    public BigDecimal getInmoney() {
+    public double getInmoney() {
         return inmoney;
     }
 
-    public void setInmoney(BigDecimal inmoney) {
+    public void setInmoney(double inmoney) {
         this.inmoney = inmoney;
     }
 
@@ -191,19 +190,19 @@ private static final long serialVersionUID=1L;
         this.profitmodel = profitmodel;
     }
 
-    public BigDecimal getProfitmoney() {
+    public double getProfitmoney() {
         return profitmoney;
     }
 
-    public void setProfitmoney(BigDecimal profitmoney) {
+    public void setProfitmoney(double profitmoney) {
         this.profitmoney = profitmoney;
     }
 
-    public LocalDateTime getIndate() {
+    public Date getIndate() {
         return indate;
     }
 
-    public void setIndate(LocalDateTime indate) {
+    public void setIndate(Date indate) {
         this.indate = indate;
     }
 

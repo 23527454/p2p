@@ -32,4 +32,32 @@
         id, pmoney, pincome, ptime, ptype, pway, pcount, progress, psaveway, prateben, ppublishtime, pname, ptotalmoney, prange, puse, pstate, picture, pproduce, pdesc, psafe, did
     </sql>
 
+    <select id="findProductPage" parameterType="java.util.HashMap" resultType="com.demo.p2p.entity.Product">
+        select * from product p where 1 = 1
+        <if test="map.biaoId != null and map.biaoId !=''">
+            and p.ptype = #{map.biaoId}
+        </if>
+        <if test="map.endR != null and map.endR != ''">
+            and p.pincome between #{map.startR} and #{map.endR}
+        </if>
+        <if test="map.endR == null || map.endR == ''">
+            and p.pincome >= #{map.startR}
+        </if>
+        <if test="map.endT != null and map.endT != ''">
+            and (select to_days(pcount) - to_days(ptime) from product pt where
+            pt.id = p.id) between #{map.startT} and #{map.endT}
+        </if>
+        <if test="map.endT == null || map.endT==''">
+            and (select to_days(pr.pcount) - to_days(pr.ptime) from
+            product pr where
+            pr.id = p.id) >= #{map.startT}
+        </if>
+        <if test="map.pway != null and map.pway != ''">
+            and p.pway = #{map.pway}
+        </if>
+        <if test="map.pway == null || map.pway == ''">
+            and 1=1
+        </if>
+    </select>
+
 </mapper>

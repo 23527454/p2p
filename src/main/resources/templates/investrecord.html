@@ -37,11 +37,11 @@
                     </span>
                     <span>
                         <b class="fb">待收本金</b><br/>
-                        <i th:text="${#numbers.formatDecimal((tm == null && thm == null ? 0.00 : (tm - thm)),1,2) }"></i> 元
+                        <i th:text="${#numbers.formatDecimal((tm == null && thm == null)? 0.00 : (tm - thm),1,2) }"></i> 元
                     </span>
                     <span class="none">
                         <b class="fb">待收收益</b><br/>
-                        <i th:text="${#numbers.formatDecimal((gtm == null && gm == null ? '0.00' : (gtm - gm)),1,2)}"></i> 元
+                        <i th:text="${#numbers.formatDecimal((gtm == null && gm == null)?0.00:(gtm - gm),1,2)}"></i> 元
                     </span>
                 </div>
                 <form id="form" name="form" method="post" action="">

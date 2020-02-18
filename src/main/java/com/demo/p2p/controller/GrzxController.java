@@ -1,10 +1,7 @@
 package com.demo.p2p.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.demo.p2p.entity.Certification;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.CertificationService;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,14 +24,13 @@ public class GrzxController {
      */
     @RequestMapping(value = "/grzx")
     public String zhanghu(HttpServletRequest request){
-        System.out.println("================================zhanghu");
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("loginUser");
 
-        Certification certification = null;
+        /*Certification certification = null;
         certification = certificationService.getcserial(user.getUid().toString());
-        request.setAttribute("certification",certification);
-        System.out.println(certification.getCbalance());
+        System.out.println("++++++++++++++++++++++++++"+certification.getCbalance());
+        request.setAttribute("certification",certification);*/
         return "personalpage";
     }
 
