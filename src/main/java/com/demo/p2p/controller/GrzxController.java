@@ -1,5 +1,6 @@
 package com.demo.p2p.controller;
 
+import com.demo.p2p.entity.Certification;
 import com.demo.p2p.entity.Investinfo;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.CertificationService;
@@ -33,10 +34,7 @@ public class GrzxController {
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("loginUser");
 
-        /*Certification certification = null;
-        certification = certificationService.getcserial(user.getUid().toString());
-        System.out.println("++++++++++++++++++++++++++"+certification.getCbalance());
-        request.setAttribute("certification",certification);*/
+
         List<Investinfo> list  = investinfoService.getFive(user.getUid());
         request.setAttribute("investlist",list);
 
