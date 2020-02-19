@@ -1,7 +1,9 @@
 package com.demo.p2p.controller;
 
+import com.demo.p2p.entity.Investinfo;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.CertificationService;
+import com.demo.p2p.service.InvestinfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -18,6 +21,9 @@ public class GrzxController {
 
     @Resource
     private CertificationService certificationService;
+
+    @Resource
+    private InvestinfoService investinfoService;
     /**
      * 个人中心——账户总览/首页
      * @return
@@ -31,6 +37,9 @@ public class GrzxController {
         certification = certificationService.getcserial(user.getUid().toString());
         System.out.println("++++++++++++++++++++++++++"+certification.getCbalance());
         request.setAttribute("certification",certification);*/
+        List<Investinfo> list  = investinfoService.getFive(user.getUid());
+        request.setAttribute("investlist",list);
+
         return "personalpage";
     }
 
