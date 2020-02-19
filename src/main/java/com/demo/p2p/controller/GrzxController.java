@@ -39,6 +39,10 @@ public class GrzxController {
         out.close();
     }
 
+    /**
+     * 进入账户总览
+     * @return
+     */
     @RequestMapping(value = "/grzx_zhzl")
     public String grzx_zhzl(){
         return "personalpage";

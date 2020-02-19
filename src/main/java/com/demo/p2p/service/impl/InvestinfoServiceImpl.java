@@ -8,6 +8,7 @@ import com.demo.p2p.service.InvestinfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,6 +48,11 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     @Override
     public Integer getMoney(Integer uid) {
         return investinfoMapper.getMoney(uid);
+    }
+
+    @Override
+    public List<Investinfo> getFive(int userid) {
+        return investinfoMapper.getFive(userid);
     }
 
 }
