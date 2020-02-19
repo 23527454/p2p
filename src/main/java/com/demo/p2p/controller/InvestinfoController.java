@@ -83,5 +83,11 @@ public class InvestinfoController {
         model.addAttribute("thm", allM);
         return "investrecord";
     }
+
+    @RequestMapping(value = "/toInvestInfo")
+    public String toInvestInfo(String bmid,Model model){
+
+        return "redirect:/sys/index";
+    }
 }
 

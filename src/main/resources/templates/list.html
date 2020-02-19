@@ -1,29 +1,26 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>p2p网贷平台</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<link href="/css/common.css" rel="stylesheet" />
-<link href="/css/index.css" rel="stylesheet" type="text/css" />
-<link href="/css/detail.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="/script/jquery.min.js"></script>
-<script type="text/javascript" src="/script/common.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>p2p网贷平台</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link href="/css/common.css" rel="stylesheet" />
+  <link href="/css/index.css" rel="stylesheet" type="text/css" />
+  <link href="/css/detail.css" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" src="/script/jquery.min.js"></script>
+  <script type="text/javascript" src="/script/common.js"></script>
 </head>
 
 <script type="text/javascript">
-	function test(index){
-		alert(index);
+    function test(index){
+        alert(index);
 //		var l = "${list}"; //一定要用双引号才能获取到
-	}
-	
-	function Select(items,param){//按条件查询
-		
-		window.location.href=" invest/investSel.do?item="+items+"&param="+param;
-	}
+    }
+
+    function Select(items,param){//按条件查询
+        window.location.href="/invest/investSel?item="+items+"&param="+param;
+    }
 
 </script>
 
@@ -38,22 +35,22 @@
       <div class="filter-item">
         <div class="hd">
           <h3>筛选投资项目</h3>
-<!--           <label>
-          <input id="filterMulti" name="multiple_choice" type="checkbox"/>
-          多选</label> -->
+          <!--           <label>
+                    <input id="filterMulti" name="multiple_choice" type="checkbox"/>
+                    多选</label> -->
         </div>
         <div class="bd">
           <dl>
             <dt>项目类型</dt>
             <dd>
               <ul id="items">
-                <li class="n1"><a id="post_type_" th:class="${biaoId == null}?'':'active'"style="cursor:pointer;'" onclick="Select('itemtype','-1');">不限</a></li>
-                	<li th:each="${biao}" class="n2"><a th:if=""th:class="${biaoId==biao.id }?'':'active'" style="cursor:pointer;" th:onclick="'javascript:Select(itemtype,\''+${user.id}+'\');'"  th:id="post_type_car${biao.id}" th:value="${biao.bname }"></a></li>
-                <li class="n1"><a id="post_type_" class="active" style="cursor:pointer;" onclick="Select('itemtype','-1');">不限</a></li>
-                 <li class="n2"><a href="javascript:url('post_type','car');" id="post_type_car">多金保</a></li>
-                <li class="n3"><a href="javascript:url('post_type','house');" id="post_type_house">普金包</a></li>
-                <li class="n4"><a href="javascript:url('post_type','bridge');" id="post_type_bridge">恒金宝</a></li>
-                <li class="n5"><a href="javascript:url('post_type','worth');" id="post_type_worth">债权贷</a> </li>
+                <li class="n1">
+                  <a id="post_type_" th:class="${session.biaoId == null?'active':''}" style="cursor:pointer;'" onclick="Select('itemtype','-1');">不限</a>
+                </li>
+                <li th:each="biao,biaoStat:${biaos}" class="n2">
+                  <!--biao.id是数值类型，session.biaoId是字符类型，需要判断的话要进行转换-->
+                  <a th:id="'post_type_car'+${biao.id}" th:class="${session.biaoId == biao.id+''?'active':''}" style="cursor:pointer;" th:onclick="Select('itemtype',[[${biao.id}]]);" th:text="${biao.bname}"></a>
+                </li>
               </ul>
             </dd>
           </dl>
@@ -61,16 +58,11 @@
             <dt>年利率</dt>
             <dd>
               <ul id="rate">
-                <li class="n1"><a th:class="${startR=='-1' || startR == null}?'':'active'" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
-                <li class="n2"><a th:class="${startR=='0' }?'':'active'" id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
-                <li class="n3"><a th:class="${startR=='12' }?'':'active'" id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
-                <li class="n4"><a th:class="${startR=='14' }?'':'active'" id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>
-                <li class="n5"><a th:class="${startR=='16' }?'':'active'" id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>
-                <li class="n1"><a class="active" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
-                <li class="n2"><a  id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
-                <li class="n3"><a  id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
-                <li class="n4"><a  id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>
-                <li class="n5"><a  id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>
+                <li class="n1"><a th:class="${session.startR=='-1' || session.startR == null?'active':''}" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
+                <li class="n2"><a th:class="${session.startR=='0'?'active':''}" id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
+                <li class="n3"><a th:class="${session.startR=='12'?'active':''}" id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
+                <li class="n4"><a th:class="${session.startR=='14'?'active':''}" id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>
+                <li class="n5"><a th:class="${session.startR=='16'?'active':''}" id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>
               </ul>
             </dd>
           </dl>
@@ -78,12 +70,12 @@
             <dt>期限</dt>
             <dd>
               <ul id="timel">
-                <li class="n1"><a class="active" id="spread_month_0" style="cursor:pointer" onclick="Select('timelimit','-1');">不限</a> </li>
-                <li class="n2"><a   id="spread_month_1" style="cursor:pointer" onclick="Select('timelimit','1');">1月以下</a> </li>
-                <li class="n3"><a  id="spread_month_2" style="cursor:pointer" onclick="Select('timelimit','2');">1-3月</a> </li>
-                <li class="n4"><a  id="spread_month_3" style="cursor:pointer" onclick="Select('timelimit','3');">3-6月</a> </li>
-                <li class="n5"><a  id="spread_month_4" style="cursor:pointer" onclick="Select('timelimit','4');">6-12月</a> </li>
-                <li class="n6"><a  id="spread_month_5" style="cursor:pointer" onclick="Select('timelimit','5');">12月及以上</a> </li>
+                <li class="n1"><a th:class="${session.startT=='-1' || session.startT == null?'active':''}" id="spread_month_0" style="cursor:pointer" onclick="Select('timelimit','-1');">不限</a> </li>
+                <li class="n2"><a th:class="${session.startT=='0'?'active':''}" id="spread_month_1" style="cursor:pointer" onclick="Select('timelimit','1');">1月以下</a> </li>
+                <li class="n3"><a th:class="${session.startT=='30'?'active':''}" id="spread_month_2" style="cursor:pointer" onclick="Select('timelimit','2');">1-3月</a> </li>
+                <li class="n4"><a th:class="${session.startT=='90'?'active':''}" id="spread_month_3" style="cursor:pointer" onclick="Select('timelimit','3');">3-6月</a> </li>
+                <li class="n5"><a th:class="${session.startT=='180'?'active':''}" id="spread_month_4" style="cursor:pointer" onclick="Select('timelimit','4');">6-12月</a> </li>
+                <li class="n6"><a th:class="${session.startT=='360'?'active':''}" id="spread_month_5" style="cursor:pointer" onclick="Select('timelimit','5');">12月及以上</a> </li>
               </ul>
             </dd>
           </dl>
@@ -91,10 +83,10 @@
             <dt>还款方式</dt>
             <dd>
               <ul id="rway">
-                <li class="n1"><a class="active" id="repay_style_0" style="cursor:pointer" onclick="Select('repayway','-1');">不限</a></li>
-                <li class="n2"><a  id="repay_style_1" style="cursor:pointer" onclick="Select('repayway','1');">到期还本付息</a> </li>
-                <li class="n2"><a  id="repay_style_2" style="cursor:pointer" onclick="Select('repayway','2');">按月付息,到期还本</a> </li>
-                <li class="n2"><a  id="repay_style_3" style="cursor:pointer" onclick="Select('repayway','3');">等额本息</a> </li>
+                <li class="n1"><a th:class="${session.pway=='' || session.pway == null?'active':''}" id="repay_style_0" style="cursor:pointer" onclick="Select('repayway','-1');">不限</a></li>
+                <li class="n2"><a th:class="${session.pway=='到期还本付息'?'active':''}" id="repay_style_1" style="cursor:pointer" onclick="Select('repayway','1');">到期还本付息</a> </li>
+                <li class="n2"><a th:class="${session.pway=='按月付息,到期还本'?'active':''}" id="repay_style_2" style="cursor:pointer" onclick="Select('repayway','2');">按月付息,到期还本</a> </li>
+                <li class="n2"><a th:class="${session.pway=='等额本息'?'active':''}" id="repay_style_3" style="cursor:pointer" onclick="Select('repayway','3');">等额本息</a> </li>
               </ul>
             </dd>
           </dl>
@@ -114,12 +106,6 @@
   <div class="invest-list mrt30 clearfix">
     <div class="hd">
       <h3>投资列表</h3>
-<!--       <div class="count">
-        <ul>
-          <li class="line">散标投资交易金额&nbsp;&nbsp;<span class="f20 bold">73.54亿元</span></li>
-          <li>累计赚取收益&nbsp;&nbsp;<span class="f20 bold">2.52亿元</span></li>
-        </ul>
-      </div>
     </div>
     <div class="bd">
       <div class="invest-table clearfix">
@@ -134,122 +120,60 @@
             <li class="col-120-t">操作</li>
           </ul>
         </div>
-        ----------投资列表------------
-        <c:forEach items="${list }" var="invest" varStatus="status">
-<!--         <form action="investInfo.do" method="post" onsubmit="">investAdd.do
-        <input type="hidden" name="" value=""/> 控制层要获取一个对象要不就在页面上用form表单传要不传一个条件到控制层查出来-->
-        <div class="item">
+        <!------------投资列表-------------->
+        <!--         <form action="investInfo.do" method="post" onsubmit="">investAdd.do
+                <input type="hidden" name="" value=""/> 控制层要获取一个对象要不就在页面上用form表单传要不传一个条件到控制层查出来-->
+        <div class="item" th:each="invest,investStat:${list}">
           <ul>
             <li class="col-330 col-t">
-            	<a th:href="@{'investInfo_do?bmid='+${invest.id}}" target="_blank">
-            		<i class="icon icon-xin" title="类型"></i>
-            	</a>
-            	<a class="f18" th:href="@{'investInfo_do?bmid='+${invest.id}}" th:title="${invest.pname }" target="_blank" th:value="${ft:substring(invest.pname,0,8) }">
-            	</a>
+              <a th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}" target="_blank">
+                <i class="icon icon-xin" title="类型"></i>
+              </a>
+              <a class="f18" th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}" th:title="${invest.pname }" target="_blank" th:text="${#strings.abbreviate(invest.pname,8)}">
+              </a>
             </li>
             <li class="col-180"><span class="f20 c-333" th:text="${invest.ptotalmoney }"></span>元</li>
-            <li class="col-110 relative"><span class="f20 c-orange" th:text="${invest.pincome }%<%-- ${invest.brate } --%>"></span></li>
-            <li class="col-150"><span class="f20 c-333" th:text="${invest.pcount }"></span></li>
-            <li class="col-150"><spam th:text="${invest.pway }"></spam></li>
+            <li class="col-110 relative"><span class="f20 c-orange" th:text="${invest.pincome+'%'}"></span></li>
+            <li class="col-150"><span class="f20 c-333" th:text="${#dates.format(invest.pcount,'yyyy-MM-dd')}"></span></li>
+            <li class="col-150" th:text="${invest.pway }"></li>
             <li class="col-120">
               <div class="circle">
                 <div class="left progress-bar">
-                  <div class="progress-bgPic progress-bfb">
-                    <div class="show-bar"> <span class="f20 c-333" th:value="${(invest.pmoney/invest.ptotalmoney)*(100)}"></span> % </div><!-- pattern="#.00"表示规定必须保存2位小数，如果最多保存2位，使用 pattern="#.##" -->
+                  <div th:class="'progress-bgPic progress-bfb'+${#numbers.formatDecimal(((invest.pmoney/invest.ptotalmoney)*10<1?1:(invest.pmoney/invest.ptotalmoney)*10),1,0)}">
+                    <div class="show-bar" th:text="${#numbers.formatDecimal((invest.pmoney/invest.ptotalmoney)*(100),1,1)+'%'}">  </div>
                   </div>
                 </div>
               </div>
             </li>
             <li class="col-120-2">
-            	<a class="ui-btn btn-gray"  th:href="@{'investInfo_do?bmid='+${invest.id}}">
-                  <span th:if="${invest.pstate=='1' }">立即投标</span>>
-                  <span th:if="${invest.pstate=='2' }">募集完成</span>>
-                  <span th:if="${invest.pstate=='3' }">还款中</span>>
-            	</a>
-            </li><!-- -------onClick=test('${invest }');-----------investInfo.do"?bm=${invest }"-----------------------------注意此处是按照表中的字符串类型字段来判断的 -->
+              <a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}">
+                <span th:if="${invest.pstate=='1' }">立即投标</span>
+                <span th:if="${invest.pstate=='2' }">募集完成</span>
+                <span th:if="${invest.pstate=='3' }">还款中</span>
+              </a>
+            </li>
 
           </ul>
         </div>
-         <!-- </form>  -->
-        </c:forEach>
-
-          <div class="item">
-            <ul>
-              <li class="col-330 col-t">
-                <a th:href="@{'investInfo_do?bmid='+${invest.id}}" target="_blank">
-                  <i class="icon icon-xin" title="类型"></i>
-                </a>
-                  <a class="f18" th:href="@{'investInfo_do?bmid='+${invest.id}}" th:title="${invest.pname }" target="_blank"> 唐先生宝马318
-                </a>
-              </li>
-              <li class="col-180"><span class="f20 c-333">30000</span>元</li>
-              <li class="col-110 relative"><span class="f20 c-orange">70</span></li>
-              <li class="col-150"><span class="f20 c-333">2017-03-13 </span></li>
-              <li class="col-150">按月付息,到期还本</li>
-              <li class="col-120">
-                <div class="circle">
-                  <div class="left progress-bar">
-                    <div class="progress-bgPic progress-bfb7">
-                    <div class="show-bar">75% </div><!-- pattern="#.00"表示规定必须保存2位小数，如果最多保存2位，使用 pattern="#.##" -->
-                  </div>
-                </div>
-          </div>
-          </li>
-          <li class="col-120-2">
-            <a class="ui-btn btn-gray"  th:href="@{'investInfo_do?bmid='+${invest.id}}">
-              <span th:if="${invest.pstate=='1' }">立即投标</span>
-              <span th:if="${invest.pstate=='2' }">募集完成</span>>
-              <span th:if="${invest.pstate=='3' }">还款中</span>>
-              还款中
-            </a>
-          </li>
-
-              <li class="col-330 col-t">
-                <a th:href="@{'investInfo_do?bmid='+${invest.id}}" target="_blank">
-                  <i class="icon icon-xin" title="类型"></i>
-                </a>
-                <a class="f18" th:href="@{'investInfo_do?bmid='+${invest.id}}" th:title="${invest.pname}" target="_blank"> 唐先生宝马318
-                </a>
-              </li>
-              <li class="col-180"><span class="f20 c-333">30000</span>元</li>
-              <li class="col-110 relative"><span class="f20 c-orange">70</span></li>
-              <li class="col-150"><span class="f20 c-333">2017-03-13 </span></li>
-              <li class="col-150">按月付息,到期还本</li>
-              <li class="col-120">
-                <div class="circle">
-                  <div class="left progress-bar">
-                    <div class="progress-bgPic progress-bfb7">
-                      <div class="show-bar">75% </div><!-- pattern="#.00"表示规定必须保存2位小数，如果最多保存2位，使用 pattern="#.##" -->
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="col-120-2">
-                <a class="ui-btn btn-gray"  th:href="@{'investInfo_do?bmid='+${invest.id}}">
-                  <!--<c:if test="${invest.pstate=='1' }">立即投标</c:if>-->
-                  <!--<c:if test="${invest.pstate=='2' }">募集完成</c:if>-->
-                  <!--<c:if test="${invest.pstate=='3' }">还款中</c:if>-->
-                  还款中
-                </a>
-              </li>
-          </ul>
-      </div>
+        <!-- </form>  -->
         <!------------投资列表-------------->
       </div>
-      <div class="pagination clearfix mrt30"> <span class="page">
-        <a href="investSel_do?currpage=1" onclick=""><!-- javascript:void(0); -->首页</a>
-        <a th:href="@{'investSel_do?currpage='+${currpages-1 }}" onclick="">上一页</a>
-        <!--<c:forEach begin="1" end="${totalpage }" step="1" varStatus="bindex">&nbsp;<a class="curr" onclick="" href="investSel.do?currpage=${bindex.count }">1</a></c:forEach>-->
-        <a class="curr" onclick="" th:href="@{'investSel_do?currpage='+${bindex.count}}">1</a>
-        <a class="curr" onclick="" th:href="@{'investSel_do?currpage='+${bindex.count}}">2</a>
-        <a th:href="@{'investSel_do?currpage='+${currpages+1 }}" onclick="">下一页</a>
-        <a th:href="@{'investSel_do?currpage='+${totalpage }}" onclick="">尾页</a>&nbsp;<em>共1页&nbsp;</em></span>
+
+      <!--分页-->
+      <div class="pagination clearfix mrt30">
+      <span class="page">
+        <a th:href="@{/invest/investSel(current=1)}" onclick=""><!-- javascript:void(0); -->首页</a>
+        <a th:href="@{/invest/investSel(current=${page.current-1 })}" onclick="">上一页</a>
+        <a th:each="p:${#numbers.sequence(1,page.pages)}" th:class="${page.current==p?'curr':''}" onclick="" th:href="@{/invest/investSel(current=${p })}" >[[${p}]]</a>
+        <a th:href="@{/invest/investSel(current=${page.current+1 })}" onclick="">下一页</a>
+        <a th:href="@{/invest/investSel(current=${page.pages })}" onclick="">尾页</a>&nbsp;
+        <em>共[[${page.total}]]条信息，当前[[${page.current}]]页 / 共[[${page.pages }]]页&nbsp;</em>
+      </span>
       </div>
     </div>
   </div>
-</div>
-<!--网站底部-->
-<div th:include="common/footer :: footer" id="footer" class="ft"></div>
+  <!--网站底部-->
+  <div th:include="common/footer :: footer" id="footer" class="ft"></div>
 
 </body>
 </html>
