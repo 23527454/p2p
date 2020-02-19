@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,14 +25,22 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx")
-    public String zhanghu(HttpServletRequest request){
-        HttpSession session = request.getSession();
+    public void zhanghu(HttpServletResponse response,HttpSession session)throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
         Users user = (Users) session.getAttribute("loginUser");
+        if(user==null){
+            out.print("<script>alert('请先登录！');window.location.href='/sys/login';</script>");
+        }else{
+            out.print("<script>window.location.href='/grzx/grzx_zhzl';</script>");
+        }
+        out.flush();
+        out.close();
+    }
 
-        /*Certification certification = null;
-        certification = certificationService.getcserial(user.getUid().toString());
-        System.out.println("++++++++++++++++++++++++++"+certification.getCbalance());
-        request.setAttribute("certification",certification);*/
+    @RequestMapping(value = "/grzx_zhzl")
+    public String grzx_zhzl(){
         return "personalpage";
     }
 

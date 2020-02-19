@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,12 +30,12 @@
   			$("#bt").click(function(){
   				var user = document.getElementById("uid").value;
   				var password = document.getElementById("pwd").value;
-  				$.post("/employee/login",{"uid":user,"pwd":password},function(date){
+  				$.post("/backend/login",{"uid":user,"pwd":password},function(date){
   					if(date=="0"){
   						alert("登陆失败！");
   					}else{
   						alert("登陆成功！");
-						//location.href="menu_S.do";
+						location.href="/backend/index";
   					}
   				});
   			});

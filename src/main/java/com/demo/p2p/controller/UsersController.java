@@ -11,10 +11,8 @@ import com.demo.p2p.service.ApproveitemService;
 import com.demo.p2p.service.CertifrecordService;
 import com.demo.p2p.service.LogService;
 import com.demo.p2p.service.UsersService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -26,13 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -371,18 +367,21 @@ public class UsersController {
      * 登录
      * @param username
      * @param password
-     * @param request
+     * @param session
      * @return
      */
     @PostMapping(value = "/login")
     @ResponseBody
-    public Object login(String username, String password, HttpServletRequest request){
-
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+    public Object login(String username, String password, HttpSession session){
         Map<String,Object> map=new HashMap<String,Object>();
         try {
-            SecurityUtils.getSubject().login(token);//调用Shiro认证
-            Users users = (Users) SecurityUtils.getSubject().getPrincipal();
+            QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("unickname",username).eq("upassword",password);
+            Users users=usersService.login(queryWrapper);
+            if (users == null) {
+                throw new UnknownAccountException("登录失败！");
+            }
+            session.setAttribute("loginUser",users);
             Log log=new Log(users.getUnickname(),"进入系统","进入系统",new Date());
             logService.addLog(log);
             users.setUfldate(new Date());
