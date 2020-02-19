@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>p2p网贷平台</title>
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <link href="/css/common.css" rel="stylesheet" />
-  <link href="/css/index.css" rel="stylesheet" type="text/css" />
-  <link href="/css/detail.css" rel="stylesheet" type="text/css"/>
-  <script type="text/javascript" src="/script/jquery.min.js"></script>
-  <script type="text/javascript" src="/script/common.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>p2p网贷平台</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="/css/common.css" rel="stylesheet" />
+<link href="/css/index.css" rel="stylesheet" type="text/css" />
+<link href="/css/detail.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/script/jquery.min.js"></script>
+<script type="text/javascript" src="/script/common.js"></script>
 </head>
 
 <script type="text/javascript">
-    function test(index){
-        alert(index);
+	function test(index){
+		alert(index);
 //		var l = "${list}"; //一定要用双引号才能获取到
-    }
-
-    function Select(items,param){//按条件查询
-        window.location.href="/invest/investSel?item="+items+"&param="+param;
-    }
+	}
+	
+	function Select(items,param){//按条件查询
+		window.location.href="/invest/investSel?item="+items+"&param="+param;
+	}
 
 </script>
 
@@ -35,9 +35,9 @@
       <div class="filter-item">
         <div class="hd">
           <h3>筛选投资项目</h3>
-          <!--           <label>
-                    <input id="filterMulti" name="multiple_choice" type="checkbox"/>
-                    多选</label> -->
+<!--           <label>
+          <input id="filterMulti" name="multiple_choice" type="checkbox"/>
+          多选</label> -->
         </div>
         <div class="bd">
           <dl>
@@ -121,46 +121,46 @@
           </ul>
         </div>
         <!------------投资列表-------------->
-        <!--         <form action="investInfo.do" method="post" onsubmit="">investAdd.do
-                <input type="hidden" name="" value=""/> 控制层要获取一个对象要不就在页面上用form表单传要不传一个条件到控制层查出来-->
-        <div class="item" th:each="invest,investStat:${list}">
-          <ul>
-            <li class="col-330 col-t">
-              <a th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}" target="_blank">
-                <i class="icon icon-xin" title="类型"></i>
-              </a>
-              <a class="f18" th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}" th:title="${invest.pname }" target="_blank" th:text="${#strings.abbreviate(invest.pname,8)}">
-              </a>
-            </li>
-            <li class="col-180"><span class="f20 c-333" th:text="${invest.ptotalmoney }"></span>元</li>
-            <li class="col-110 relative"><span class="f20 c-orange" th:text="${invest.pincome+'%'}"></span></li>
-            <li class="col-150"><span class="f20 c-333" th:text="${#dates.format(invest.pcount,'yyyy-MM-dd')}"></span></li>
-            <li class="col-150" th:text="${invest.pway }"></li>
-            <li class="col-120">
-              <div class="circle">
-                <div class="left progress-bar">
-                  <div th:class="'progress-bgPic progress-bfb'+${#numbers.formatDecimal(((invest.pmoney/invest.ptotalmoney)*10<1?1:(invest.pmoney/invest.ptotalmoney)*10),1,0)}">
+          <!--         <form action="investInfo.do" method="post" onsubmit="">investAdd.do
+                  <input type="hidden" name="" value=""/> 控制层要获取一个对象要不就在页面上用form表单传要不传一个条件到控制层查出来-->
+          <div class="item" th:each="invest,investStat:${list}">
+            <ul>
+              <li class="col-330 col-t">
+                <a th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}" target="_blank">
+                  <i class="icon icon-xin" title="类型"></i>
+                </a>
+                <a class="f18" th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}" th:title="${invest.pname }" target="_blank" th:text="${#strings.abbreviate(invest.pname,8)}">
+                </a>
+              </li>
+              <li class="col-180"><span class="f20 c-333" th:text="${invest.ptotalmoney }"></span>元</li>
+              <li class="col-110 relative"><span class="f20 c-orange" th:text="${invest.pincome+'%'}"></span></li>
+              <li class="col-150"><span class="f20 c-333" th:text="${#dates.format(invest.pcount,'yyyy-MM-dd')}"></span></li>
+              <li class="col-150" th:text="${invest.pway }"></li>
+              <li class="col-120">
+                <div class="circle">
+                  <div class="left progress-bar">
+                    <div th:class="'progress-bgPic progress-bfb'+${#numbers.formatDecimal(((invest.pmoney/invest.ptotalmoney)*10<1?1:(invest.pmoney/invest.ptotalmoney)*10),1,0)}">
                     <div class="show-bar" th:text="${#numbers.formatDecimal((invest.pmoney/invest.ptotalmoney)*(100),1,1)+'%'}">  </div>
                   </div>
                 </div>
-              </div>
-            </li>
-            <li class="col-120-2">
-              <a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}">
-                <span th:if="${invest.pstate=='1' }">立即投标</span>
-                <span th:if="${invest.pstate=='2' }">募集完成</span>
-                <span th:if="${invest.pstate=='3' }">还款中</span>
-              </a>
-            </li>
+          </div>
+          </li>
+          <li class="col-120-2">
+            <a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${invest.id })}">
+              <span th:if="${invest.pstate=='1' }">立即投标</span>
+              <span th:if="${invest.pstate=='2' }">募集完成</span>
+              <span th:if="${invest.pstate=='3' }">还款中</span>
+            </a>
+          </li>
 
           </ul>
-        </div>
-        <!-- </form>  -->
-        <!------------投资列表-------------->
       </div>
+      <!-- </form>  -->
+      <!------------投资列表-------------->
+    </div>
 
-      <!--分页-->
-      <div class="pagination clearfix mrt30">
+    <!--分页-->
+    <div class="pagination clearfix mrt30">
       <span class="page">
         <a th:href="@{/invest/investSel(current=1)}" onclick=""><!-- javascript:void(0); -->首页</a>
         <a th:href="@{/invest/investSel(current=${page.current-1 })}" onclick="">上一页</a>
@@ -169,11 +169,11 @@
         <a th:href="@{/invest/investSel(current=${page.pages })}" onclick="">尾页</a>&nbsp;
         <em>共[[${page.total}]]条信息，当前[[${page.current}]]页 / 共[[${page.pages }]]页&nbsp;</em>
       </span>
-      </div>
     </div>
   </div>
-  <!--网站底部-->
-  <div th:include="common/footer :: footer" id="footer" class="ft"></div>
+</div>
+<!--网站底部-->
+<div th:include="common/footer :: footer" id="footer" class="ft"></div>
 
 </body>
 </html>

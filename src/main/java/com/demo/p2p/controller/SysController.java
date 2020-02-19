@@ -287,7 +287,7 @@ public class SysController {
      */
     @RequestMapping(value = "/touzi")
     public String touzi(){
-        return "list";
+        return "redirect:/invest/investSel";
     }
 
     /**

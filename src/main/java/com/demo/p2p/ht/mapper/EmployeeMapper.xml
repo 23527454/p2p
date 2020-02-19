@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.EmployeeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Employee">
+        <id column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="esex" property="esex" />
+        <result column="ebirth" property="ebirth" />
+        <result column="eidcard" property="eidcard" />
+        <result column="ephone" property="ephone" />
+        <result column="email" property="email" />
+        <result column="edeptno" property="edeptno" />
+        <result column="epostno" property="epostno" />
+        <result column="etime" property="etime" />
+        <result column="estatus" property="estatus" />
+        <result column="epassword" property="epassword" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        eid, ename, esex, ebirth, eidcard, ephone, email, edeptno, epostno, etime, estatus, epassword
+    </sql>
+
+</mapper>

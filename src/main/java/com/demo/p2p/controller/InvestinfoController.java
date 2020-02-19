@@ -37,21 +37,32 @@ public class InvestinfoController {
     @Resource
     private BiaoService biaoService;
 
+    /**
+     * 获取信息进入投资记录页面
+     * @param current
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/toInvestcordPage")
     public String toInvestcordPage(Integer current,Model model, HttpSession session){
+        //获取当前登录用户的信息
         Users users=(Users)session.getAttribute("loginUser");
+        //没有当前页参数就赋值1
         if(current==null){
             current=1;
         }
+        //分页查询
         Page<Investinfo> page=new Page<Investinfo>(current,5);
         page=investinfoService.selInvestinfoPageByUId(users.getUid(),page);
         model.addAttribute("page",page);
         List<Investinfo> list=page.getRecords();
+        //查询biao表所有数据
         List<Biao> biaos=biaoService.list();
         model.addAttribute("list",list);
         model.addAttribute("biao",biaos);
 
-        // 查出一些总额
+        // 查出总额信息，在mapper中编写动态sql
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("rowName", "inmoney");// 查出投资总额
         map.put("tableName", "investinfo");
@@ -60,13 +71,12 @@ public class InvestinfoController {
         }
 
         Double tm = investinfoService.sumMoney(map);//查出投资总额
+        tm=tm==null?0:tm;
         model.addAttribute("tm", tm);
-        System.out.println("tm" + tm);
         map.put("rowName", "profitmoney");
 
         Double gm = investinfoService.sumMoney(map);// 查出收益总额
         model.addAttribute("gm", gm);
-        System.out.println("gm" + gm);
 
         //查出退还的本金
         List<Trade> tmonery = tradeService.selectMoney(users.getUid());
@@ -75,7 +85,6 @@ public class InvestinfoController {
             String money = tr.getJymoney().replace("+", "");
             allM += Integer.parseInt(money);
         }
-        System.out.println("退还本金总额"+allM);
 
         //查出总收益
         Integer gtm = investinfoService.getMoney(users.getUid());

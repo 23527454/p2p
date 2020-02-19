@@ -2,8 +2,9 @@ package com.demo.p2p.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -26,7 +27,7 @@ private static final long serialVersionUID=1L;
     /**
      * 已募集总金额
      */
-    private Long pmoney;
+    private double pmoney;
 
     /**
      * 预期年化收益
@@ -36,7 +37,7 @@ private static final long serialVersionUID=1L;
     /**
      * 项目期限
      */
-    private LocalDateTime ptime;
+    private Date ptime;
 
     /**
      * 类型
@@ -51,7 +52,7 @@ private static final long serialVersionUID=1L;
     /**
      * 还款截止期限
      */
-    private LocalDateTime pcount;
+    private Date pcount;
 
     /**
      * 投资进度
@@ -71,7 +72,7 @@ private static final long serialVersionUID=1L;
     /**
      * 发布时间
      */
-    private LocalDateTime ppublishtime;
+    private Date ppublishtime;
 
     /**
      * 产品名称
@@ -81,7 +82,7 @@ private static final long serialVersionUID=1L;
     /**
      * 募集资金
      */
-    private Long ptotalmoney;
+    private double ptotalmoney;
 
     /**
      * 投资范围
@@ -132,11 +133,11 @@ private static final long serialVersionUID=1L;
         this.id = id;
     }
 
-    public Long getPmoney() {
+    public double getPmoney() {
         return pmoney;
     }
 
-    public void setPmoney(Long pmoney) {
+    public void setPmoney(double pmoney) {
         this.pmoney = pmoney;
     }
 
@@ -148,11 +149,11 @@ private static final long serialVersionUID=1L;
         this.pincome = pincome;
     }
 
-    public LocalDateTime getPtime() {
+    public Date getPtime() {
         return ptime;
     }
 
-    public void setPtime(LocalDateTime ptime) {
+    public void setPtime(Date ptime) {
         this.ptime = ptime;
     }
 
@@ -172,11 +173,11 @@ private static final long serialVersionUID=1L;
         this.pway = pway;
     }
 
-    public LocalDateTime getPcount() {
+    public Date getPcount() {
         return pcount;
     }
 
-    public void setPcount(LocalDateTime pcount) {
+    public void setPcount(Date pcount) {
         this.pcount = pcount;
     }
 
@@ -204,11 +205,11 @@ private static final long serialVersionUID=1L;
         this.prateben = prateben;
     }
 
-    public LocalDateTime getPpublishtime() {
+    public Date getPpublishtime() {
         return ppublishtime;
     }
 
-    public void setPpublishtime(LocalDateTime ppublishtime) {
+    public void setPpublishtime(Date ppublishtime) {
         this.ppublishtime = ppublishtime;
     }
 
@@ -220,11 +221,11 @@ private static final long serialVersionUID=1L;
         this.pname = pname;
     }
 
-    public Long getPtotalmoney() {
+    public double getPtotalmoney() {
         return ptotalmoney;
     }
 
-    public void setPtotalmoney(Long ptotalmoney) {
+    public void setPtotalmoney(double ptotalmoney) {
         this.ptotalmoney = ptotalmoney;
     }
 
