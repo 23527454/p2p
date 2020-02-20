@@ -1,17 +1,21 @@
 package com.demo.p2p.controller;
 
+import com.demo.p2p.entity.Investinfo;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.CertificationService;
+import com.demo.p2p.service.InvestinfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -20,12 +24,15 @@ public class GrzxController {
 
     @Resource
     private CertificationService certificationService;
+
+    @Resource
+    private InvestinfoService investinfoService;
     /**
      * 个人中心——账户总览/首页
      * @return
      */
     @RequestMapping(value = "/grzx")
-    public void zhanghu(HttpServletResponse response,HttpSession session)throws IOException {
+    public void zhanghu(HttpServletResponse response, HttpSession session)throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out=response.getWriter();
@@ -37,6 +44,8 @@ public class GrzxController {
         }
         out.flush();
         out.close();
+
+
     }
 
     /**
@@ -44,7 +53,16 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zhzl")
-    public String grzx_zhzl(){
+    public String grzx_zhzl( HttpServletRequest request, HttpSession session){
+        Users user = (Users) session.getAttribute("loginUser");
+        List<Investinfo> list = investinfoService.getFive(user.getUid());
+        System.out.println(list.size() + "集合数据一共就有这么多");
+        request.setAttribute("infolist",list);
+        for (Investinfo ls:list
+             ) {
+            System.out.println(ls.getPname()+ "/" + ls.getIndate() + "/" + ls.getInstatus() +"/" + ls.getInmoney()+"/" + ls.getProfitmoney());
+
+        }
         return "personalpage";
     }
 

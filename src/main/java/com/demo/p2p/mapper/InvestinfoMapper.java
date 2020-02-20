@@ -40,7 +40,7 @@ public interface InvestinfoMapper extends BaseMapper<Investinfo> {
     @Select("select sum(inmoney * (interest / 100)) from investinfo where userid = #{uid}")
     public Integer getMoney(Integer uid);
 
-    @Select("SELECT io.*,te.other FROM investinfo io,trade te \n" +
-            "WHERE io.brrowid = te.tID AND userid = #{userid} LIMIT 5")
+    @Select("SELECT io.*,pt.pname FROM investinfo io,product pt\n" +
+            "WHERE   pt.id = io.brrowid AND userid = #{userid} LIMIT 5")
     public List<Investinfo> getFive(@Param("userid")int userid);
 }
