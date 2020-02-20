@@ -3,7 +3,9 @@ package com.demo.p2p.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.p2p.entity.Investinfo;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,4 +46,11 @@ public interface InvestinfoService extends IService<Investinfo> {
     public Double sumMoney(Map<String, Object> map);
 
     public Integer getMoney(Integer uid);
+
+    /**
+     * 显示
+     * @param userid
+     * @return
+     */
+    public List<Investinfo> getFive(@Param("userid")int userid);
 }
