@@ -12,6 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author gzd
  * @since 2020-02-18
  */
-public interface EmployeeService extends IService<Employee> {
+public interface Bk_EmployeeService extends IService<Employee> {
     public Employee login(QueryWrapper<Employee> queryWrapper);
 }

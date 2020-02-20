@@ -2,8 +2,8 @@ package com.demo.p2p.ht.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.ht.entity.Employee;
-import com.demo.p2p.ht.mapper.EmployeeMapper;
-import com.demo.p2p.ht.service.EmployeeService;
+import com.demo.p2p.ht.mapper.Bk_EmployeeMapper;
+import com.demo.p2p.ht.service.Bk_EmployeeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ import javax.annotation.Resource;
  * @since 2020-02-18
  */
 @Service
-public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
+public class Bk_EmployeeServiceImpl extends ServiceImpl<Bk_EmployeeMapper, Employee> implements Bk_EmployeeService {
     @Resource
-    private EmployeeMapper employeeMapper;
+    private Bk_EmployeeMapper bk_employeeMapper;
 
     @Override
     public Employee login(QueryWrapper<Employee> queryWrapper) {
-        return employeeMapper.selectOne(queryWrapper);
+        return bk_employeeMapper.selectOne(queryWrapper);
     }
 }
