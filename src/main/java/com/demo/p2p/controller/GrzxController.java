@@ -1,5 +1,7 @@
 package com.demo.p2p.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.demo.p2p.entity.Certification;
 import com.demo.p2p.entity.Investinfo;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.CertificationService;
@@ -56,11 +58,15 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zhzl")
-    public String grzx_zhzl(HttpServletRequest request, HttpSession session) {
+    public String grzx_zhzl(HttpServletRequest request, HttpSession session,Model model) {
+        QueryWrapper<Certification> queryWrapper= new QueryWrapper<Certification>();
         Users user = (Users) session.getAttribute("loginUser");
+        queryWrapper.eq("cserial",user.getUid());
+        List<Certification> list1 = certificationService.getcserial(queryWrapper);
         List<Investinfo> list = investinfoService.getFive(user.getUid());
         System.out.println(list.size() + "集合数据一共就有这么多");
         request.setAttribute("infolist", list);
+        model.addAttribute("list",list1);
         return "personalpage";
     }
 

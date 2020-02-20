@@ -1,10 +1,14 @@
 package com.demo.p2p.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.entity.Certification;
 import com.demo.p2p.mapper.CertificationMapper;
 import com.demo.p2p.service.CertificationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -17,7 +21,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, Certification> implements CertificationService {
 
-
+@Resource
+public CertificationMapper certificationMapper;
     @Override
     public Integer saveCertification(Certification certification) {
         return this.baseMapper.insert(certification);
@@ -28,14 +33,15 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
         return this.baseMapper.certification();
     }
 
-    @Override
-    public Certification getcserial(String cserial) {
-        return this.baseMapper.getcserial(cserial);
-    }
 
     @Override
     public Certification selById(int id) {
         return this.baseMapper.selectById(id);
+    }
+
+    @Override
+    public List<Certification> getcserial(QueryWrapper<Certification> queryWrapper) {
+        return certificationMapper.selectList(queryWrapper);
     }
 
 }

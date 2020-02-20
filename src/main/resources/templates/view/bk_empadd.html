@@ -28,7 +28,7 @@
 <link href="/assets/css/style-responsive.css"
 	rel="stylesheet">
 <script type="text/javascript"
-	src="/assets/My97DatePickers/WdatePicker.js"></script>
+	src="/My97DatePickers/WdatePicker.js"></script>
 
 <script src="/assets/js/chart-master/Chart.js"></script>
 <style type="text/css">
@@ -55,7 +55,7 @@
 </head>
 
 <body>
-	<!-- 导航栏 --><jsp:include page="common.jsp"></jsp:include>
+	<!-- 导航栏 --><div th:replace="/view/common"></div>
 	<!--main content start-->
 	<section id="main-content">
 		<section class="wrapper">
@@ -63,66 +63,57 @@
 			<div class="showback">
 				<h4>
 					<i class="fa fa-angle-right"> <a
-						href=" employee/list.do">部门信息列表</a>
+						href="/bk/employee/list">部门信息列表</a>
 					</i> <i class="fa fa-angle-right"> <a
 						href="javascript:history.go(-1)">返回</a>
 					</i>
 				</h4>
-				<!-- 页面内容 -->
+				<!-- 页面内容/bk/employee/add -->
 
 				<form class="form-horizontal style-form" method="post"
-					action=" employee/add.do">
+					action="/bk/employee/add">
 
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">员工姓名：</label>
 						<div class="col-sm-2">
-							<input type="text" class="form-control" name="ename" id="ename"
-								onblur="return cename();">
+							<input type="text" class="form-control" name="ename" id="ename">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">员工性别：</label>
 						<div class="col-sm-2">
-							<input type="radio" value="1" name="esex" checked="checked">男
-							<input type="radio" value="0" name="esex">女
+							<input type="radio" value="男" name="esex" checked="checked">男
+							<input type="radio" value="女" name="esex">女
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">出生年月：</label>
 						<div class="col-sm-2">
-							<input type="text" class="form-control"
-								onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="ebirths"
-								id="ebirths">
+							<input type="text" class="form-control" name="ebirths" id="ebirths">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">员工身份证号码：</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control"
-								onblur="return ceidcard();" id="eidcard" name="eidcard">
+							<input type="text" class="form-control" id="eidcard" name="eidcard">
 						</div>
 						<label class="col-sm-2 col-sm-2 control-label">员工手机号：</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control" onblur="return cephone();"
-							id="ephone" name="ephone">
+							<input type="text" class="form-control" id="ephone" name="ephone">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">员工邮箱：</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" id="email" 
-							onblur="return cemail();" name="email">
+							<input type="text" class="form-control" id="email" name="email">
 						</div>
 						<label class="col-sm-2 col-sm-2 control-label">所属部门：</label>
 						<div class="col-sm-3">
 							<div id="parent">
 								<select name="edeptno">
-									<c:forEach items="${dept }" var="dept">
-										<option class="form-control" value="${dept.did }">${dept.dname
-											}</option>
-									</c:forEach>
+									<option th:each="dept,deptStat:${depts}" class="form-control" th:value="${dept.did }">[[${dept.dname}]]</option>
 								</select>
 							</div>
 						</div>
@@ -132,21 +123,17 @@
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">职位：</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" id="epostno"
-							 onblur="return  cepostno();"	name="epostno">
+							<input type="text" class="form-control" id="epostno" name="epostno">
 						</div>
 						<label class="col-sm-2 col-sm-2 control-label">入职时间：</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control"
-								onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="etimes"
-								name="etimes">
+							<input type="text" class="form-control" id="etimes" name="etimes">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">登录密码：</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control" id="epassword"
-								onblur="return cepassword();" name="epassword">
+							<input type="text" class="form-control" id="epassword" name="epassword">
 						</div>
 						<label class="col-sm-2 col-sm-2 control-label">显示</label> <span>
 							<button type="reset" class="col-sm-2 col-sm-2 control-label">重置</button>
@@ -205,7 +192,7 @@
 <script src="/assets/js/form-component.js"></script>
 
 <script type="text/javascript"
-	src=" My97DatePickers/WdatePicker.js"></script>
+	src="/My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
 
 	function cename() {
@@ -273,9 +260,7 @@
 			return false;
 		}
 	}
-	
-	
-	
+
 	function cephone(){
 		var ephone = document.getElementById("ephone").value;
 		var e =/^1(3|4|5|7|8)\d{9}$/;
@@ -332,121 +317,102 @@
 		var epassword = document.getElementById("epassword").value;
 		var eyear1 = ebirths.substring(0, 4);
 		var tyear1 = etimes.substring(0, 4);
-		if (ename == "" || ename == null) {
+        var k = new RegExp("^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$");
+        var eidcard = document.getElementById("eidcard").value;//身份证号码
+        var reg = /(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        var year = eidcard.substring(6, 10);//获取输入身份证的年限
+        var eyear = ebirths.substring(0, 4);
+        var month = eidcard.substring(10, 12);//获取输入身份证的月份
+        var emonth = ebirths.substring(5, 7);
+        var day = eidcard.substring(12, 14);//获取输入身份证的日子
+        var eday = ebirths.substring(8, 10);
+        var temp_date = new Date(year, parseFloat(month) - 1, parseFloat(day));
+        var e =/^1(3|4|5|7|8)\d{9}$/;
+        var ee =/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var timeyz=new RegExp("^(?:(?:([0-9]{4}(-|\/)(?:(?:0?[1,3-9]|1[0-2])(-|\/)(?:29|30)|((?:0?[13578]|1[02])(-|\/)31)))|([0-9]{4}(-|\/)(?:0?[1-9]|1[0-2])(-|\/)(?:0?[1-9]|1\\d|2[0-8]))|(((?:(\\d\\d(?:0[48]|[2468][048]|[13579][26]))|(?:0[48]00|[2468][048]00|[13579][26]00))(-|\/)0?2(-|\/)29))))$");
+        if (ename == "" || ename == null) {
 			alert("姓名不能为空");
 			return false;
-		}
-		var k = new RegExp("^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$");
-		if (k.test(ename) != true) {
+		}else if (k.test(ename) != true) {
 			alert("名字不能含有非法字符");
 			document.getElementById("ename").value = "";
 			return false;
-		}
-		if (ename.length > 11) {
-			alert("只能输出2-10个字符");
+		}else if (ename.length > 11 || ename.length < 2) {
+			alert("名字只能输入2-10个字符");
 			document.getElementById("ename").value = "";
 			return false;
-		}
-		if (ename.length < 2) {
-			alert("只能输出2-10个字符");
-			document.getElementById("ename").value = "";
-			return false;
-		}
-		if (ebirths == "" || ebirths == null) {
+		}else if (ebirths == "" || ebirths == null) {
 			alert("出生年月日不能为空");
 			return false;
-		}
-		if (eidcard == "" || eidcard == null) {
-			alert("身份证号码不能为空");
-			return false;
-		}
-		if (ebirths == "" || ebirths == null) {
+		}else if (timeyz.test(ebirths)==false) {
+            alert("出生年月日不正确");
+            return false;
+        }else if (eidcard == "" || eidcard == null) {
+            alert("身份证号码不能为空");
+            return false;
+        }else if (ebirths == "" || ebirths == null) {
 			alert("请先填写出生年月日");
 			return false;
-		}
-		var eidcard = document.getElementById("eidcard").value;//身份证号码
-		var reg = /(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-		if (reg.test(eidcard) == false) {
+		}else if (reg.test(eidcard) == false) {
 			alert("身份证输入有误，请核对");
 			return false;
-		}
-		var year = eidcard.substring(6, 10);//获取输入身份证的年限
-		var eyear = ebirths.substring(0, 4);
-		if (year != eyear) {
+		}else if (year != eyear) {
 			alert("身份证号码年份与出生年份不对,请核对后输入");
 			return false;
-		}
-		var month = eidcard.substring(10, 12);//获取输入身份证的月份 
-		var emonth = ebirths.substring(5, 7);
-		if (month != emonth) {
+		}else if (month != emonth) {
 			alert("身份证号码月份与出生月份不对,请核对后输入");
 			return false;
-		}
-		var day = eidcard.substring(12, 14);//获取输入身份证的日子
-		var eday = ebirths.substring(8, 10);
-		if (day != eday) {
+		}else if (day != eday) {
 			alert("身份证号码日份与出生日份不对,请核对后输入");
 			return false;
-		}
-		var temp_date = new Date(year, parseFloat(month) - 1, parseFloat(day));
-		if (temp_date.getFullYear() != parseFloat(year)
+		}else if (temp_date.getFullYear() != parseFloat(year)
 				|| temp_date.getMonth() != parseFloat(month) - 1
 				|| temp_date.getDate() != parseFloat(day)) {
 			alert("身份证号码有误");
 			return false;
-		}
-		if (ephone == "" || ephone == null) {
+		}else if (ephone == "" || ephone == null) {
 			alert("电话号码不能为空");
 			return false;
-		}
-		var e =/^1(3|4|5|7|8)\d{9}$/;
-		if(ephone.length!=11){
+		}else if(ephone.length!=11){
 			alert("请输入11位的手机号码");
 			return false; 
-		}
-		if(e.test(ephone)==false){
+		}else if(e.test(ephone)==false){
 			 alert("手机号码有误，请重填"); 
 		     return false; 
-		}
-		if (email == "" || email == null) {
+		}else if (email == "" || email == null) {
 			alert("邮箱不能为空");
 			return false;
-		}
-		var ee =/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-		if (ee.test(email)==false) {
+		}else if (ee.test(email)==false) {
 			alert("邮箱格式有误，请重填"); 
 		    return false; 
-		}
-		if (epostno == "" || epostno == null) {
+		}else if (epostno == "" || epostno == null) {
 			alert("请填写职位");
 			return false;
-		}
-		if(epostno.length>10){
+		}else if(epostno.length>10){
 			alert("部门过长，请重填密码（2-10）个汉字"); 
 		    return false;
-		}if(epostno.length<2){
+		}else if(epostno.length<2){
 			alert("部门过短，请重填密码（2-10）个汉字"); 
 		    return false;
-		}
-		if (etimes == "" || etimes == null) {
-			alert("请填写入职时间");
-			return false;
-		}
-		if((tyear1-eyear1)<16){
+		}else if (etimes == "" || etimes == null) {
+            alert("请填写入职时间");
+            return false;
+        }else if (timeyz.test(etimes)==false) {
+            alert("入职时间不正确");
+            return false;
+        }else if((tyear1-eyear1)<16){
 			alert("未满16周岁，不能雇佣此员工");
-		}
-		if (epassword == "" || epassword == null) {
+            return false;
+		}else if (epassword == "" || epassword == null) {
 			alert("请输入登入密码");
 			return false;
+		}else if(epassword.length>16 || epassword.length<6){
+            alert("密码过长，请重填密码（6-16）位");
+            return false;
+        }else{
+		    return true;
 		}
-		if(epassword.length>16){
-			alert("密码过长，请重填密码（6-16）位"); 
-		    return false; 
-		}
-		if(epassword.length<6){
-			alert("密码过段，请重填密码（6-16）位"); 
-		    return false; 
-		}
+		return false;
 	}
 
 	function jsdate() {

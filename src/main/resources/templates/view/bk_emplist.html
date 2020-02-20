@@ -38,7 +38,7 @@
 </head>
 
 <body>
-	<!-- 导航栏 --><jsp:include page="common.jsp"></jsp:include>
+	<!-- 导航栏 --><div th:replace="/view/common"></div>
 	<!--main content start-->
 	<section id="main-content">
 		<section class="wrapper">
@@ -48,15 +48,16 @@
 				<div class="content-panel">
 					<h4>
 						<i class="fa fa-angle-right">
-							<a href=" employee/list.do">员工列表</a>
+							<a href="/bk/employee/list=">员工列表</a>
 						</i> 
 						<i class="fa fa-angle-right">
-							<a  href=" employee/toadd.do">添加员工</a>
+							<a  href="/bk/employee/toadd">添加员工</a>
 						</i>
 						<br/><br/>
-						<form  action=" employee/selectlike.do" method="post">
+						<form id="myForm" action="/bk/employee/list" method="post">
 							用户名：
-						<input type="text" name="ename" maxlength="10" />
+						<input type="text" name="ename" th:value="${ename}" maxlength="10" />
+						<input type="hidden" name="current" id="current">
 						<input type="submit" value="查 找" class="btn btn-theme03"/>
 						</form>
 					</h4>
@@ -79,61 +80,45 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${emp }" var="emp" varStatus="status">
-							<tr >
-								<td>${status.index+1 }</td>
-								<td>${emp.ename }</td>
-								<td>${emp.esex }</td>
-								<td><fmt:formatDate value="${emp.ebirth }" 
-								pattern="yyyy-MM-dd"></fmt:formatDate>
+							<tr th:each="emp,empStat:${emps}">
+								<td th:text="${empStat.count}"></td>
+								<td th:text="${emp.ename }"></td>
+								<td th:text="${emp.esex }"></td>
+								<td th:text="${#dates.format(emp.ebirth,'yyyy-MM-dd')}"></td>
+								<td th:text="${emp.eidcard }"></td>
+								<td th:text="${emp.ephone }"></td>
+								<td th:text="${emp.email }"></td>
+								<td>
+									<span th:each="dept,deptStat:${depts}">
+										<span th:if="${emp.edeptno==dept.did}" th:text="${dept.dname }"></span>
+									</span>
 								</td>
-								<td>${emp.eidcard }</td>
-								<td>${emp.ephone }</td>
-								<td>${emp.email }</td>
-								<td>
-									<c:forEach items="${depts}" var="dept">
-										<c:if test="${emp.edeptno==dept.did}">
-											${dept.dname }
-										</c:if>
-									</c:forEach>
-								</td>
-								<td>${emp.epostno }</td>
-								<td>
-								<fmt:formatDate value="${emp.etime }" 
-								pattern="yyyy-MM-dd"></fmt:formatDate></td>
-								<td>
-									<a href=" employee/toupd.do?eid=${emp.eid}">编辑</a>
-									<c:if test="${emp.eid!=1}">
-									<a href=" employee/del.do?eid=${emp.eid}">删除</a>
-									</c:if>
+								<td th:text="${emp.epostno }"></td>
+								<td th:text="${#dates.format(emp.etime,'yyyy-MM-dd')}"><td>
+									<a th:href="@{/bk/employee/toupd(eid=${emp.eid})}">编辑</a>
+									<a th:if="${emp.eid!=1 && emp.eid!=session.loginEmp.eid}" th:href="@{/bk/employee/del(eid=${emp.eid})}">删除</a>
 								</td>
 							</tr>
-						</c:forEach>
-
 						</tbody>
 						<tbody>
 						<tbody>
-							<c:if test="${1==2 }">
-								<tr>
-								<td colspan="7" align="center">
-									<div class="btn-group" align="center">
-										<button type="button" class="btn btn-default">
-											<font><font>首页</font></font>
-											<tton>
-											<button type="button" class="btn btn-default">
-												<font><font>1</font></font>
-												<tton>
-												<button type="button" class="btn btn-default">
-													<font><font>2</font></font>
-													<tton>
-													<button type="button" class="btn btn-default">
-														<font><font>末页</font></font>
-														<tton>
-									</div>
-								</td>
-
-							</tr>
-							</c:if>
+					<tr>
+						<td colspan="7" align="center">
+							<div class="btn-group" align="center">
+								<a th:onclick="pageClick(1)" class="btn btn-default">首页</a>
+								<span th:each="p:${#numbers.sequence(1,page.pages)}">
+                                    <a th:onclick="pageClick([[${p}]])" class="btn btn-default" th:text="${p}"></a>
+								</span>
+								<a th:onclick="pageClick([[${page.pages}]])" class="btn btn-default">末页</a>
+							</div>
+						</td>
+					</tr>
+					<script>
+						function pageClick(data) {
+							$("#current").val(data);
+							$("#myForm").submit();
+                        }
+					</script>
 						</tbody>
 
 					</table>
@@ -186,9 +171,8 @@
 <script src="/assets/js/form-component.js"></script>
 
 <script type="text/javascript"
-	src=" My97DatePickers/WdatePicker.js"></script>
+	src="/My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
-
 
 	function jsdate() {
 		var b = document.getElementsByName("qj.endtime");
@@ -316,7 +300,6 @@
 
 <script>
 	//custom select box
-
 	$(function() {
 		$('select.styled').customSelect();
 	});

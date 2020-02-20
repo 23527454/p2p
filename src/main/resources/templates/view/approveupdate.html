@@ -49,7 +49,7 @@
   </head>
   
   <body>
-   <!-- 导航栏 --><jsp:include page="common.jsp"></jsp:include>		
+   <!-- 导航栏 --><div th:replace="/view/common"></div>
 	  <!--main content start-->
       <section id="main-content">
           <section class="wrapper"> 
@@ -128,7 +128,7 @@
 	
 	<script src="/assets/js/form-component.js"></script>
     
-    <script type="text/javascript" src=" My97DatePickers/WdatePicker.js"></script>
+    <script type="text/javascript" src="/My97DatePickers/WdatePicker.js"></script>
     <script type="text/javascript">
 	function jsdate() {
 		var b = document.getElementsByName("qj.endtime");
