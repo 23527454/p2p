@@ -1,7 +1,10 @@
 package com.demo.p2p.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.entity.Certification;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CertificationService extends IService<Certification> {
     public Integer certification();
-    public Certification getcserial(String cserial);
     public Certification selById(int id);
+    public List<Certification> getcserial(QueryWrapper<Certification> queryWrapper);
 }

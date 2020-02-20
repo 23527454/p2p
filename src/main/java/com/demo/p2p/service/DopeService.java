@@ -17,4 +17,5 @@ import java.util.List;
  */
 public interface DopeService extends IService<Dope> {
     public List<Dope> select();
+    public void batchDeletes(Integer did);
 }

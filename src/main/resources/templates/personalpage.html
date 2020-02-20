@@ -74,16 +74,18 @@
           <div class="user-info user-info1">
             <ul>
               <li>用户名<span>[[${session.loginUser.unickname}]]</span></li>
+              <li th:text="${session.loginUser.upwdZd}">
               <li>安全级别<span><i class="safe-level"><i class="onlevel" style="width:40%;" ></i></i></span> <a href="#">[低]</a></li>
-              <li>您还未开通第三方支付账户，请 <a class="pmain-log" href="#">立即开通</a>以确保您的正常使用和资金安全。 </li>
+              <li th:if="${#strings.isEmpty(session.loginUser.upwdZd)}">您还未开通第三方支付账户，请 <a class="pmain-log" href="/grzx/grzx_ktdsf">立即开通</a>以确保您的正常使用和资金安全。 </li>
+              <li th:if="${not #strings.isEmpty(session.loginUser.upwdZd)}">您已经开通第三方支付账户</li>
             </ul>
           </div>
         </div>
         <div class="pmain-money">
-          <ul>
-            <li class="none"><span><em>账户总额</em><i id="zhze" class="markicon"></i><span class="arrow-show1" style="display:none;">可用余额+待收本息</span><span class="icon-show1" style="display:none;"></span></span> <span class="truemoney"><i class="f26 fb">0.00</i> 元</span> </li>
-            <li><span><em>待收本息</em><i id="dsbx" class="markicon"></i><span class="arrow-show2" style="display:none;">未到账的投资项目的本金、利息总额</span><span class="icon-show2" style="display:none;"></span></span> <span class="truemoney"><i class="f26 fb">0.00 </i>元</span> </li>
-            <li><span><em>累计收益</em><i id="ljsy" class="markicon"></i><span class="arrow-show3" style="display: none;">已到账的投资收益+未到账的投资收益</span><span class="icon-show3" style="display: none;"></span></span> <span class="truemoney"><i class="f26 fb c-pink">0.00 </i> 元</span> </li>
+          <ul th:each="list:${list}">
+            <li class="none"><span><em>账户总额</em><i id="zhze" class="markicon"></i><span class="arrow-show1" style="display:none;">可用余额+待收本息</span><span class="icon-show1" style="display:none;"></span></span> <span class="truemoney"><i class="f26 fb" th:text="${list.ctotalmoney}"></i> 元</span> </li>
+            <li><span><em>待收本息</em><i id="dsbx" class="markicon"></i><span class="arrow-show2" style="display:none;">未到账的投资项目的本金、利息总额</span><span class="icon-show2" style="display:none;"></span></span> <span class="truemoney"><i class="f26 fb"th:text="${list.cdue}"></i>元</span> </li>
+            <li><span><em>累计收益</em><i id="ljsy" class="markicon"></i><span class="arrow-show3" style="display: none;">已到账的投资收益+未到账的投资收益</span><span class="icon-show3" style="display: none;"></span></span> <span class="truemoney"><i class="f26 fb c-pink" th:text="${list.cbalance}"></i> 元</span> </li>
           </ul>
         </div>
       </div>

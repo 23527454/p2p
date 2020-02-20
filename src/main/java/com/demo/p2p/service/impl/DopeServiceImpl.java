@@ -27,4 +27,9 @@ public class DopeServiceImpl extends ServiceImpl<DopeMapper, Dope> implements Do
     public List<Dope> select() {
         return dopeService.list();
     }
+
+    @Override
+    public void batchDeletes(Integer did) {
+        dopeMapper.deleteById(did);
+    }
 }
