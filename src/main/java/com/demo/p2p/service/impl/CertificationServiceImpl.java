@@ -19,6 +19,11 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
 
 
     @Override
+    public Integer saveCertification(Certification certification) {
+        return this.baseMapper.insert(certification);
+    }
+
+    @Override
     public Integer certification() {
         return this.baseMapper.certification();
     }

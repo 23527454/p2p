@@ -22,6 +22,9 @@ public interface UsersMapper extends BaseMapper<Users> {
     @Select("SELECT COUNT(unickname) FROM users")
     public Integer usersNameCount();
 
+    @Select("SELECT MAX(uid) FROM users")
+    public Integer getUserMaxId();
+
     @Update("update users set upassword=#{password} where uid=#{uid}")
     public Integer resetPwd(@Param("uid") Integer uid, @Param("password") String password);
 

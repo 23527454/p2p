@@ -3,14 +3,8 @@ package com.demo.p2p.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
-import com.demo.p2p.entity.Approveitem;
-import com.demo.p2p.entity.Certifrecord;
-import com.demo.p2p.entity.Log;
-import com.demo.p2p.entity.Users;
-import com.demo.p2p.service.ApproveitemService;
-import com.demo.p2p.service.CertifrecordService;
-import com.demo.p2p.service.LogService;
-import com.demo.p2p.service.UsersService;
+import com.demo.p2p.entity.*;
+import com.demo.p2p.service.*;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +45,8 @@ public class UsersController {
     private ApproveitemService approveitemService;
     @Resource
     private CertifrecordService certifrecordService;
+    @Resource
+    private CertificationService certificationService;
 
     //发邮件
     @Autowired
@@ -171,6 +167,7 @@ public class UsersController {
     @RequestMapping(value = "/do_register")
     public String paaaaa(String unickname,String upassword,String uphonenumber,String xm,String sfz,String yx,String tjr,String tjrxm){
         Users users = new Users();
+        Certification certification = new Certification();
         Date date = new Date();
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
@@ -185,6 +182,15 @@ public class UsersController {
         users.setUreferrername(tjrxm);
         users.setUregisterdate(date);
         usersService.saveUser(users);
+        certification.setCserial(usersService.getUserMaxId());
+        certification.setCbalance(0.0);
+        certification.setCdue(0.0);
+        certification.setCfreeze(0.0);
+        certification.setCpaid(0.0);
+        certification.setCtotalmoney(0.0);
+        certification.setCrealname(users.getUname());
+        certification.setCusername(users.getUnickname());
+        certificationService.saveCertification(certification);
         return "redirect:/sys/register1";
     }
 

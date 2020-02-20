@@ -30,6 +30,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
+    public int getUserMaxId() {
+        return usersMapper.getUserMaxId();
+    }
+
+    @Override
     public int insertucertnum(Users users) {
         return usersMapper.updateById(users);
     }

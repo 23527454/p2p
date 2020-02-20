@@ -22,7 +22,7 @@ private static final long serialVersionUID=1L;
     /**
      * 序号
      */
-    private String cserial;
+    private Integer cserial;
 
     /**
      * 用户名
@@ -37,27 +37,27 @@ private static final long serialVersionUID=1L;
     /**
      * 可用余额
      */
-    private String cbalance;
+    private Double cbalance;
 
     /**
      * 冻结金额 
      */
-    private String cfreeze;
+    private Double cfreeze;
 
     /**
      * 待收金额 
      */
-    private String cdue;
+    private Double cdue;
 
     /**
      * 待还金额
      */
-    private String cpaid;
+    private Double cpaid;
 
     /**
      * 总金额
      */
-    private String ctotalmoney;
+    private Double ctotalmoney;
 
 
     public Integer getId() {
@@ -68,11 +68,11 @@ private static final long serialVersionUID=1L;
         this.id = id;
     }
 
-    public String getCserial() {
+    public Integer getCserial() {
         return cserial;
     }
 
-    public void setCserial(String cserial) {
+    public void setCserial(Integer cserial) {
         this.cserial = cserial;
     }
 
@@ -92,43 +92,43 @@ private static final long serialVersionUID=1L;
         this.crealname = crealname;
     }
 
-    public String getCbalance() {
+    public Double getCbalance() {
         return cbalance;
     }
 
-    public void setCbalance(String cbalance) {
+    public void setCbalance(Double cbalance) {
         this.cbalance = cbalance;
     }
 
-    public String getCfreeze() {
+    public Double getCfreeze() {
         return cfreeze;
     }
 
-    public void setCfreeze(String cfreeze) {
+    public void setCfreeze(Double cfreeze) {
         this.cfreeze = cfreeze;
     }
 
-    public String getCdue() {
+    public Double getCdue() {
         return cdue;
     }
 
-    public void setCdue(String cdue) {
+    public void setCdue(Double cdue) {
         this.cdue = cdue;
     }
 
-    public String getCpaid() {
+    public Double getCpaid() {
         return cpaid;
     }
 
-    public void setCpaid(String cpaid) {
+    public void setCpaid(Double cpaid) {
         this.cpaid = cpaid;
     }
 
-    public String getCtotalmoney() {
+    public Double getCtotalmoney() {
         return ctotalmoney;
     }
 
-    public void setCtotalmoney(String ctotalmoney) {
+    public void setCtotalmoney(Double ctotalmoney) {
         this.ctotalmoney = ctotalmoney;
     }
 

@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-02-11
  */
 public interface CertificationService extends IService<Certification> {
+    public Integer saveCertification(Certification certification);
     public Integer certification();
     public Certification getcserial(String cserial);
     public Certification selById(int id);

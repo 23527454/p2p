@@ -15,6 +15,8 @@ import com.demo.p2p.entity.Users;
 public interface UsersService extends IService<Users> {
     public Users getUsersById(int id);
 
+    public int getUserMaxId();
+
     public int insertucertnum(Users users);
 
     public int saveUser(Users users);
