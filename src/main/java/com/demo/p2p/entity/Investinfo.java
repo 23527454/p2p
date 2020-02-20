@@ -15,7 +15,7 @@ import java.util.Date;
  * @author gzd
  * @since 2020-02-12
  */
-public class Investinfo extends Trade implements Serializable {
+public class Investinfo extends Product implements Serializable {
 
 private static final long serialVersionUID=1L;
 

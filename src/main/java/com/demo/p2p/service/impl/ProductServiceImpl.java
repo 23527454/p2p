@@ -27,4 +27,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public Page<Product> findProductPage(Map<String, Object> map,Page<Product> page) {
         return page.setRecords(productMapper.findProductPage(map,page));
     }
+
+    @Override
+    public Product selById(int id) {
+        return productMapper.selectById(id);
+    }
 }
