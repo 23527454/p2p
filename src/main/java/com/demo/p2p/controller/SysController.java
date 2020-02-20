@@ -305,7 +305,7 @@ public class SysController {
      */
     @RequestMapping(value = "/help")
     public String anquan(){
-        return "help";
+        return "helinforp";
     }
 
     /**
@@ -315,6 +315,15 @@ public class SysController {
     @RequestMapping(value = "/infor")
     public String infor() {
         return "infor";
+    }
+
+    /**
+     * 项目详情2
+     * @return
+     */
+    @RequestMapping(value = "/inforadd")
+    public String inforadd() {
+        return "inforadd";
     }
 
     /**

@@ -162,12 +162,6 @@ public class InvestinfoController {
         System.out.println("gm" + gm);
 
         List<Biao> biao = biaoService.selList();
-        for (Investinfo list : lists) {
-            System.out.println(list.getType());
-        }
-        for (Biao biao1 : biao) {
-            System.out.println("id："+biao1.getId() + "bname：" + biao1.getBname());
-        }
         session.setAttribute("biao", biao);
 
 
@@ -184,7 +178,8 @@ public class InvestinfoController {
                 / (24 * 60 * 60 * 1000);
         session.setAttribute("days", days);
         if (pro.getPstate().equals("1")) {
-            Users us = (Users) req.getSession().getAttribute("globaluser");
+            Users us = (Users) req.getSession().getAttribute("loginUser");
+            us.getUname();
             if (us != null) {
                 Certification certification = certificationService.selById(us.getUid());
                 String kymoney = certification.getCbalance();
