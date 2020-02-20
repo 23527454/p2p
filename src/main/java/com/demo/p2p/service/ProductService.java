@@ -16,4 +16,5 @@ import java.util.Map;
  */
 public interface ProductService extends IService<Product> {
     public Page<Product> findProductPage(Map<String,Object> map,Page<Product> page);
+    public Product selById(int id);
 }

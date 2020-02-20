@@ -13,4 +13,12 @@
         id, bname
     </sql>
 
+    <select id="selList" resultType="com.demo.p2p.entity.Biao">
+        select
+        *
+        from biao where 1=1
+        <if test="params.startPage !=null and params.pageSize !=''">
+            limit #{params.startPage},#{params.pageSize}
+        </if>
+    </select>
 </mapper>

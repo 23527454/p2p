@@ -34,4 +34,17 @@
         </if>
     </select>
 
+    <select id="selInfo" resultMap="BaseResultMap" parameterType="map">
+        SELECT a.*,p.pname title,p.ptype type FROM (SELECT inv.*,un.uname FROM InvestInfo inv LEFT JOIN users un ON inv.userid = un.uid) as a left join product p on a.brrowid =p.id
+        where 1 = 1
+        <if test="uid != null">
+            and userid = #{uid}
+        </if>
+        <if test="bid != null">
+            and brrowid = #{bid}
+        </if>
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
 </mapper>

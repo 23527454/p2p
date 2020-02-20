@@ -28,4 +28,9 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
         return this.baseMapper.getcserial(cserial);
     }
 
+    @Override
+    public Certification selById(int id) {
+        return this.baseMapper.selectById(id);
+    }
+
 }

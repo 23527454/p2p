@@ -67,7 +67,7 @@ private static final long serialVersionUID=1L;
     /**
      * 需还本息
      */
-    private String prateben;
+    private double prateben;
 
     /**
      * 发布时间
@@ -197,11 +197,11 @@ private static final long serialVersionUID=1L;
         this.psaveway = psaveway;
     }
 
-    public String getPrateben() {
+    public double getPrateben() {
         return prateben;
     }
 
-    public void setPrateben(String prateben) {
+    public void setPrateben(double prateben) {
         this.prateben = prateben;
     }
 
