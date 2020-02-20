@@ -53,7 +53,7 @@
 </head>
 
 <body>
-	<!-- 导航栏 --><jsp:include page="common.jsp"></jsp:include>
+	<!-- 导航栏 --><div th:replace="/view/common"></div>
 	<!--main content start-->
 	<section id="main-content">
 		<section class="wrapper">
@@ -61,7 +61,7 @@
 			<div class="showback">
 				<h4>
 					<i class="fa fa-angle-right"> <a
-						href=" dept/findall.do">部门列表</a>
+						href="/bk/dept/findall">部门列表</a>
 					</i> <i class="fa fa-angle-right"> <a
 						href="javascript:history.go(-1)">返回</a>
 					</i>
@@ -69,23 +69,20 @@
 				<!-- 页面内容 -->
 				
 				<form class="form-horizontal style-form" method="post"
-					action=" dept/upd.do">
+					action="/bk/dept/upd">
 
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">部门名称：</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="dname"
-								value="${dept.dname }" maxlength="10"> <input
-								type="hidden" name="did" value="${dept.did }">
+							<input type="text" class="form-control" name="dname" th:value="${dept.dname }" maxlength="10">
+							<input type="hidden" name="did" th:value="${dept.did }">
+							<input type="hidden" name="dstatus" th:value="${dept.dstatus }">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">部门描述：</label>
 						<div class="col-sm-10">
-							<textarea rows="3" cols="30" class="form-control"
-								name="describes" maxlength="50">
-						 	${dept.describes}
-									</textarea>
+							<textarea rows="3" cols="30" class="form-control" name="describes" maxlength="50">[[${dept.describes}]]</textarea>
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
@@ -139,7 +136,7 @@
 <script src="/assets/js/form-component.js"></script>
 
 <script type="text/javascript"
-	src=" My97DatePickers/WdatePicker.js"></script>
+	src="/My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
 	function jsdate() {
 		var b = document.getElementsByName("qj.endtime");

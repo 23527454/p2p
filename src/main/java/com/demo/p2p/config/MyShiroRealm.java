@@ -2,7 +2,7 @@ package com.demo.p2p.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.ht.entity.Employee;
-import com.demo.p2p.ht.service.EmployeeService;
+import com.demo.p2p.ht.service.Bk_EmployeeService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 public class MyShiroRealm extends AuthorizingRealm {
     @Resource
-    private EmployeeService employeeService;
+    private Bk_EmployeeService employeeService;
 
     /*主要是用来进行身份认证的，也就是说验证用户输入的账号和密码是否正确。AuthenticationToken*/
     @Override

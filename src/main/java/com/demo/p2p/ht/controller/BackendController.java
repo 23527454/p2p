@@ -1,7 +1,7 @@
 package com.demo.p2p.ht.controller;
 
 import com.demo.p2p.ht.entity.Employee;
-import com.demo.p2p.ht.service.EmployeeService;
+import com.demo.p2p.ht.service.Bk_EmployeeService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/backend")
 public class BackendController {
     @Resource
-    private EmployeeService employeeService;
+    private Bk_EmployeeService employeeService;
 
     @RequestMapping(value = "/index")
     public String index(){

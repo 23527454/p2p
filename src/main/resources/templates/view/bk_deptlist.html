@@ -38,7 +38,7 @@
 </head>
 
 <body>
-	<!-- 导航栏 --><jsp:include page="common.jsp"></jsp:include>
+	<!-- 导航栏 --><div th:replace="/view/common"></div>
 	<!--main content start-->
 	<section id="main-content">
 		<section class="wrapper">
@@ -47,10 +47,10 @@
 				<div class="content-panel">
 					<h4>
 						<i class="fa fa-angle-right">
-							<a href=" dept/findall.do">部门列表</a>
+							<a href="/bk/dept/findall">部门列表</a>
 						</i> 
 						<i class="fa fa-angle-right">
-							<a  href=" dept/toadd.do">添加部门</a>
+							<a  href="/bk/dept/toadd">添加部门</a>
 						</i>
 					</h4>
 					
@@ -66,43 +66,30 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${deptlist }" var="dept" varStatus="status">
-							<tr>
-								<td>${status.index+1 }</td>
-								<td>${dept.dname }</td>
-								<td>${dept.describes }</td>
+							<tr th:each="dept,deptStat:${deptlist}">
+								<td th:text="${deptStat.count}"></td>
+								<td th:text="${dept.dname}"></td>
+								<td th:text="${dept.describes}"></td>
+								<td th:text="${#dates.format(dept.dtime,'yyyy-MM-dd')}"></td>
 								<td>
-								<fmt:formatDate value="${dept.dtime }" 
-								pattern="yyyy-MM-dd"></fmt:formatDate></td>
-								<td>
-									<a href=" dept/toupd.do?did=${dept.did}">编辑</a>
-								 &nbsp;&nbsp;
-									<a href=" dept/del.do?did=${dept.did}">删除</a>
+									<a th:href="@{/bk/dept/toupd(did=${dept.did})}">编辑</a>
+									&nbsp;&nbsp;
+									<a th:href="@{/bk/dept/del(did=${dept.did})}">删除</a>
 								</td>
 							</tr>
-						</c:forEach>
-
 						</tbody>
 						<tbody>
 						<tbody>
 							<tr>
 								<td colspan="7" align="center">
 									<div class="btn-group" align="center">
-										<button type="button" class="btn btn-default">
-											<font><font>首页</font></font>
-											<tton>
-											<button type="button" class="btn btn-default">
-												<font><font>1</font></font>
-												<tton>
-												<button type="button" class="btn btn-default">
-													<font><font>2</font></font>
-													<tton>
-													<button type="button" class="btn btn-default">
-														<font><font>末页</font></font>
-														<tton>
+                                        <a th:href="@{/bk/dept/findall(current=1)}" class="btn btn-default">首页</a>
+                                        <span th:each="p:${#numbers.sequence(1,page.pages)}">
+                                            <a class="btn btn-default"  th:href="@{/bk/dept/findall(current=${p})}" th:text="${p}"></a>
+                                        </span>
+                                        <a th:href="@{/bk/dept/findall(current=${page.pages})}" class="btn btn-default">末页</a>
 									</div>
 								</td>
-
 							</tr>
 						</tbody>
 
@@ -156,7 +143,7 @@
 <script src="/assets/js/form-component.js"></script>
 
 <script type="text/javascript"
-	src=" My97DatePickers/WdatePicker.js"></script>
+	src="/My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
 	function jsdate() {
 		var b = document.getElementsByName("qj.endtime");

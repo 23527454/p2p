@@ -2,8 +2,9 @@ package com.demo.p2p.ht.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -36,7 +37,7 @@ private static final long serialVersionUID=1L;
     /**
      * 生日
      */
-    private LocalDateTime ebirth;
+    private Date ebirth;
 
     /**
      * 身份证号码
@@ -66,7 +67,7 @@ private static final long serialVersionUID=1L;
     /**
      * 入职时间
      */
-    private LocalDateTime etime;
+    private Date etime;
 
     /**
      * 状态1为在职 0为离职
@@ -103,11 +104,11 @@ private static final long serialVersionUID=1L;
         this.esex = esex;
     }
 
-    public LocalDateTime getEbirth() {
+    public Date getEbirth() {
         return ebirth;
     }
 
-    public void setEbirth(LocalDateTime ebirth) {
+    public void setEbirth(Date ebirth) {
         this.ebirth = ebirth;
     }
 
@@ -151,11 +152,11 @@ private static final long serialVersionUID=1L;
         this.epostno = epostno;
     }
 
-    public LocalDateTime getEtime() {
+    public Date getEtime() {
         return etime;
     }
 
-    public void setEtime(LocalDateTime etime) {
+    public void setEtime(Date etime) {
         this.etime = etime;
     }
 

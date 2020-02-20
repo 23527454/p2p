@@ -38,7 +38,7 @@
 </head>
 
 <body>
-	<!-- 导航栏 --><jsp:include page="common.jsp"></jsp:include>
+	<!-- 导航栏 --><div th:replace="/view/common"></div>
 	<!--main content start-->
 	<section id="main-content">
 		<section class="wrapper">
@@ -47,12 +47,13 @@
 				<div class="content-panel">
 					<h4>
 						<i class="fa fa-angle-right">
-							<a href=" users/list.do?currpage=1">用户列表</a>
+							<a href="/bk/users/list">用户列表</a>
 						</i> 
 						<br><br>
-						<form  action=" users/list.do" method="post">
+						<form id="myForm" action="/bk/users/list" method="post">
 							用户名：
-						<input type="text" name="unickname" maxlength="10" />
+						<input type="text" th:value="${unickname}" name="unickname" maxlength="10" />
+						<input type="hidden" name="current" id="current">
 						<input type="submit" value="查 找"  class="btn btn-theme03"/>
 						</form>
 						
@@ -61,8 +62,7 @@
 					<hr>
 					
 					<table class="table table-hover">
-					<c:if test="${stas!=1}">
-						<thead>
+						<thead th:if="${stas!=1}">
 							<tr>
 								<th>序号</th>
 								<th>用户名</th>
@@ -72,53 +72,38 @@
 								<th>注册时间</th>
 							</tr>
 						</thead>
-						<tbody>
-						<c:forEach items="${ulist }" var="user" varStatus="status">
-							<tr>
-								<td>${status.index+1 }</td>
-								<td>${user.unickname }</td>
-								<td>${user.uname }</td>
-								<td>${user.umailbox }</td>
-								<td>${user.uphonenumber }</td>
-								<td>
-								<fmt:formatDate value="${user.uregisterdate }" 
-								pattern="yyyy-MM-dd"></fmt:formatDate></td>
+						<tbody th:if="${stas!=1}">
+							<tr th:each="user,userStat:${ulist}">
+								<td th:text="${userStat.count}">${status.index+1 }</td>
+								<td th:text="${user.unickname }"></td>
+								<td th:text="${user.uname }"></td>
+								<td th:text="${user.umailbox }"></td>
+								<td th:text="${user.uphonenumber }"></td>
+								<td th:text="${#dates.format(user.uregisterdate,'yyyy-MM-dd')}"></td>
 							</tr>
-						</c:forEach>
-
 						</tbody>
-						<tbody>
-						<tbody>
-							<c:if test="${sta!=1}">
-								<tr>
+						<tbody th:if="${stas!=1}">
+							<tr>
 								<td colspan="7" align="center">
 									<div class="btn-group" align="center">
-										<button type="button" class="btn btn-default">
-										<font>共${totalpage}页</font>
-										<button type="button" class="btn btn-default">
-											<font><a href=" users/list.do?currpage=1">首页</a></font>
-											<tton>
-											<button type="button" class="btn btn-default">
-												
-												<font><a href=" users/list.do?currpage=${currpage-1}">上一页</a></font>
-												<tton>
-												<button type="button" class="btn btn-default">
-													<font><a href=" users/list.do?currpage=${currpage+1}">下一页</a></font>
-													<tton>
-													<button type="button" class="btn btn-default">
-														<font><a href=" users/list.do?currpage=${totalpage}">末页</a></font>
-														<tton>
-									</div>	
+										<a th:onclick="pageClick(1)" class="btn btn-default">首页</a>
+										<span th:each="p:${#numbers.sequence(1,page.pages)}">
+                                    	<a th:onclick="pageClick([[${p}]])" class="btn btn-default" th:text="${p}"></a>
+									</span>
+										<a th:onclick="pageClick([[${page.pages}]])" class="btn btn-default">末页</a>
+									</div>
 								</td>
 							</tr>
-							</c:if>
-							
-							
+							<script>
+                            	function pageClick(data) {
+                               	 	$("#current").val(data);
+                                	$("#myForm").submit();
+                            	}
+							</script>
 						</tbody>
-						</c:if>
-						<c:if test="${stas==1}">
-							<center><h3>暂无数据,<a href=" users/list.do?currpage=1">返回用户列表</a></h3></center>
-						</c:if>
+						<tbody th:if="${stas==1}">
+							<center><h3>暂无数据,<a href="/bk/users/list">返回用户列表</a></h3></center>
+						</tbody>
 					</table>
 				</div>
 				<!-- --/content-panel ---->
@@ -169,7 +154,7 @@
 <script src="/assets/js/form-component.js"></script>
 
 <script type="text/javascript"
-	src=" My97DatePickers/WdatePicker.js"></script>
+	src="/My97DatePickers/WdatePicker.js"></script>
 <script type="text/javascript">
 	function jsdate() {
 		var b = document.getElementsByName("qj.endtime");

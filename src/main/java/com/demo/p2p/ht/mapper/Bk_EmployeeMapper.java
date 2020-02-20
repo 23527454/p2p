@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author gzd
  * @since 2020-02-18
  */
-public interface EmployeeMapper extends BaseMapper<Employee> {
+public interface Bk_EmployeeMapper extends BaseMapper<Employee> {
 
 }

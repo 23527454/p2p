@@ -65,7 +65,7 @@ public class ShiroConfig {
 
         //设置会被拦截的请求
         filtrChainDefinitionMap.put("/backend/**", "perms[login]");
-        filtrChainDefinitionMap.put("/employee/**", "perms[login]");
+        filtrChainDefinitionMap.put("/bk/**", "perms[login]");
 
         //所有路径必须授权访问（登录），且必须放在最后
         filtrChainDefinitionMap.put("/", "user");
