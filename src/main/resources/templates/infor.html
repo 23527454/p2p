@@ -53,38 +53,37 @@
 <!--header--> <header th:include="common/header :: header"></header>
 <!--信息详细-->
 <div class="item-detail wrap">
-	<div class="breadcrumbs"> <a href="/sys/index">首页</a>&gt; <a href="#">散标投资列表</a>&gt; <span class="cur">项目详情</span> </div>
+	<div class="breadcrumbs"> <a href="index.html">首页</a>&gt; <a href="#">散标投资列表</a>&gt; <span class="cur">项目详情</span> </div>
 	<div class="item-detail-head clearfix" data-target="sideMenu">
 		<div class="hd"> <i class="icon icon-che" title="车易贷"></i>
-			<h2 th:text="${product.pname}"></h2>
+			<h2>赵女士长安福特福克斯汽车质押贷款4万元</h2>
 		</div>
 		<div class="bd clearfix">
 			<div class="data">
 				<ul>
 					<li> <span class="f16">借款金额</span><br>
-						<span class="f30 c-333" id="account" th:text="${borrowmoney.bmoney}"></span>元 </li>
-					<li class="relative"><span class="f16" th:text="${borrowmoney.brate}">年利率</span><br>
-						<span class="f30 c-orange">12.00% </span> </li>
+						<span class="f30 c-333" id="account" th:text="${session.Borrowmoney.ptotalmoney }"></span>元 </li>
+					<li class="relative"><span class="f16">年利率</span><br>
+						<span class="f30 c-orange" th:text="${session.Borrowmoney.pincome }">% </span> </li>
 					<li><span class="f16">借款期限</span><br>
-						<span class="f30 c-333"  th:text="${borrowmoney.btimelimit}"></span>个月 </li>
-					<li><span class="c-888">借款编号：</span><span th:text="${borrowmoney.btimelimit}"></span></li>
-					<li><span class="c-888">发标日期：</span><span th:text="${borrowmoney.btimelimit}"></span></li>
-					<li><span class="c-888">保障方式：</span><span th:text="${borrowmoney.btimelimit}"></span></li>
-					<li><span class="c-888">还款方式：</span><span th:text="${borrowmoney.btimelimit}"></span></li>
-					<li><span class="c-888">需还本息：</span><span th:text="${borrowmoney.btimelimit}"></span></li>
-					<li><span class="c-888">借款用途：</span><span th:text="${borrowmoney.btimelimit}"></span></li>
+						<span class="f30 c-333" th:text="${#dates.format(session.Borrowmoney.pcount, 'yyyy-MM-dd')}"></span></li>
+					<li><span class="c-888">借款编号：</span><span th:text="${session.Borrowmoney.id }"></span></li>
+					<li><span class="c-888">发标日期：</span><span th:text="${#dates.format(session.Borrowmoney.ppublishtime, 'yyyy-MM-dd')}"></span></li>
+					<li><span class="c-888">保障方式：</span><span th:text="${session.Borrowmoney.psaveway }"></span></li>
+					<li><span class="c-888">还款方式：</span><span th:text="${session.Borrowmoney.pway }"></span></li>
+					<li><span class="c-888">需还本息：</span><span th:text="${(session.Borrowmoney.prateben + session.Borrowmoney.ptotalmoney)}"></span>元</li>
+					<li><span class="c-888">借款用途：</span><span th:text="${session.Borrowmoney.puse }"></span></li>
 					<li class="colspan"> <span class="c-888 fl">投标进度：</span>
 						<div class="progress-bar fl"> <span style="width:100%"></span> </div>
-						<span class="c-green">100%</span> </li>
-					<li> <span class="c-888">投资范围：</span> <span id="account_range"> 50元~
-            不限 </span> </li>
+						<span class="c-green" th:text="${(session.Borrowmoney.pmoney/session.Borrowmoney.ptotalmoney)*(100)}+'%'"></span> </li>
+					<li> <span class="c-888">投资范围：</span> <span id="account_range" th:text="${session.Borrowmoney.prange }"></span> </li>
 				</ul>
 			</div>
 			<div class="mod-right mod-status">
 				<div class="inner">
-					<div class="text"> 待还本息：<span class="f24 c-333">40,400.00</span>元<br>
-						剩余期限：<span class="f24 c-333">29天</span> <br>
-						下期还款日： <span class="f20 c-333">2015-10-13</span> </div>
+					<div class="text"> 待还本息：<span class="f24 c-333"  th:text="${(session.Borrowmoney.prateben + session.Borrowmoney.ptotalmoney - session.Borrowmoney.pmoney)}"></span>元<br>
+						剩余期限：<span class="f24 c-333" th:text="${#dates.format(session.Borrowmoney.pcount, 'yyyy-MM-dd')}"></span> <br>
+						下期还款日： <span class="f20 c-333" th:text="${#dates.format(session.Borrowmoney.ptime, 'yyyy-MM-dd')}"></span> </div>
 					<i class="icon icon-status icon-status1"></i> </div>
 			</div>
 		</div>
@@ -105,16 +104,25 @@
 							<h3>借款人介绍</h3>
 						</dt>
 						<dd>
-							<div class="text">
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人信息介绍：</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人赵女士，<span>1988</span>年出生，大专学历，未婚，户籍地址为四川省古蔺县，现居住于成都市成华区。</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人工作情况：</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 赵女士为成都某服装店老板，月收入<span>2</span>万元，收入居住稳定。</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人资产介绍：</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 赵女士有<span>1</span>辆全款长安福特福克斯汽车。</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 详细资金用途：</p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人申请汽车质押贷款，贷款用于资金周转。</p>
+							<div class="text" th:each="deta:${session.Details }">
+								<span th:if="${deta.dtype==0 }">
+									<p class="MsoNormal"
+									   style="margin-left: 0cm; text-indent: 0cm;"><span th:text="${deta.dname }"></span>：</p>
+									<p class="MsoNormal"
+									   style="margin-left: 0cm; text-indent: 0cm;">
+										<span th:text="${deta.dcontent }"></span></p>
+								</span>
 							</div>
+							<!--<div class="text">-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人信息介绍：</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人赵女士，<span>1988</span>年出生，大专学历，未婚，户籍地址为四川省古蔺县，现居住于成都市成华区。</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人工作情况：</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 赵女士为成都某服装店老板，月收入<span>2</span>万元，收入居住稳定。</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人资产介绍：</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 赵女士有<span>1</span>辆全款长安福特福克斯汽车。</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 详细资金用途：</p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 借款人申请汽车质押贷款，贷款用于资金周转。</p>-->
+							<!--</div>-->
 						</dd>
 					</dl>
 					<dl class="item">
@@ -161,14 +169,22 @@
 							<h3>风控步骤</h3>
 						</dt>
 						<dd>
-							<div class="text">
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 调查：风控部对借款人各项信息进行了全面的电话征信，一切资料真实可靠。<span></span> </p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 抵押物：全款长安福特福克斯汽车，车牌号：川<span>AYY***</span>，新车购买于<span>2013</span>年，裸车价<span>14</span>万，评估价<span>5</span>万。 </p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 权证：汽车已入库、已办理相关手续等。 </p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 担保：质押物担保。 </p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 结论：此客户为老客户，上笔贷款<span>4</span>万元，标的号为<span>20150745682</span>，已结清，现因资金周转，再次申请贷款。借款人居住稳定，收入来源可靠，经风控综合评估，同意放款<span>4</span>万。 </p>
-								<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 保障：借款逾期<span>48</span>小时内，易贷风险准备金先行垫付。 </p>
+							<div class="text" th:each="deta:${session.Details }">
+								<span th:if="${deta.dtype==1 }">
+									<p class="MsoNormal"
+									   style="margin-left: 0cm; text-indent: 0cm;">
+										<span th:text="${deta.dname }"></span>：<span th:text="${deta.dcontent }"></span>
+									</p>
+								</span>
 							</div>
+							<!--<div class="text">-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 调查：风控部对借款人各项信息进行了全面的电话征信，一切资料真实可靠。<span></span> </p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 抵押物：全款长安福特福克斯汽车，车牌号：川<span>AYY***</span>，新车购买于<span>2013</span>年，裸车价<span>14</span>万，评估价<span>5</span>万。 </p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 权证：汽车已入库、已办理相关手续等。 </p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 担保：质押物担保。 </p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 结论：此客户为老客户，上笔贷款<span>4</span>万元，标的号为<span>20150745682</span>，已结清，现因资金周转，再次申请贷款。借款人居住稳定，收入来源可靠，经风控综合评估，同意放款<span>4</span>万。 </p>-->
+								<!--<p class="MsoNormal" style="margin-left:0cm;text-indent:0cm;"> 保障：借款逾期<span>48</span>小时内，易贷风险准备金先行垫付。 </p>-->
+							<!--</div>-->
 							<div class="step clearfix">
 								<ul>
 									<li><i class="icon icon-1"></i>资料审核</li>
@@ -177,7 +193,7 @@
 									<li class="no"><i class="icon icon-4"></i>发布借款</li>
 								</ul>
 							</div>
-							<div class="conclusion f16"> 结论：经风控部综合评估， <span class="c-orange">同意放款40,000.00元；</span> <i class="icon icon-status icon-status1"></i> </div>
+							<div class="conclusion f16"> 结论：经风控部综合评估， <span class="c-orange">同意放款<span th:text="${session.Borrowmoney.ptotalmoney }"></span>元；</span> <i class="icon icon-status icon-status1"></i> </div>
 						</dd>
 					</dl>
 					<dl class="item">
@@ -212,147 +228,44 @@
 				</div>
 			</div>
 			<div class="ui-tab-item" style="display: none;">
-				<div class="repayment-list"> 目前投标总额：<span class="c-orange">40,000.00 元</span>&nbsp;&nbsp;
-					剩余投标金额：<span class="c-orange">0.00 元</span>
+				<div class="repayment-list"> 目前投标总额：<span class="c-orange" th:text="${session.tm }">40,000.00 元</span>&nbsp;&nbsp;
+					目前收益总额：<span class="c-orange" th:text="${session.gm }">0.00 元</span>
 					<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tbody>
 						<tr>
 							<th>投标人</th>
 							<th>投标金额</th>
 							<th>投标时间</th>
-							<th>投标方式</th>
+							<th>投资类型</th>
 						</tr>
 						</tbody>
 						<tbody id="repayment_content">
-						<tr>
-							<td>筱*** </td>
-							<td><span class="c-orange">￥652.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>大*** </td>
-							<td><span class="c-orange">￥94.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>p*** </td>
-							<td><span class="c-orange">￥796.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>t*** </td>
-							<td><span class="c-orange">￥4,000.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>湘*** </td>
-							<td><span class="c-orange">￥5,642.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>A*** </td>
-							<td><span class="c-orange">￥3,336.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>蒲*** </td>
-							<td><span class="c-orange">￥2,582.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>c*** </td>
-							<td><span class="c-orange">￥683.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>豆*** </td>
-							<td><span class="c-orange">￥8,000.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>j*** </td>
-							<td><span class="c-orange">￥2,725.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>l*** </td>
-							<td><span class="c-orange">￥1,242.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>郑*** </td>
-							<td><span class="c-orange">￥624.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>神*** </td>
-							<td><span class="c-orange">￥100.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>快*** </td>
-							<td><span class="c-orange">￥2,279.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>一*** </td>
-							<td><span class="c-orange">￥500.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>思*** </td>
-							<td><span class="c-orange">￥54.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>b*** </td>
-							<td><span class="c-orange">￥1,027.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>林*** </td>
-							<td><span class="c-orange">￥969.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>小*** </td>
-							<td><span class="c-orange">￥81.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
-						<tr>
-							<td>V*** </td>
-							<td><span class="c-orange">￥77.00</span></td>
-							<td>2015-09-13 14:22:01</td>
-							<td>自动</td>
-						</tr>
+							<div th:each="record1:${session.record }">
+								<tr>
+									<td th:text="${record1.uname}"></td>
+									<td><span class="c-orange">￥<span th:text="${record1.inmoney}"></span></span></td>
+									<td th:text="${#dates.format(record1.indate, 'yyyy-MM-dd')}"></td>
+									<td th:text="${record1.instyle }"></td>
+								</tr>
+							</div>
 						</tbody>
 						<tfoot>
 						<tr class="page-outer">
-							<td colspan="4" align="center"><div class="pagination clearfix"><span class="page" id="repayment_content_pager"><a class="disabled"> 上一页 </a><a class="curr">1</a><a href="javascript:void(0)">2</a><a href="javascript:void(0)" next="2">下一页</a><em>共2页</em>
-                    <dl class="page-select">
-                      <dt><span>1</span><i class="icon icon-down"></i></dt>
-                      <dd style="display: none;"><a href="javascript:;" total="23" spaninterval="2" content="repayment_content">1</a><a href="javascript:;" total="23" spaninterval="2" content="repayment_content">2</a></dd>
-                    </dl>
-                    </span></div></td>
+							<td colspan="4" align="center">
+								<div class="pagination clearfix">
+									<span class="page" id="repayment_content_pager" th:if="${session.totalpage > 1}">
+										<span th:if="${session.currpages-1  > 0}">
+											<a th:href="@{/investinfo/toInvestInfo(bmid=${session.bmid },currpage=${session.currpages-1 })}"> 上一页 </a>
+										</span>
+										<em>
+											<span th:text="${session.currpages }"></span>/<span th:text="${session.totalpage }"></span>
+										</em>
+										<span th:if="${session.currpages+1  <= session.totalpage}">
+											<a th:href="@{/investinfo/toInvestInfo(bmid=${session.bmid },currpage=${session.currpages+1 })}">下一页</a>
+										</span>
+                    				</span>
+								</div>
+							</td>
 						</tr>
 						</tfoot>
 					</table>
@@ -387,49 +300,6 @@
 	</div>
 </div>
 <!--网站底部-->
-<div id="footer" class="ft">
-	<div class="ft-inner clearfix">
-		<div class="ft-helper clearfix">
-			<dl>
-				<dt>关于我们</dt>
-				<dd><a href="公司简介.html">公司简介</a><a href="管理团队.html">管理团队</a><a href="网站公告.html">网站公告</a></dd>
-			</dl>
-			<dl>
-				<dt>相关业务</dt>
-				<dd><a href="list.html">我要投资</a><a href="我要借款.html">我要借款</a></dd>
-			</dl>
-			<dl>
-				<dt>帮助中心</dt>
-				<dd><a href="帮助中心.html">新手入门</a><a href="个人中心首页.html">我的账户</a><a href="list.html">债权转让</a></dd>
-			</dl>
-			<dl>
-				<dt>联系我们</dt>
-				<dd><a href="联系我们.html">联系我们</a></dd>
-			</dl>
-		</div>
-		<div class="ft-service">
-			<dl>
-				<dd>
-					<p><strong>400-660-1268</strong><br>
-						工作日 9:00-22:00<br>
-						官方交流群:<em>12345678</em><br>
-						工作日 9:00-22:00 / 周六 9:00-18:00<br>
-					</p>
-					<div class="ft-serv-handle clearfix"><a class="icon-hdSprite icon-ft-sina a-move a-moveHover" title="亿人宝新浪微博" target="_blank" href="#"></a><a class="icon-hdSprite icon-ft-qqweibo a-move a-moveHover" title="亿人宝腾讯微博" target="_blank" href="#"></a><a class="icon-ft-qun a-move a-moveHover" title="亿人宝QQ群" target="_blank" href="#"></a><a class="icon-hdSprite icon-ft-email a-move a-moveHover mrn" title="阳光易贷email" target="_blank" href="mailto:xz@yirenbao.com"></a></div>
-				</dd>
-			</dl>
-		</div>
-		<div class="ft-wap clearfix">
-			<dl>
-				<dt>官方二维码</dt>
-				<dd><span class="icon-ft-erweima"><img src="/images/code.png" style="display: inline;"></span></dd>
-			</dl>
-		</div>
-	</div>
-	<div class="ft-record">
-		<div class="ft-approve clearfix"><a class="icon-approve approve-0 fadeIn-2s" target="_blank" href="#"></a><a class="icon-approve approve-1 fadeIn-2s" target="_blank" href="#"></a><a class="icon-approve approve-2 fadeIn-2s" target="_blank" href="#"></a><a class="icon-approve approve-3 fadeIn-2s" target="_blank" href="#"></a></div>
-		<div class="ft-identity">©2015 亿人宝 All rights reserved&nbsp;&nbsp;&nbsp;<span class="color-e6">|</span>&nbsp;&nbsp;&nbsp;安徽省亿人宝投资管理有限公司&nbsp;&nbsp;&nbsp;<span class="color-e6">|</span>&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn/">皖ICP备12345678号-1</a></div>
-	</div>
-</div>
+<div th:include="common/footer :: footer" id="footer" class="ft"></div>
 </body>
 </html>
