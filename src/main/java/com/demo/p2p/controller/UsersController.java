@@ -187,7 +187,7 @@ public class UsersController {
         certification.setCdue(0.0);
         certification.setCfreeze(0.0);
         certification.setCpaid(0.0);
-        certification.setCtotalmoney(0.0);
+        certification.setCtotalmoney("0.0");
         certification.setCrealname(users.getUname());
         certification.setCusername(users.getUnickname());
         certificationService.saveCertification(certification);

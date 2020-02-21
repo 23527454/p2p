@@ -1,9 +1,11 @@
 package com.demo.p2p.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.demo.p2p.entity.Bankcard;
 import com.demo.p2p.entity.Certification;
 import com.demo.p2p.entity.Investinfo;
 import com.demo.p2p.entity.Users;
+import com.demo.p2p.service.BankcardService;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.InvestinfoService;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class GrzxController {
 
     @Resource
     private InvestinfoService investinfoService;
+
+    @Resource
+    private BankcardService bankcardService;
 
     /**
      * 个人中心——账户总览/首页
@@ -150,7 +155,25 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_tx1")
-    public String grzx_tx1() {
+    public String grzx_tx1(HttpSession session,HttpServletRequest request) {
+        Users user = (Users)session.getAttribute("loginUser");
+        if(user.getUcertnumber() != null){
+            System.out.println(1);
+            List<Bankcard> list = bankcardService.getbank(user.getUid());
+            for (Bankcard ls: list
+                 ) {
+                String strhours = String.valueOf( ls.getCardid());
+                String strh = strhours.substring(strhours.length() -2,strhours.length());   //截取
+                String strm = strhours.substring(0,2);   //截掉
+                String cardid = strm + "***" +strh;
+                ls.setCardid(cardid);
+            }
+            Certification certification = certificationService.getcserial(user.getUnickname());
+            System.out.println(certification.getCtotalmoney());
+            request.setAttribute("certification",certification);
+            request.setAttribute("bankls",list);
+            return "Withdraw";
+        }
         return "Withdrawno";
     }
 

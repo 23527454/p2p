@@ -24,6 +24,6 @@ public interface CertificationMapper extends BaseMapper<Certification> {
     /**
      * 个人中心显示账户余额
      */
-    @Select("SELECT * FROM certification WHERE cserial = #{cserial}")
-    public Certification getcserial(@Param("cserial") String cserial);
+    @Select("SELECT * FROM certification WHERE cusername =  #{cusername}")
+    public Certification getcserial(@Param("cusername") String cusername);
 }
