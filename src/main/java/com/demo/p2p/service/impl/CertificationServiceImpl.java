@@ -44,4 +44,9 @@ public CertificationMapper certificationMapper;
         return certificationMapper.selectList(queryWrapper);
     }
 
+    @Override
+    public Certification getcserial(String cusername) {
+        return certificationMapper.getcserial(cusername);
+    }
+
 }
