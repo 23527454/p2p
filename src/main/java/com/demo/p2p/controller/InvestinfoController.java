@@ -7,10 +7,15 @@ import com.demo.p2p.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +89,7 @@ public class InvestinfoController {
         List<Trade> tmonery = tradeService.selectMoney(users.getUid());
         Integer allM = 0;
         for(Trade tr : tmonery){
-            String money = tr.getJymoney().replace("+", "");
+            String money = tr.getJymoney()+"";
             allM += Integer.parseInt(money);
         }
 
@@ -177,6 +182,18 @@ public class InvestinfoController {
         long days = (pro.getPcount().getTime() - pro.getPtime().getTime())
                 / (24 * 60 * 60 * 1000);
         session.setAttribute("days", days);
+        String reea = (String)session.getAttribute("reea");
+        if (reea != null && reea != ""){
+            if (reea.equals("no")){
+                session.setAttribute("reea","yes");
+            }else {
+                session.setAttribute("end","no");
+            }
+        }else {
+            session.setAttribute("end","no");
+        }
+        System.out.println(reea);
+        System.out.println(session.getAttribute("end"));
         if (pro.getPstate().equals("1")) {
             Users us = (Users) req.getSession().getAttribute("loginUser");
             us.getUname();
@@ -191,6 +208,75 @@ public class InvestinfoController {
             System.out.println("进入到显示页面");
             return "redirect:/sys/infor";
         }
+    }
+
+    @RequestMapping("investAdd_do")
+    public String investAdd(double money, HttpServletRequest request) {// 投标
+
+        HttpSession session = request.getSession();
+
+
+        Product pro = (Product) session.getAttribute("Product");
+
+        Investinfo ii = new Investinfo();
+        Users user = (Users) session.getAttribute("loginUser");
+        // inid; //'投资信息表主键',
+        // ii.setInid(2);
+        if(user != null){
+            Date date = new Date();
+            ii.setUserid(user.getUid()); // '投资用户主键',
+            ii.setBrrowid(pro.getId());//
+            ii.setInmoney(money); // '投资金额',
+            ii.setInstatus("不用"); // '投资状态 0 收益中的投资 1已完成的投资',
+            ii.setInstyle("不用"); // '投资类型',
+            ii.setBrrowstatus("不用");
+            ii.setInterest(pro.getPincome()); // '投资利率',
+            ii.setProfitmodel(pro.getPway()); // '盈利方式 如等额本金',
+            ii.setProfitmoney(0.00); // '盈利金额',
+            ii.setIndate(date); // '投资时间，可为空'
+            long days = (pro.getPcount().getTime() - pro.getPtime().getTime())
+                    / (24 * 60 * 60 * 1000);// 相差几天
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String ds = sdf.format(pro.getPcount());
+
+            ii.setReplaydate(ds + "(共" + days + "天)");
+            ii.setMarkstatus(0); // '投标状态 0默认投标中 1 投标通过（中标） 2投标未通过（失标）';
+
+            System.out.println(ii.toString());
+            session.removeAttribute("Product");
+            session.removeAttribute("Details");
+            investinfoService.addInfo(ii);//添加投资记录
+
+            double kym = (Double) session.getAttribute("kymoney");//可用总金额
+            double nkym = kym - money;//扣除投资后剩余的可用金额
+            Certification certification = new Certification();
+            certification.setId(user.getUid());
+            certification.setCbalance(nkym);
+            certificationService.updateById(certification);
+            session.removeAttribute("kymoney");
+            Trade td = new Trade();
+            td.setuID(user.getUid());
+            td.setUname(user.getUnickname());
+            td.setZname(user.getUname());
+            td.setJymoney(money);
+            td.setOther("要投资就要舍得花钱");
+            tradeService.save(td);
+            Double updMoney = pro.getPmoney() + money;
+            System.out.println("修改完后的金额"+updMoney);
+            pro.setPmoney(updMoney.intValue());
+            productService.updateById(pro);
+            DecimalFormat df = new DecimalFormat( "0.00");
+            String udm = df.format(updMoney).toString();
+            String odm = df.format(pro.getPtotalmoney()).toString();
+            if(udm.equals(odm)){//刚好凑集完
+                pro.setPstate("2");//修改为凑资完
+                productService.updateById(pro);
+            }
+            session.setAttribute("end", "end");
+            session.setAttribute("reea","no");
+        }
+
+        return "redirect:/investinfo/toInvestInfo?bmid="+pro.getId();
     }
 }
 

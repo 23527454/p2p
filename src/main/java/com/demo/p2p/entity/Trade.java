@@ -43,7 +43,7 @@ private static final long serialVersionUID=1L;
     /**
      * 交易金额
      */
-    private String jymoney;
+    private Double jymoney;
 
     /**
      * 交易类型
@@ -93,11 +93,11 @@ private static final long serialVersionUID=1L;
         this.zname = zname;
     }
 
-    public String getJymoney() {
+    public Double getJymoney() {
         return jymoney;
     }
 
-    public void setJymoney(String jymoney) {
+    public void setJymoney(Double jymoney) {
         this.jymoney = jymoney;
     }
 
