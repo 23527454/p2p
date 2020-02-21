@@ -179,18 +179,18 @@
 			</div>
 			<center>
 				<div class="btn-group" align="center">
-					共${totalPage}/${currpage}页    <a href=" queryDope.do?currpage=1">首页</a>
-					<a href=" queryDope.do?currpage=${currpage-1}">上一页</a>
-
-					<a href=" queryDope.do?currpage=${currpage-1}">下一页</a>
-					<a href=" queryDope.do?currpage=${totalPage}">末页</a>
+					共<span th:text="${currpage}"></span>/
+					<span th:text="${totalPage}"></span>页
+					<a th:href="@{'/dope/grzx_xtxx?currpage='+1}">首页</a>
+					<a th:href="@{'/dope/grzx_xtxx?currpage='+${currpage-1}}">上一页</a>
+					<a th:href="@{'/dope/grzx_xtxx?currpage='+${currpage+1}}">下一页</a>
+					<a th:href="@{'/dope/grzx_xtxx?currpage='+${totalPage}}">末页</a>
 				</div>
 			</center>
 		</div>
 
 		<div class="clear"></div>
 	</div>
-
 </div>
 
 <!--网站底部-->

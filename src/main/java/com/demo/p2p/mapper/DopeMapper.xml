@@ -16,4 +16,11 @@
         did, dprimkey, dtitle, details, dtime
     </sql>
 
+    <select id="findDope" parameterType="map" resultType="com.demo.p2p.entity.Dope">
+    select * from dope  limit #{currpage},#{pagecount}
+    </select>
+
+    <select id="total" resultType="com.demo.p2p.entity.Dope">
+SELECT COUNT(*) FROM dope </select>
+
 </mapper>

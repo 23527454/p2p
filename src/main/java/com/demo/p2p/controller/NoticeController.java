@@ -31,8 +31,10 @@ public class NoticeController {
     @RequestMapping(value = "/wzgg")
     public String wzgg(Model model){
         QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("noticetype",5);
+        queryWrapper.eq("noticetype",1);
         List<Notice>list = noticeService.select1(queryWrapper);
+        int sum = noticeService.select1(queryWrapper).size();
+        System.out.println(sum+"////////////////////////");
         model.addAttribute("list",list);
         return "inform";
     }
@@ -78,5 +80,44 @@ public class NoticeController {
         model.addAttribute("list",list);
         return "informsel";
     }
+
+    /**
+     * 管理团队
+     * @return
+     */
+    @RequestMapping(value = "/gltd")
+    public String gltd(Model model){
+        QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("noticetype",3);
+        List<Notice> list = noticeService.select1(queryWrapper);
+        model.addAttribute("list",list);
+        return "informgltd";
+    }
+    /**
+     * 团队风采
+     * @return
+     */
+    @RequestMapping(value = "/tdfc")
+    public String tdfc(Model model){
+        QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("noticetype",5);
+        List<Notice> list = noticeService.select1(queryWrapper);
+        model.addAttribute("list",list);
+        return "informtdfc";
+    }
+
+    /**
+     * 合作伙伴
+     * @return
+     */
+    @RequestMapping(value = "/hzhb")
+    public String hzhb(Model model){
+        QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("noticetype",4);
+        List<Notice> list = noticeService.select1(queryWrapper);
+        model.addAttribute("list",list);
+        return "informhzhb";
+    }
+
 }
 

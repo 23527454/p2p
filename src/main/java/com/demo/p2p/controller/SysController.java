@@ -69,7 +69,6 @@ public class SysController {
         request.setAttribute("sumprofitmoney",sumprofitmoney);
         return "index";
     }
-
     /**
      * 注册
      * @return
@@ -333,35 +332,6 @@ public class SysController {
     @RequestMapping(value = "/lxwm")
     public String lxwm(){
         return "contact";
-    }
-
-    /**
-     * 合作伙伴
-     * @return
-     */
-    @RequestMapping(value = "/hzhb")
-    public String hzhb(){
-        return "informhzhb";
-    }
-
-
-
-    /**
-     * 管理团队
-     * @return
-     */
-    @RequestMapping(value = "/gltd")
-    public String gltd(){
-        return "informgltd";
-    }
-
-    /**
-     * 团队风采
-     * @return
-     */
-    @RequestMapping(value = "/tdfc")
-    public String tdfc(){
-        return "informtdfc";
     }
 
     /**
