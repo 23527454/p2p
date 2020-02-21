@@ -192,8 +192,6 @@ public class InvestinfoController {
         }else {
             session.setAttribute("end","no");
         }
-        System.out.println(reea);
-        System.out.println(session.getAttribute("end"));
         if (pro.getPstate().equals("1")) {
             Users us = (Users) req.getSession().getAttribute("loginUser");
             us.getUname();
