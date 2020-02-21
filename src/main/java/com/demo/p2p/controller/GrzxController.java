@@ -179,8 +179,13 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_cz1")
-    public String grzx_cz1() {
-        return "Payno";
+    public String grzx_cz1(HttpSession session) {
+        Users user = (Users) session.getAttribute("loginUser");
+        if (user == null) {
+            return "redirect:/sys/login";
+        } else {
+            return "Payno";
+        }
     }
 
     /**
@@ -191,24 +196,28 @@ public class GrzxController {
     @RequestMapping(value = "/grzx_tx1")
     public String grzx_tx1(HttpSession session,HttpServletRequest request) {
         Users user = (Users)session.getAttribute("loginUser");
-        if(user.getUcertnumber() != null){
-            System.out.println(1);
-            List<Bankcard> list = bankcardService.getbank(user.getUid());
-            for (Bankcard ls: list
-                 ) {
-                String strhours = String.valueOf( ls.getCardid());
-                String strh = strhours.substring(strhours.length() -2,strhours.length());   //截取
-                String strm = strhours.substring(0,2);   //截掉
-                String cardid = strm + "***" +strh;
-                ls.setCardid(cardid);
+        if (user == null) {
+            return "redirect:/sys/login";
+        } else {
+            if(user.getUcertnumber() != null){
+                System.out.println(1);
+                List<Bankcard> list = bankcardService.getbank(user.getUid());
+                for (Bankcard ls: list
+                ) {
+                    String strhours = String.valueOf( ls.getCardid());
+                    String strh = strhours.substring(strhours.length() -2,strhours.length());   //截取
+                    String strm = strhours.substring(0,2);   //截掉
+                    String cardid = strm + "***" +strh;
+                    ls.setCardid(cardid);
+                }
+                Certification certification = certificationService.getcserial(user.getUnickname());
+                System.out.println(certification.getCtotalmoney());
+                request.setAttribute("certification",certification);
+                request.setAttribute("bankls",list);
+                return "Withdraw";
             }
-            Certification certification = certificationService.getcserial(user.getUnickname());
-            System.out.println(certification.getCtotalmoney());
-            request.setAttribute("certification",certification);
-            request.setAttribute("bankls",list);
-            return "Withdraw";
+            return "Withdrawno";
         }
-        return "Withdrawno";
     }
 
     /**
