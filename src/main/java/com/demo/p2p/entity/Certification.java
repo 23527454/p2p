@@ -57,7 +57,7 @@ private static final long serialVersionUID=1L;
     /**
      * 总金额
      */
-    private Double ctotalmoney;
+    private String ctotalmoney;
 
 
     public Integer getId() {
@@ -124,11 +124,11 @@ private static final long serialVersionUID=1L;
         this.cpaid = cpaid;
     }
 
-    public Double getCtotalmoney() {
+    public String getCtotalmoney() {
         return ctotalmoney;
     }
 
-    public void setCtotalmoney(Double ctotalmoney) {
+    public void setCtotalmoney(String ctotalmoney) {
         this.ctotalmoney = ctotalmoney;
     }
 

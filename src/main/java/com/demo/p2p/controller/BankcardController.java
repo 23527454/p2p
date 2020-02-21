@@ -1,0 +1,21 @@
+package com.demo.p2p.controller;
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.stereotype.Controller;
+
+/**
+ * <p>
+ * 银行卡管理表 前端控制器
+ * </p>
+ *
+ * @author gzd
+ * @since 2020-02-21
+ */
+@Controller
+@RequestMapping("/bankcard")
+public class BankcardController {
+
+}
+

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,10 +23,14 @@ import java.util.List;
 public class DopeServiceImpl extends ServiceImpl<DopeMapper, Dope> implements DopeService {
      @Resource
     public DopeMapper dopeMapper;
-     public DopeService dopeService;
     @Override
-    public List<Dope> select() {
-        return dopeService.list();
+    public List<Dope> findDope(Map<String, Object> map) {
+        return dopeMapper.findDope(map);
+    }
+
+    @Override
+    public List total() {
+        return dopeMapper.total();
     }
 
     @Override

@@ -38,22 +38,22 @@
 	function investA() {
 		var money = document.getElementById("amount").value;
 
-		if (money > "${session.kymoney}") {//用户余额不足
+		if (money > [[${session.kymoney}]]) {//用户余额不足
 			alert("对不起,您的用户余额不足;无法完成投资!");
 			return;
 		}
-		if (money > "${session.Product.ptotalmoney - session.Product.pmoney}") {//投资金额大于剩余可投金额
+		if (money > [[${session.Product.ptotalmoney - session.Product.pmoney}]]) {//投资金额大于剩余可投金额
 			alert("您输入的投资金额大于剩余可投金额!");
 			return;
 		}
-		window.location.href = "investAdd.do?money=" + money;
+		window.location.href = "../investinfo/investAdd_do?money=" + money;
 	}
 
 	function reckon() {//动态算出预期收益
 		var money = document.getElementById("amount").value;
 //	alert("${days}");
-//	alert(("${Borrowmoney.pincome }" * ("${days}" / 365) * money) / 100);	
-	var getm = parseInt(money) + (${session.Borrowmoney.pincome } * (${session.days} / 365) * money) / 100;
+// 	alert(([[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100);
+	var getm = parseInt(money) + ( [[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100;
 		var lm = parseFloat(getm).toFixed(2);
 		//		alert(lm);
 		if (isNaN(lm)) {
@@ -62,8 +62,8 @@
 		document.getElementById("sp").innerHTML = lm + "元";
 	}
 
-	function end() {//投资完返回此界面弹出提示
-		if ("${session.end}" != null && "${session.end}" == "end") {
+	function end() {
+		if ([[${session.end}]] != null && "[[${session.end}]]" == "end") {
 			alert("恭喜您,投资成功!");
 		}
 	}

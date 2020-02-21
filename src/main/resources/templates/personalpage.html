@@ -74,7 +74,6 @@
           <div class="user-info user-info1">
             <ul>
               <li>用户名<span>[[${session.loginUser.unickname}]]</span></li>
-              <li th:text="${session.loginUser.upwdZd}">
               <li>安全级别<span><i class="safe-level"><i class="onlevel" style="width:40%;" ></i></i></span> <a href="#">[低]</a></li>
               <li th:if="${#strings.isEmpty(session.loginUser.upwdZd)}">您还未开通第三方支付账户，请 <a class="pmain-log" href="/grzx/grzx_ktdsf">立即开通</a>以确保您的正常使用和资金安全。 </li>
               <li th:if="${not #strings.isEmpty(session.loginUser.upwdZd)}">您已经开通第三方支付账户</li>
