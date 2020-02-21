@@ -55,4 +55,6 @@ public interface InvestinfoService extends IService<Investinfo> {
     public List<Investinfo> getFive(@Param("userid")int userid);
 
     public List<Investinfo> selInfo(Map<String, Object> map);
+
+    public int addInfo(Investinfo investinfo);
 }

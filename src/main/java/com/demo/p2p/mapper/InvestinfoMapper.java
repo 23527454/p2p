@@ -45,4 +45,6 @@ public interface InvestinfoMapper extends BaseMapper<Investinfo> {
     @Select("SELECT io.*,pt.pname FROM investinfo io,product pt\n" +
             "WHERE   pt.id = io.brrowid AND userid = #{userid} LIMIT 5")
     public List<Investinfo> getFive(@Param("userid")int userid);
+
+    public int add(Investinfo investinfo);
 }

@@ -411,4 +411,8 @@ public class SysController {
     }
 
 
+    @RequestMapping(value = "/demo")
+    public String demo(){
+        return "demo";
+    }
 }

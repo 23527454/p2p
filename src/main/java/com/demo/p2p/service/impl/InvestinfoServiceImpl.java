@@ -56,6 +56,11 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     }
 
     @Override
+    public int addInfo(Investinfo investinfo) {
+        return investinfoMapper.add(investinfo);
+    }
+
+    @Override
     public List<Investinfo> getFive(int userid) {
         return investinfoMapper.getFive(userid);
     }
