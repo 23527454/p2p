@@ -48,8 +48,6 @@ public class GrzxController {
         }
         out.flush();
         out.close();
-
-
     }
 
     /**

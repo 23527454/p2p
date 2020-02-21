@@ -42,28 +42,29 @@
 				  		<!-- 页面内容 -->
 				  		
 				  		 <form class="form-horizontal style-form" method="post"
-				  		 	action=" notice/notupd.do?noticeid=${nots.noticeid}"
+				  		 	action="/bk/notice/notupd"
 				  		 	enctype="multipart/form-data"
 				  		 	>
                           
                           <div class="form-group" align="justify">
                               <label class="col-sm-2 col-sm-2 control-label">标题</label>
                               <div class="col-sm-10">
-                                  <input type="text"  name="noticetitle" class="form-control" value="${nots.noticetitle }">
-                                  <input type="hidden"  name="noticepicture" value="${nots.noticepicture }">
+                                  <input type="text"  name="noticetitle" class="form-control" th:value="${nots.noticetitle }">
+                                  <input type="hidden"  name="noticepicture" th:value="${nots.noticepicture }">
+                                  <input type="hidden"  name="noticeid" th:value="${nots.noticeid}">
                               </div>
                          </div>
 							 <div class="form-group" align="justify">
                               <label class="col-sm-2 col-sm-2 control-label">公告类型</label>
                               <div class="col-sm-10">
                                 <select class="form-control" name="noticetype">
-									  <option value="1" ${nots.noticetype=='1'?'selected':'' }>网站公告</option>
-									  <option value="2" ${nots.noticetype=='2'?'selected':'' }>媒体报道</option>
-									  <option value="3" ${nots.noticetype=='3'?'selected':'' }>管理团队</option>
-									  <option value="4" ${nots.noticetype=='4'?'selected':'' }>合作伙伴</option>
-									  <option value="5" ${nots.noticetype=='5'?'selected':'' }>团队风采</option>
-									  <option value="6" ${nots.noticetype=='6'?'selected':'' }>首页图片</option>
-									</select>
+									  <option value="1" th:selected="${nots.noticetype=='1'}">网站公告</option>
+									  <option value="2" th:selected="${nots.noticetype=='2'}">媒体报道</option>
+									  <option value="3" th:selected="${nots.noticetype=='3'}">管理团队</option>
+									  <option value="4" th:selected="${nots.noticetype=='4'}">合作伙伴</option>
+									  <option value="5" th:selected="${nots.noticetype=='5'}">团队风采</option>
+									  <option value="6" th:selected="${nots.noticetype=='6'}">首页图片</option>
+                                </select>
                               </div>
                          </div>
 							 
@@ -78,14 +79,14 @@
                          <div class="form-group" align="justify">
                               <label class="col-sm-2 col-sm-2 control-label">图片</label>
                               <div class="col-sm-10">
-                                  <img alt="" src="${nots.noticepicture }" width="80xp" height="100xp">
+                                  <img alt="" th:src="${nots.noticepicture }" width="80xp" height="100xp">
                               </div>
                          </div>
 							
 							 <div class="form-group" align="justify">
                               <label class="col-sm-2 col-sm-2 control-label">内容</label>
                               <div class="col-sm-10">
-                              	  <textarea class="form-control" name="noticecontent" rows="3"  >${nots.noticecontent }</textarea>
+                              	  <textarea class="form-control" name="noticecontent" rows="3">[[${nots.noticecontent }]]</textarea>
                               </div>
                          </div>
 							        	

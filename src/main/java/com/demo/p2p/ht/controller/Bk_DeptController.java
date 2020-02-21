@@ -71,7 +71,7 @@ public class Bk_DeptController {
         if (result){
             out.print("<script>alert('删除成功！');window.location.href='/bk/dept/findall';</script>");
         }else{
-            out.print("<script>alert('删除失败！');window.location.href='/bk/dept/findall';</script>");
+        out.print("<script>alert('删除失败！');window.location.href='/bk/dept/findall';</script>");
         }
         out.flush();
         out.close();
