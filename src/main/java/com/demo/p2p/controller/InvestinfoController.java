@@ -182,7 +182,7 @@ public class InvestinfoController {
             us.getUname();
             if (us != null) {
                 Certification certification = certificationService.selById(us.getUid());
-                String kymoney = certification.getCbalance();
+                Double kymoney = certification.getCbalance();
                 System.out.println("进入到输入金额页面  用户余额" + kymoney);
                 session.setAttribute("kymoney", kymoney);
             }
