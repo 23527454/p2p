@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_RechargeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Recharge">
+        <id column="rID" property="rID" />
+        <result column="uID" property="uID" />
+        <result column="uname" property="uname" />
+        <result column="czlx" property="czlx" />
+        <result column="lsh" property="lsh" />
+        <result column="czmoney" property="czmoney" />
+        <result column="fl" property="fl" />
+        <result column="dzmoney" property="dzmoney" />
+        <result column="cztime" property="cztime" />
+        <result column="statu" property="statu" />
+        <result column="zname" property="zname" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        rID, uID, uname, czlx, lsh, czmoney, fl, dzmoney, cztime, statu, zname
+    </sql>
+</mapper>
