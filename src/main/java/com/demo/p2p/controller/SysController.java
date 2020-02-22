@@ -304,7 +304,7 @@ public class SysController {
      */
     @RequestMapping(value = "/help")
     public String anquan(){
-        return "helinforp";
+        return "help";
     }
 
     /**

@@ -84,6 +84,9 @@
 						</tbody>
 						<tbody th:if="${stas!=1}">
 							<tr>
+								<td align="left">
+									共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
+								</td>
 								<td colspan="7" align="center">
 									<div class="btn-group" align="center">
 										<a th:onclick="pageClick(1)" class="btn btn-default">首页</a>

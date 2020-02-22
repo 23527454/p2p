@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_BankcardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Bankcard">
+        <id column="bID" property="bID" />
+        <result column="uID" property="uID" />
+        <result column="uname" property="uname" />
+        <result column="zname" property="zname" />
+        <result column="sfz" property="sfz" />
+        <result column="khh" property="khh" />
+        <result column="cardid" property="cardid" />
+        <result column="tjtime" property="tjtime" />
+        <result column="statu" property="statu" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        bID, uID, uname, zname, sfz, khh, cardid, tjtime, statu
+    </sql>
+
+</mapper>

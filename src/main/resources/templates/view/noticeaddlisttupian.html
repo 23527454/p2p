@@ -66,88 +66,102 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${list}" var="list" varStatus="status">
-							<tr >
-								<td  data-target="#${list.noticeid }" data-toggle="modal" >
-								${ft:substring(list.noticetitle,0,9) }...</td>
-								<td data-target="#${list.noticeid }" data-toggle="modal">
-									<c:if test="${list.noticetype=='1' }">网站公告</c:if>
-									<c:if test="${list.noticetype=='2' }">媒体报道</c:if>
-									<c:if test="${list.noticetype=='3' }">管理团队</c:if>
-									<c:if test="${list.noticetype=='4' }">合作伙伴</c:if>
-									<c:if test="${list.noticetype=='5' }">团队风采</c:if>
-									<c:if test="${list.noticetype=='6' }">首页图片</c:if>
+						<script>
+                            function showInfo(data) {
+                                var windowWidth = document.documentElement.clientWidth;
+                                var windowHeight = document.documentElement.clientHeight;
+                                var popupHeight = $("#"+data).height();
+                                var popupWidth = $("#"+data).width();
+                                $("#"+data).css({
+                                    "position": "absolute",
+                                    "z-index":100,
+                                    "top": (windowHeight-popupHeight)/2+$(document).scrollTop(),
+                                    "left": (windowWidth-popupWidth)/2
+                                });
+                                $("#"+data).show();
+                            }
+                            function closeInfo(data) {
+                                $("#"+data).hide();
+                            }
+						</script>
+						<div th:each="notice,noticeStat:${list}">
+							<tr>
+								<td  th:onclick="showInfo([[${notice.noticeid}]])" th:attr="data-target=${notice.noticeid }" data-toggle="modal" th:text="${#strings.abbreviate(notice.noticetitle,9)}"></td>
+								<td th:attr="data-target=${notice.noticeid }" data-toggle="modal">
+									<span th:if="${notice.noticetype=='1' }">网站公告</span>
+									<span th:if="${notice.noticetype=='2' }">媒体报道</span>
+									<span th:if="${notice.noticetype=='3' }">管理团队</span>
+									<span th:if="${notice.noticetype=='4' }">合作伙伴</span>
+									<span th:if="${notice.noticetype=='5' }">团队风采</span>
+									<span th:if="${notice.noticetype=='6' }">首页图片</span>
 								</td>
-								<td data-target="#${list.noticeid }" data-toggle="modal">
-								${ft:substring(list.noticecontent,0,50) }...
-								</td>
-								<td data-target="#${list.noticeid }" data-toggle="modal">
-									<fmt:formatDate value="${list.noticelasttime }"/></td>
-								<td>
-								<a href=" notice/sgetno.do?ids=${list.noticeid}">修改</a>
+								<td th:attr="data-target=${notice.noticeid }" data-toggle="modal" th:text="${#strings.abbreviate(notice.noticecontent,50)}"></td>
+								<td th:attr="data-target=${notice.noticeid }" data-toggle="modal" th:text="${#dates.format(notice.noticelasttime,'yyyy-MM-dd')}"><td>
+								<a th:href="@{/bk/notice/sgetno(ids=${notice.noticeid})}">修改</a>
 								&nbsp;&nbsp;
-								<a href=" notice/nottop.do?ids=${list.noticeid}&isd=${list.noticetype}">置顶</a>
+								<a th:href="@{/bk/notice/nottop(ids=${notice.noticeid},isd=${notice.noticetype})}">置顶</a>
 								&nbsp;&nbsp;
-								<a href=" notice/notdel.do?ids=${list.noticeid}&isd=${list.noticetype}">删除</a>
+								<a th:href="@{/bk/notice/notdel(ids=${notice.noticeid},isd=${notice.noticetype})}">删除</a>
 								</td>
 							</tr>
 							
  							<!-- 弹出框 -->
-							<div class="modal fade" id="${list.noticeid }" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div th:id="${notice.noticeid }" style="display: none;">
 							  <div class="modal-dialog">
 							    <div class="modal-content">
 							      <div class="modal-header">
-							        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							        <button type="button" th:onclick="closeInfo([[${notice.noticeid}]])" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							        <h4 class="modal-title" id="myModalLabel">详情</h4>
 							      </div>
 							      <div class="modal-body">
-							        <div class="alert alert-danger"><b><font><font>图片描述: </font></font></b><font><font>${list.noticetitle }</font></font></div>
-							        <div class="alert alert-info"><b><font><font>图片链接: </font></font></b><font><font>${list.noticecontent }</font></font></div>
-							        <div class="alert alert-success"><b><font><font>图片: </font></font></b><font><font> </font><img alt="${list.noticetitle }" src="${list.noticepicture }" width="112" height="148"></font></div>
+							        <div class="alert alert-danger"><b><font><font>图片描述: </font></font></b><font><font>[[${notice.noticetitle }]]</font></font></div>
+							        <div class="alert alert-info"><b><font><font>图片链接: </font></font></b><font><font>[[${notice.noticecontent }]]</font></font></div>
+							        <div class="alert alert-success"><b><font><font>图片: </font></font></b><font><font> </font><img th:alt="${notice.noticetitle }" th:src="${notice.noticepicture }" width="112" height="148"></font></div>
 							        <div class="alert alert-danger"><b><font><font>通过类型: </font></font></b>
 							        	<font><font>
-											<c:if test="${list.noticetype=='1' }">网站公告</c:if>
-											<c:if test="${list.noticetype=='2' }">媒体报道</c:if>
-											<c:if test="${list.noticetype=='3' }">管理团队</c:if>
-											<c:if test="${list.noticetype=='4' }">合作伙伴</c:if>
-											<c:if test="${list.noticetype=='5' }">团队风采</c:if>
-											<c:if test="${list.noticetype=='6' }">首页图片</c:if>
+											<span th:if="${notice.noticetype=='1' }">网站公告</span>
+											<span th:if="${notice.noticetype=='2' }">媒体报道</span>
+											<span th:if="${notice.noticetype=='3' }">管理团队</span>
+											<span th:if="${notice.noticetype=='4' }">合作伙伴</span>
+											<span th:if="${notice.noticetype=='5' }">团队风采</span>
+											<span th:if="${notice.noticetype=='6' }">首页图片</span>
 										</font></font>
 									</div>
-							        <div class="alert alert-info"><b><font><font>最后修改时间: </font></font></b><font><font><fmt:formatDate value="${list.noticelasttime }"/></font></font></div>
+							        <div class="alert alert-info"><b><font><font>最后修改时间: </font></font></b><font><font th:text="${#dates.format(notice.noticelasttime,'yyyy-MM-dd')}"></font></font></div>
 							        
 							      </div>
 							      <div class="modal-footer">
-							        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							        <button th:onclick="closeInfo([[${notice.noticeid}]])" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 							      </div>
 							    </div>
 							  </div>
 							 </div>
 	                         <!--  -->
 		
-						</c:forEach>
+						</div>
 
 						</tbody>
-						<tbody>
-						<tbody>
-							<tr>
-								<td colspan="7" align="center">
-									<div class="btn-group" align="center">
-										<button type="button" class="btn btn-default">
-											<font><font>首页</font></font>
-											<tton>
-											<button type="button" class="btn btn-default">
-												<font><font>1</font></font>
-												<tton>
-													<button type="button" class="btn btn-default">
-														<font><font>末页</font></font>
-														<tton>
-									</div>
-								</td>
-
-							</tr>
+						<tbody th:if="${page.pages>0}">
+						<tr>
+							<td align="left">
+								共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
+							</td>
+							<td colspan="7" align="center">
+								<div class="btn-group" align="center">
+									<a th:href="@{/bk/notice/toaddlisttupian(current=1)}" class="btn btn-default">首页</a>
+									<span th:each="p:${#numbers.sequence(1,page.pages)}">
+                                            <a class="btn btn-default"  th:href="@{/bk/notice/toaddlisttupian(current=${p})}" th:text="${p}"></a>
+                                        </span>
+									<a th:href="@{/bk/notice/toaddlisttupian(current=${page.pages})}" class="btn btn-default">末页</a>
+								</div>
+							</td>
+						</tr>
 						</tbody>
-
+						<tr th:if="${page.pages<1}">
+							<td>
+								<h3 style="text-align: center">未找到任何数据！</h3>
+							</td>
+						</tr>
 					</table>
 				</div>
 				<!-- --/content-panel ---->
