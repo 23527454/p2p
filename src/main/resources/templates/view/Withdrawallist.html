@@ -188,14 +188,14 @@
 													class="btn" data-toggle="modal">查看</a>
 											</span>
 											<span th:if="${w.statu=='1' }">
-												<a id="mod" onclick="only('${w.wID}');" role="button"
+												<a id="mod" th:onclick="only([[${w.wID}]]);" role="button"
 													class="btn" data-toggle="modal">查看</a>
 											</span>
 											<span th:if="${w.statu=='2' }">
-												<a onclick="zhuan('${w.wID}')">转账</a>
+												<a th:onclick="zhuan([[${w.wID}]]);">转账</a>
 											</span>
 											<span th:if="${w.statu=='3' }">
-												<a onclick="shens('${w.wID}')">审核</a>
+												<a  th:onclick="shens([[${w.wID}]]);">审核</a>
 											</span>
 										</td>
 									</tr>
