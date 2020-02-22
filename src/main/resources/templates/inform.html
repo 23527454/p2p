@@ -33,12 +33,13 @@
 							</span>
 					</li>
 				</ul>
-				<div class="page">
-					<span class="count"></span>
-					<div class="fr pages">
-						<span data-page="1" class="currents">1</span>
-						<a data-page="17" class="last" href="#">尾页</a>
-					</div>
+				<div class="btn-group" align="center">
+					共<span th:text="${currpage}"></span>/
+					<span th:text="${totalPage}"></span>页
+					<a th:href="@{'/notice/wzgg?currpage='+1}">首页</a>
+					<a th:href="@{'/notice/wzgg?currpage='+${currpage-1}}">上一页</a>
+					<a th:href="@{'/notice/wzgg?currpage='+${currpage+1}}">下一页</a>
+					<a th:href="@{'/notice/wzgg?currpage='+${totalPage}}">末页</a>
 				</div>
 			</div>
 		</div>

@@ -33,22 +33,13 @@
 							</span>
 					</li>
 				</ul>
-				<div class="page">
-					<span class="all">共有n条信息</span>
-					<span class="count"></span>
-					<div class="fr pages">
-						<span data-page="1" class="currents">1</span>
-						<a data-page="2" href="#">2</a>
-						<a data-page="3" href="#">3</a>
-						<a data-page="4" href="#">4</a>
-						<a data-page="5" href="#">5</a>
-						<a data-page="6" href="#">6</a>
-						<span>...</span>
-						<a data-page="16" href="#">16 </a>
-						<a data-page="17" href="#">17 </a>
-						<a data-page="2" class="next" href="#">下一页</a>
-						<a data-page="17" class="last" href="#">尾页</a>
-					</div>
+				<div class="btn-group" align="center">
+					共<span th:text="${currpage}"></span>/
+					<span th:text="${totalPage}"></span>页
+					<a th:href="@{'/notice/mtbd?currpage='+1}">首页</a>
+					<a th:href="@{'/notice/mtbd?currpage='+${currpage-1}}">上一页</a>
+					<a th:href="@{'/notice/mtbd?currpage='+${currpage+1}}">下一页</a>
+					<a th:href="@{'/notice/mtbd?currpage='+${totalPage}}">末页</a>
 				</div>
 			</div>
 		</div>

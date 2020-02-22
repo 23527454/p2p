@@ -18,13 +18,13 @@
   <div class="contain" id="tabs" style="margin:0 auto;">
 <!--左导航栏-->
 	  <div th:include="common/gywm_left :: gywm_left" class="text-nav"></div>
-	  <div class="text-box" th:each="list:${list}">
+	  <div class="text-box">
 		  <div class="text-content" id="text-content">
 			  <h1 class="title">管理团队</h1>
 			  <p class="mt20 cn_line">
 				  亿人宝以金融创新基因吸引了来自国内五百强知名企业的业界精英，目前团队成员年轻朝气、充满活力，热爱新事物，勇于接受新挑战，团队成员有信心和决心，要用人人共享的理念在金融改革的浪潮中乘风破浪，要为普通大众创造财富增值的机会，为诚信经营者提供高效便捷的金融服务。
 			  </p>
-			  <div style="padding:20px 0;border-bottom:1px dashed #dbdbdb" class="clearfix">
+			  <div style="padding:20px 0;border-bottom:1px dashed #dbdbdb" class="clearfix" th:each="list:${list}">
 				  <div class="img fl" style="width:130px;">
 					  <img src="/images/lxw.jpg" alt="" >
 				  </div>

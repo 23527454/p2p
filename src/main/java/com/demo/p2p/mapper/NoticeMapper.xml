@@ -18,4 +18,12 @@
         noticeid, noticetitle, noticetype, noticepicture, noticecontent, noticelasttime, noticelastmodifier
     </sql>
 
+    <select id="findDope1" parameterType="map" resultType="com.demo.p2p.entity.Notice">
+    select * from notice where  noticetype=1  limit #{currpage},#{pagecount}
+    </select>
+
+    <select id="findDope2" parameterType="map" resultType="com.demo.p2p.entity.Notice">
+    select * from notice where  noticetype=2  limit #{currpage},#{pagecount}
+    </select>
+
 </mapper>
