@@ -160,7 +160,7 @@
       </div>
 
       <!--分页-->
-      <div class="pagination clearfix mrt30">
+      <div class="pagination clearfix mrt30" th:if="${page.pages>0}">
       <span class="page">
         <a th:href="@{/invest/investSel(current=1)}" onclick=""><!-- javascript:void(0); -->首页</a>
         <a th:href="@{/invest/investSel(current=${page.current-1 })}" onclick="">上一页</a>
@@ -169,6 +169,10 @@
         <a th:href="@{/invest/investSel(current=${page.pages })}" onclick="">尾页</a>&nbsp;
         <em>共[[${page.total}]]条信息，当前[[${page.current}]]页 / 共[[${page.pages }]]页&nbsp;</em>
       </span>
+      </div>
+
+      <div th:if="${page.pages<1}">
+        <h3 style="text-align: center">未找到任何数据！</h3>
       </div>
     </div>
   </div>

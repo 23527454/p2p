@@ -67,7 +67,6 @@ public class DopeController {
     @RequestMapping(value = "/grzx_sc")
     @ResponseBody
     public String grzx_sc(String delitems) {
-        System.out.println("传来的id:" + delitems);
         String[] item = delitems.split(",");
         List list = new ArrayList();
         for (int i = 0; i < item.length; i++) {

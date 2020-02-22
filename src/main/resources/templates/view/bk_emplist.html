@@ -102,7 +102,10 @@
 						</tbody>
 						<tbody>
 						<tbody>
-					<tr>
+					<tr th:if="${page.pages>0}">
+						<td align="left">
+							共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
+						</td>
 						<td colspan="7" align="center">
 							<div class="btn-group" align="center">
 								<a th:onclick="pageClick(1)" class="btn btn-default">首页</a>
@@ -111,6 +114,11 @@
 								</span>
 								<a th:onclick="pageClick([[${page.pages}]])" class="btn btn-default">末页</a>
 							</div>
+						</td>
+					</tr>
+					<tr th:if="${page.pages<1}">
+						<td>
+							<h3 style="text-align: center">未找到任何数据！</h3>
 						</td>
 					</tr>
 					<script>

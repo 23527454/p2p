@@ -143,9 +143,11 @@
 							</div>
 						</div>
 						</tbody>
-						<tbody>
-						<tbody>
+						<tbody th:if="${page.pages>0}">
 							<tr>
+								<td align="left">
+									共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
+								</td>
 								<td colspan="7" align="center">
 									<div class="btn-group" align="center">
 										<a th:href="@{/bk/notice/notlists(current=1)}" class="btn btn-default">首页</a>
@@ -157,7 +159,11 @@
 								</td>
 							</tr>
 						</tbody>
-
+						<tr th:if="${page.pages<1}">
+							<td>
+								<h3 style="text-align: center">未找到任何数据！</h3>
+							</td>
+						</tr>
 					</table>
 				</div>
 				<!-- --/content-panel ---->

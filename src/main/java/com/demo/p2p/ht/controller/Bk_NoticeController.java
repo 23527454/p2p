@@ -37,27 +37,72 @@ public class Bk_NoticeController {
     @Resource
     private Bk_NoticeService noticeService;
 
+    @RequestMapping(value = "/nottop")
+    public void nottop(Integer ids,HttpServletResponse response) throws IOException{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
+        Notice notice=noticeService.getById(ids);
+        notice.setNoticelasttime(new Date());
+        boolean result=noticeService.updateById(notice);
+        if(result){
+            out.print("<script>alert('置顶成功！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+        }else{
+            out.print("<script>alert('置顶失败！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+        }
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping(value = "/toaddlisttupian")
+    public String toaddlisttupian(Integer current,Model model){
+        QueryWrapper<Notice> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("noticetype","6");
+        queryWrapper.orderByDesc("noticelasttime");
+        if (current==null){
+            current=1;
+        }
+        Page<Notice> page=new Page<>(current,5);
+        IPage<Notice> iPage=noticeService.page(page,queryWrapper);
+        List<Notice> noticeList=iPage.getRecords();
+
+        model.addAttribute("list",noticeList);
+        model.addAttribute("page",page);
+        return "view/noticeaddlisttupian";
+    }
+
+    @RequestMapping(value = "/addtupian")
+    public String addtupian(){
+        return "view/noticeaddtupian";
+    }
+
     @RequestMapping(value = "/notdel")
     public void notdel(Integer ids,HttpServletResponse response) throws IOException{
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out=response.getWriter();
         Notice notice=noticeService.getById(ids);
-        String oldFileName=notice.getNoticepicture();
         boolean result=noticeService.removeById(ids);
         if (result){
             //删除图片
             File directory = new File("src/main/resources/static/file");
             String path = directory.getCanonicalPath();// 获得上传的路径
             //删除旧图片
-            File delFile=new File(path+oldFileName.substring(5));
+            File delFile=new File(path+notice.getNoticepicture().substring(5));
             if (delFile.exists()){
                 delFile.delete();
             }
-
-            out.print("<script>alert('删除成功！');window.location.href='/bk/notice/notlists';</script>");
+            if(notice.getNoticetype().equals("6")){
+                out.print("<script>alert('删除成功！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+            }else{
+                out.print("<script>alert('删除成功！');window.location.href='/bk/notice/notlists';</script>");
+            }
         }else{
-            out.print("<script>alert('删除失败！');window.location.href='/bk/notice/notlists';</script>");
+            if(notice.getNoticetype().equals("6")){
+                out.print("<script>alert('删除失败！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+            }else{
+                out.print("<script>alert('删除失败！');window.location.href='/bk/notice/notlists';</script>");
+            }
         }
         out.flush();
         out.close();
@@ -86,9 +131,17 @@ public class Bk_NoticeController {
 
                 boolean result=noticeService.save(notice);
                 if (result){
-                    out.print("<script>alert('添加成功！');window.location.href='/bk/notice/notlists';</script>");
+                    if(notice.getNoticetype().equals("6")){
+                        out.print("<script>alert('添加成功！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+                    }else{
+                        out.print("<script>alert('添加成功！');window.location.href='/bk/notice/notlists';</script>");
+                    }
                 }else{
-                    out.print("<script>alert('添加失败！');window.location.href='/bk/notice/toadd';</script>");
+                    if(notice.getNoticetype().equals("6")){
+                        out.print("<script>alert('添加失败！');window.location.href='/bk/notice/addtupian';</script>");
+                    }else{
+                        out.print("<script>alert('添加失败！');window.location.href='/bk/notice/toadd';</script>");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -135,15 +188,27 @@ public class Bk_NoticeController {
 
                 boolean result=noticeService.updateById(notice);
                 if (result){
-                    out.print("<script>alert('修改成功！');window.location.href='/bk/notice/notlists';</script>");
+                    if(notice.getNoticetype().equals("6")){
+                        out.print("<script>alert('修改成功！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+                    }else{
+                        out.print("<script>alert('修改成功！');window.location.href='/bk/notice/notlists';</script>");
+                    }
                 }else{
-                    out.print("<script>alert('修改失败！');window.location.href='/bk/notice/notlists';</script>");
+                    if(notice.getNoticetype().equals("6")){
+                        out.print("<script>alert('修改失败！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+                    }else{
+                        out.print("<script>alert('修改失败！');window.location.href='/bk/notice/notlists';</script>");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            out.print("<script>alert('修改失败，请检查图片是否存在异常！');window.location.href='/bk/notice/notlists';</script>");
+            if(notice.getNoticetype().equals("6")){
+                out.print("<script>alert('修改失败，请检查图片是否存在异常！');window.location.href='/bk/notice/toaddlisttupian';</script>");
+            }else{
+                out.print("<script>alert('修改失败，请检查图片是否存在异常！');window.location.href='/bk/notice/notlists';</script>");
+            }
         }
         out.flush();
         out.close();
@@ -163,6 +228,7 @@ public class Bk_NoticeController {
         if (ids!=null && ids!="" && !ids.equals("0")){
             queryWrapper.eq("noticetype",ids);
         }
+        queryWrapper.orderByDesc("noticelasttime");
         if (current==null){
             current=1;
         }
