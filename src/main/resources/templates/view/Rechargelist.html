@@ -37,16 +37,47 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 <script type="text/javascript">
+    function setCurrent(data) {
+        $("#current").val(data);
+        findother();
+    }
 	function findother(){
 		var uname = $('#uname').val();
 		var zflx = $('#zflx').val();
 		var statu = $('#statu').val();
 		var yyy = $('#yyy').val();
 		var yyyy = $('#yyyy').val();
-		if (yyy > yyyy) {
-			alert("第二个日期不能小于第一个日期");
-		} else {
-			location.href = "rech.do?uname=" + uname + "&yyy=" + yyy
+        var c=$('#current').val();
+        var current=0;
+        var timeyz=new RegExp("^(?:(?:([0-9]{4}(-|\/)(?:(?:0?[1,3-9]|1[0-2])(-|\/)(?:29|30)|((?:0?[13578]|1[02])(-|\/)31)))|([0-9]{4}(-|\/)(?:0?[1-9]|1[0-2])(-|\/)(?:0?[1-9]|1\\d|2[0-8]))|(((?:(\\d\\d(?:0[48]|[2468][048]|[13579][26]))|(?:0[48]00|[2468][048]00|[13579][26]00))(-|\/)0?2(-|\/)29))))$");
+        var status=false;
+        if(!isNaN(c)){
+            current = parseInt(c);
+        }
+
+        var start = new Date(yyy.replace("-", "/").replace("-", "/"));
+        var end = new Date(yyyy.replace("-", "/").replace("-", "/"));
+        if(yyy!=""){
+            if(timeyz.test(yyy)==false){
+                alert("起始时间不合法");
+            }else{
+                status=true;
+            }
+        }else if(yyyy!=""){
+            if(timeyz.test(yyyy)==false){
+                alert("截止时间不合法");
+            }else{
+                status=true;
+            }
+        }else{
+            status=true;
+        }
+        if (end < start) {
+            alert('截止时间不能小于起始时间！');
+            status=false;
+        }
+        if(status){
+			location.href = "/bk/rc/rech?current="+current+"&uname=" + uname + "&yyy=" + yyy
 					+ "&yyyy=" + yyyy + "&zflx=" + zflx+"&statu="+statu;
 		}
 	}
@@ -76,28 +107,31 @@
 				<h3>
 					&nbsp; &nbsp;<i class="fa fa-angle-right"></i> 充值记录
 				</h3>
-				<br> &nbsp; &nbsp; &nbsp; 
-				用户名：<input type="text"  id="uname">
+				<br> &nbsp; &nbsp; &nbsp;
+				<input type="hidden" name="current" id="current" th:value="${page.current}">
+				用户名：<input type="text" th:value="${uname}" id="uname">
 				 
-				 &nbsp; &nbsp; &nbsp; 
-				提交时间：<input type="text" readonly="readonly" id="yyy" class="Wdate"	onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})">--
-				<input type="text" readonly="readonly" id="yyyy" class="Wdate"	onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})">
+				 &nbsp; &nbsp; &nbsp;
+				提交时间：<input type="date" id="yyy" th:value="${yyy}" class="Wdate">--
+				<input type="date" id="yyyy" th:value="${yyyy}" class="Wdate">
 				 &nbsp; &nbsp;&nbsp; 
 				 <select id="zflx">
 				 	<option value="">请选择</option>
-				 	<option value="环迅支付">环迅支付</option>
-				 	<option value="固付宝">固付宝</option>
-				 	<option value="线下充值">线下充值</option>
-				 	<option value="手工充值">手工充值</option>
-				 	<option value="奖励充值">奖励充值</option>
+				 	<option th:selected="${zflx=='环迅支付'}" value="环迅支付">环迅支付</option>
+				 	<option th:selected="${zflx=='固付宝'}" value="固付宝">固付宝</option>
+				 	<option th:selected="${zflx=='线下充值'}" value="线下充值">线下充值</option>
+				 	<option th:selected="${zflx=='手工充值'}" value="手工充值">手工充值</option>
+				 	<option th:selected="${zflx=='奖励充值'}" value="奖励充值">奖励充值</option>
 				 </select>
 				 <select id="statu">
 				 	<option value="">请选择</option>
-				 	<option value="成功">成功</option>
-				 	<option value="失败">失败</option>
+				 	<option th:selected="${statu=='成功'}"  value="成功">成功</option>
+				 	<option th:selected="${statu=='失败'}"  value="失败">失败</option>
 				 </select>
 				 <button type="button" class="btn btn-default btn-danger"	onclick="findother()">查找</button>
-				 <br> <br>
+				&nbsp; &nbsp;&nbsp; 总计&nbsp; &nbsp;&nbsp; 充值总额：[[${czmoneyre }]]&nbsp; &nbsp;&nbsp; 到账总额：[[${dzmoneyre }]]
+				 <br>
+				<br>
 				 
 
 				<div class="row clearfix">
@@ -119,47 +153,45 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${lrc }" var="w" varStatus="i">
-									<tr>
-										<td>${i.index+1}</td>
-										<td>${w.uname }</td>
-										<td>${w.zname }</td>
-										<td>${w.czlx }</td>
-										<td>${w.lsh }</td>
-										<td>${w.czmoney }</td>
-										<td>${w.fl }</td>
-										<td>${w.dzmoney }</td>
-										<td><fmt:formatDate value="${w.cztime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-										<td>${w.statu }</td>
-										<td><a onclick="look('${w.uname }','${w.zname }','${w.czlx }','${w.lsh }','${w.czmoney }','${w.fl }','${w.dzmoney }','${w.cztime }','${w.statu }');">查看</a></td>
-									</tr>
-								</c:forEach>	
+							<tr th:each="w,wStat:${lrc}">
+								<td th:text="${wStat.count}"></td>
+								<td th:text="${w.uname }"></td>
+								<td th:text="${w.zname }"></td>
+								<td th:text="${w.czlx }"></td>
+								<td th:text="${w.lsh }"></td>
+								<td th:text="${w.czmoney }"></td>
+								<td th:text="${w.fl }"></td>
+								<td th:text="${w.dzmoney }"></td>
+								<td th:text="${#dates.format(w.cztime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${w.statu }"></td>
+								<td><a th:onclick="look([[${w.uname }]],[[${w.zname }]],[[${w.czlx }]],[[${w.lsh }]],[[${w.czmoney }]],[[${w.fl }]],[[${w.dzmoney }]],[[${w.cztime }]],[[${w.statu }]]);">查看</a></td>
+							</tr>
 							</tbody>			
 					</table>
-					
-					&nbsp; &nbsp;&nbsp; 总计&nbsp; &nbsp;&nbsp; 充值总额：${czmoneyre }&nbsp; &nbsp;&nbsp; 到账总额：${dzmoneyre }<br><br>
-					&nbsp; &nbsp;&nbsp; 共有${totalrow }条数据， <a href="putexcelr.do"><button type="button"
-						class="btn btn-default btn-inverse">导出excel</button></a> <br>
-					<br>&nbsp; &nbsp;&nbsp; 第${currpages }页/总${totalpage }页<br><br>&nbsp; &nbsp;&nbsp; 
-					<ul class="pagination">
-				<li>
-					 <a href="rech.do?currpage=1&uname=${uname }&yyy=${yyy}&yyyy=${yyyy}&statu=${statu}&zflx=${zflx}">首页</a>
-				</li>
-				<li>
-					 <a href="rech.do?currpage=${currpages-1 }&uname=${uname }&yyy=${yyy}&yyyy=${yyyy}&statu=${statu}&zflx=${zflx}">上一页</a>
-				</li>
-				<c:forEach begin="1" end="${totalpage }" varStatus="i">
-								<li><a
-									href="rech.do?currpage=${i.index}&uname=${uname }&yyy=${yyy}&yyyy=${yyyy}&statu=${statu}&zflx=${zflx}">${i.index}</a>
+
+						<div th:if="${page.pages>0}">
+							&nbsp; &nbsp;&nbsp; 共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
+							<ul class="pagination">
+								<li>
+									<a th:onclick="setCurrent(1)" href="#">首页</a>
 								</li>
-							</c:forEach>
-				<li>
-					 <a href="rech.do?currpage=${currpages+1}&uname=${uname }&yyy=${yyy}&yyyy=${yyyy}&statu=${statu}&zflx=${zflx}">下一页</a>
-				</li>
-				<li>
-					 <a href="rech.do?currpage=${totalpage}&uname=${uname }&yyy=${yyy}&yyyy=${yyyy}&statu=${statu}&zflx=${zflx}">尾页</a>
-				</li>
-			</ul>
+								<li th:if="${page.current>1}">
+									<a th:onclick="setCurrent([[${page.current-1 }]])" href="#">上一页</a>
+								</li>
+								<li th:each="p:${#numbers.sequence(1,page.pages)}">
+									<a th:onclick="setCurrent([[${p }]])" href="#">[[${p}]]</a>
+								</li>
+								<li th:if="${page.current<page.pages}">
+									<a th:onclick="setCurrent([[${page.current+1 }]])" href="#">下一页</a>
+								</li>
+								<li>
+									<a th:onclick="setCurrent([[${page.pages}]])" href="#">尾页</a>
+								</li>
+							</ul>
+						</div>
+						<div th:if="${page.pages<1}">
+							<h3 style="text-align: center">未找到任何数据！</h3>
+						</div>
 					</div>
 				</div>
 			</div>
