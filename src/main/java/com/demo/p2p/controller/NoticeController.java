@@ -27,13 +27,17 @@ import java.util.Map;
 @Controller
 @RequestMapping("/notice")
 public class NoticeController {
+
+    @Resource
+    private NoticeService noticeService;
+
     /**
      * 网站公告
      * @return
      */
     @RequestMapping(value = "/wzgg")
     public String wzgg(Model model,@RequestParam(value="currpage",required=false)String conent){
-        int pagecount = 1;//每页显示行数
+        int pagecount = 5;//每页显示行数
         int currpage = 1;//当前行数
         int totalPage = 0;//总页数
         int totalRow = 0;//总行数
@@ -68,11 +72,9 @@ public class NoticeController {
      * 媒体报道
      * @return
      */
-    @Resource
-    private NoticeService noticeService;
     @RequestMapping(value = "/mtbd")
     public String mtbd(Model model,@RequestParam(value="currpage",required=false)String conent){
-        int pagecount = 1;//每页显示行数
+        int pagecount = 5;//每页显示行数
         int currpage = 1;//当前行数
         int totalPage = 0;//总页数
         int totalRow = 0;//总行数

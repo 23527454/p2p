@@ -50,24 +50,9 @@
 	<!--banner-->
 	<div class="flexslider">
 		<ul class="slides">
-			<!--<c:forEach items="${sy}" var="nots">-->
-				<!--<li-->
-				<!--style="background-image: url(${nots.noticepicture}); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat;"-->
-				<!--class=""><a href="http://${nots.noticecontent }" target="_blank"></a></li>-->
-				<!--</c:forEach>
-				-->
-			<li
-					style="background-image: url('/images/banner.jpg'); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat;"
-					class=""><a href="http://${nots.noticecontent }" target="_blank"></a></li>
-			<li
-					style="background-image: url('/images/banner1.jpg'); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat;"
-					class=""><a href="http://${nots.noticecontent }" target="_blank"></a></li>
-			<li
-					style="background-image: url('/images/banner2.jpg'); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat;"
-					class=""><a href="http://${nots.noticecontent }" target="_blank"></a></li>
-			<li
-					style="background-image: url('/images/banner3.jpg'); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat;"
-					class=""><a href="http://${nots.noticecontent }" target="_blank"></a></li>
+			<li th:each="nots,notsStat:${sy}" class="" th:styleappend="'background-image:url('+${nots.noticepicture}+')'" style="width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat;">
+				<a th:href="'http://'+${nots.noticecontent }" target="_blank"></a>
+			</li>
 		</ul>
 	</div>
 	<script
@@ -713,14 +698,11 @@
 									</ul>
 								</div>
 							</div>
-
 						</div>
 					</div>
-				</div>
-				<div class="mrt20 mod">
-					<a href=" /demo.html"><img
-						src=" /images/pic_home_js.jpg" width="300" height="80"
-						alt="收益计算器" class="pic"></a>
+					<div class="mrt20 mod">
+						<a href="/sys/syjsq"><img src=" /images/pic_home_js.jpg" width="300" height="80" alt="收益计算器" class="pic"></a>
+					</div>
 				</div>
 			</div>
 		</div>

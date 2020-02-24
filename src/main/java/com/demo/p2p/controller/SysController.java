@@ -35,6 +35,11 @@ public class SysController {
         return "page/403";
     }
 
+    @RequestMapping(value = "/syjsq")
+    public String syjsq(){
+        return "demo";
+    }
+
     /**
      * 首页
      * @return
@@ -47,14 +52,18 @@ public class SysController {
         QueryWrapper<Notice> queryWrapper1=new QueryWrapper<>();
         QueryWrapper<Notice> queryWrapper2=new QueryWrapper<>();
         QueryWrapper<Notice> queryWrapper3=new QueryWrapper<>();
+        QueryWrapper<Notice> queryWrapper4=new QueryWrapper<>();
         queryWrapper.eq("noticetype",1);
         queryWrapper1.eq("noticetype",2);
         queryWrapper2.eq("noticetype",1);
         queryWrapper3.eq("noticeid",43);
+        queryWrapper4.eq("noticetype",6);
+        queryWrapper4.orderByDesc("noticelasttime");
         List<Notice> list = noticeService.select1(queryWrapper);
         List<Notice> list1 = noticeService.select1(queryWrapper1);
         List<Notice> list2 = noticeService.select1(queryWrapper2);
         List<Notice> list3 = noticeService.select1(queryWrapper3);
+        List<Notice> list4=noticeService.list(queryWrapper4);
         Integer certification = certificationService.certification();
         Integer usersnamecount = usersService.usersNameCount();
         Integer sumInmoney = investinfoService.sumInmoney();
@@ -63,6 +72,7 @@ public class SysController {
         mode.addAttribute("list1",list1);
         mode.addAttribute("list2",list2);
         mode.addAttribute("list3",list3);
+        mode.addAttribute("sy",list4);
         request.setAttribute("sumcertification",certification);
         request.setAttribute("sumuserscount",usersnamecount);
         request.setAttribute("sumInmoney",sumInmoney);
