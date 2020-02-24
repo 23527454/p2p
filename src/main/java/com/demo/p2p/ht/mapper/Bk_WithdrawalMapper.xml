@@ -29,6 +29,18 @@
     <select id="sellist" resultMap="BaseResultMap" parameterType="map">
         SELECT *  FROM  withdrawal
         where 1 = 1
+        <if test="uname != null">
+            and uname = #{uname}
+        </if>
+        <if test="yyy != null">
+            and txtime &gt;= #{yyy}
+        </if>
+        <if test="yyyy != null">
+            and txtime &lt;= #{yyyy}
+        </if>
+        <if test="statu != null">
+            and statu = #{statu}
+        </if>
         <if test="candp != null and pandc != null">
             limit #{candp},#{pandc};
         </if>
@@ -57,6 +69,18 @@
     <select id="sumdzmoney" resultType="Double" parameterType="map">
         SELECT SUM(dzmoney)  FROM  withdrawal
         where 1 = 1
+        <if test="uname != null">
+            and uname = #{uname}
+        </if>
+        <if test="yyy != null">
+            and txtime &gt;= #{yyy}
+        </if>
+        <if test="yyyy != null">
+            and txtime &lt;= #{yyyy}
+        </if>
+        <if test="statu != null">
+            and statu = #{statu}
+        </if>
         <if test="candp != null and pandc != null">
             limit #{candp},#{pandc};
         </if>
@@ -65,6 +89,18 @@
     <select id="sumsxf" resultType="Double" parameterType="map">
         SELECT SUM(sxf)  FROM  withdrawal
         where 1 = 1
+        <if test="uname != null">
+            and uname = #{uname}
+        </if>
+        <if test="yyy != null">
+            and txtime &gt;= #{yyy}
+        </if>
+        <if test="yyyy != null">
+            and txtime &lt;= #{yyyy}
+        </if>
+        <if test="statu != null">
+            and statu = #{statu}
+        </if>
         <if test="candp != null and pandc != null">
             limit #{candp},#{pandc};
         </if>
