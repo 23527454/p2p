@@ -52,7 +52,7 @@
 
 	}
 	function only(id) {
-		$.post("bajax.do", {
+		$.post("/bk/brower/bajax", {
 			"id" : id
 		}, function(date) {
 			
@@ -121,50 +121,50 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${wdlist }" var="w" varStatus="i">
-									<tr>
-										<td>${i.index+1}</td>
-										<td>${w.brelname }</td>
-										<td>${w.bpass }</td>
-										<td>${w.btitle }</td>
-										<td>${w.bmoney }</td>
-										<td>${w.brate }</td>
-										<td>${w.btimelimit }</td>
-										<td>${w.brecommend }</td>
-										<td><c:if test="${w.bleixing==0 }">车贷</c:if><c:if test="${w.bleixing==1 }">房贷</c:if> </td>
-										<td><c:if test="${w.bstate==0 }">提交申请未处理</c:if>
-										<c:if test="${w.bstate==1 }">后台审核通过(未还款)</c:if>
-										<c:if test="${w.bstate==2 }">审核失败</c:if>
-										<c:if test="${w.bstate==3 }">已还款</c:if></td>
-										<td><a onclick="only('${w.id}')">查看</a></td>
-									</tr>
-								</c:forEach>
+
+							<tr th:each="w,wStat:${wdlist}">
+								<td th:text="${wStat.count}"></td>
+								<td th:text="${w.brelname }"></td>
+								<td th:text="${w.bpass }"></td>
+								<td th:text="${w.btitle }"></td>
+								<td th:text="${w.bmoney }"></td>
+								<td th:text="${w.brate }"></td>
+								<td th:text="${w.btimelimit }"></td>
+								<td th:text="${w.brecommend }"></td>
+								<td th:text="${w.bleixing=='0'?'车贷':'房贷' }"></td>
+								<td>
+									<span th:if="${w.bstate=='0'}">提交申请未处理</span>
+									<span th:if="${w.bstate=='1'}">后台审核通过(未还款)</span>
+									<span th:if="${w.bstate=='2'}">审核失败</span>
+									<span th:if="${w.bstate=='3'}">已还款</span>
+								</td>
+								<td><a th:onclick="only([[${w.id}]])">查看</a></td>
+							</tr>
 							</tbody>
 						</table>
-						、<br> &nbsp;&nbsp;&nbsp;&nbsp; 共有${totalrow }条数据&nbsp;&nbsp;&nbsp;&nbsp;第${currpages }页/共${totalpage }页
-						<br> &nbsp;&nbsp;&nbsp;&nbsp;
-
-						<ul class="pagination">
-							<li><a
-								href="hjyList.do?currpage=1">
-									首页&nbsp;</a></li>
-							<li><a
-								href="hjyList.do?currpage=${currpages-1 }">上一页</a>
-							</li>
-							<c:forEach begin="1" end="${totalpage }" varStatus="i">
-								<li><a
-									href="hjyList.do?currpage=${i.index }">${i.index}</a>
+						<div th:if="${page.pages>0}">
+							&nbsp; &nbsp;&nbsp; 共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
+							<ul class="pagination">
+								<li>
+									<a  th:href="@{/bk/brower/hjyList(current=1)}">首页</a>
 								</li>
-							</c:forEach>
-
-							<li><a
-								href="hjyList.do?currpage=${currpages+1 }">下一页</a>
-							</li>
-							<li><a
-								href="hjyList.do?currpage=${totalpage }">
-									&nbsp;尾页</a></li>
-						</ul>
-
+								<li th:if="${page.current>1}">
+									<a th:href="@{/bk/brower/hjyList(current=${page.current-1 })}">上一页</a>
+								</li>
+								<li th:each="p:${#numbers.sequence(1,page.pages)}">
+									<a th:href="@{/bk/brower/hjyList(current=${p})}">[[${p}]]</a>
+								</li>
+								<li th:if="${page.current<page.pages}">
+									<a th:href="@{/bk/brower/hjyList(current=${page.current+1 })}">下一页</a>
+								</li>
+								<li>
+									<a th:href="@{/bk/brower/hjyList(current=${page.pages})}">尾页</a>
+								</li>
+							</ul>
+						</div>
+						<div th:if="${page.pages<1}">
+							<h3 style="text-align: center">未找到任何数据！</h3>
+						</div>
 					</div>
 				</div>
 			</div>

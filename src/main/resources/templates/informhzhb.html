@@ -21,21 +21,19 @@
     <div class="text-box">
 		<div class="text-content" id="text-content">
 			<h1 class="title">合作伙伴</h1>
-			<ul class="clearfix partner" th:each="list:${list}">
-				<li class="mt10 partner-item clearfix">
-					<a href="" th:href="@{'/notice/mtbdxq?ids='+${list.noticeid}}"  class="logo" style="margin-top:10px">
-						<img src="/images/ips.jpg" style="vertical-align:center">
-					</a>
-					<div class="text">
-						<h5 th:text="${list.noticetitle}">
-
-						</h5>
-						<p class="cn_line" style="text-indent:0;" th:text="${list.noticecontent}">
-
-						</p>
-					</div>
-				</li>
-			</ul>
+				<ul class="clearfix partner" th:each="notice,noticeStat:${list}">
+					<li class="mt10 partner-item clearfix">
+						<img th:src="${notice.noticepicture }" style="vertical-align:middle" width="300" height="171">
+						<div class="text">
+							<h5>
+								[[${notice.noticetitle }]]
+							</h5>
+							<p class="cn_line" style="text-indent:0;">
+								[[${notice.noticecontent }]]
+							</p>
+						</div>
+					</li>
+				</ul>
 		</div>
 	</div>
 

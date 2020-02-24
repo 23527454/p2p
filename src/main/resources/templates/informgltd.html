@@ -26,7 +26,7 @@
 			  </p>
 			  <div style="padding:20px 0;border-bottom:1px dashed #dbdbdb" class="clearfix" th:each="list:${list}">
 				  <div class="img fl" style="width:130px;">
-					  <img src="/images/lxw.jpg" alt="" >
+					  <img th:src="${list.noticepicture}" style="width: 127px;height: 173px" alt="" >
 				  </div>
 				  <div class="fl" style="width:790px;margin-left:20px;">
 					  <p>
