@@ -46,7 +46,7 @@
 		if (yyy > yyyy) {
 			alert("第二个日期不能小于第一个日期");
 		} else {
-			location.href = "wlist.do?wname=" + wname + "&yyy=" + yyy
+			location.href = "wlist_do?wname=" + wname + "&yyy=" + yyy
 					+ "&yyyy=" + yyyy + "&wstatu=" + wstatu;
 		}
 
@@ -163,57 +163,61 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${wdlist }" var="w" varStatus="i">
+								<span th:each="w,i:${session.wdlist }">
+
 									<tr>
-										<td>${i.index+1}</td>
-										<td>${w.uname }</td>
-										<td>${w.zname }</td>
-										<td>${w.txnum }</td>
-										<td>${w.txbank }</td>
-										<td>${w.txmoney }</td>
-										<td>${w.dzmoney }</td>
-										<td>${w.sxf }</td>
-										<td><fmt:formatDate value="${w.txtime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-										<td><fmt:formatDate value="${w.zztime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-										<td><c:if test="${w.statu=='0' }">失败</c:if> <c:if
-												test="${w.statu=='1' }">已提现</c:if> <c:if
-												test="${w.statu=='2' }">转账中</c:if> <c:if
-												test="${w.statu=='3' }">审核中</c:if></td>
-										<td><c:if test="${w.statu=='0' }">
-												<a id="mod" onclick="only('${w.wID}');" role="button"
+										<td th:text="${i.index+1}"></td>
+										<td th:text="${w.uname }"></td>
+										<td th:text="${w.zname }"></td>
+										<td th:text="${w.txnum }"></td>
+										<td th:text="${w.txbank }"></td>
+										<td th:text="${w.txmoney }"></td>
+										<td th:text="${w.dzmoney }"></td>
+										<td th:text="${w.sxf }"></td>
+										<td th:text="${#dates.format(w.txtime, 'yyyy-MM-dd')}"></td>
+										<td th:text="${#dates.format(w.zztime, 'yyyy-MM-dd')}"></td>
+										<td>
+											<span th:if="${w.statu=='0' }">失败</span>
+											<span th:if="${w.statu=='1' }">已提现</span>
+											<span th:if="${w.statu=='2' }">转账中</span>
+											<span th:if="${w.statu=='3' }">审核中</span>
+										</td>
+										<td>
+											<span th:if="${w.statu=='0' }">
+												<a id="mod" th:onclick="only([[${w.wID}]]);" role="button"
 													class="btn" data-toggle="modal">查看</a>
-											</c:if> <c:if test="${w.statu=='1' }">
-												<a id="mod" onclick="only('${w.wID}');" role="button"
+											</span>
+											<span th:if="${w.statu=='1' }">
+												<a id="mod" th:onclick="only([[${w.wID}]]);" role="button"
 													class="btn" data-toggle="modal">查看</a>
-											</c:if> <c:if test="${w.statu=='2' }"><a onclick="zhuan('${w.wID}')">转账</a></c:if> <c:if
-												test="${w.statu=='3' }"><a onclick="shens('${w.wID}')">审核</a></c:if></td>
+											</span>
+											<span th:if="${w.statu=='2' }">
+												<a th:onclick="zhuan([[${w.wID}]]);">转账</a>
+											</span>
+											<span th:if="${w.statu=='3' }">
+												<a  th:onclick="shens([[${w.wID}]]);">审核</a>
+											</span>
+										</td>
 									</tr>
-								</c:forEach>
+								</span>
 							</tbody>
 						</table>
-						&nbsp;&nbsp;&nbsp;&nbsp;总计：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提现总额：${suntxmoney }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;到账金额:${sumdzmoney}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手续费：${sumsxf}
-						<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 共有${totalrow }条数据&nbsp;&nbsp;&nbsp;&nbsp;第${currpages }页/共${totalpage }页
+						&nbsp;&nbsp;&nbsp;&nbsp;总计：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提现总额：<span th:text="${session.sumtxmoney }"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;到账金额:<span th:text="${session.sumdzmoney}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手续费：<span th:text="${session.sumsxf}"></span>
+						<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 共有<span th:text="${session.totalrow }"></span>条数据&nbsp;&nbsp;&nbsp;&nbsp;第<span th:text="${session.currpages }"></span>页/共<span th:text="${session.totalpage }"></span>页
 						<br> &nbsp;&nbsp;&nbsp;&nbsp;
 
 						<ul class="pagination">
-							<li><a
-								href="wlist.do?currpage=1&btn=${btn }&wname=${wname}&yyy=${yyy}&yyyy=${yyyy}&wstatu=${wstatu}">
+							<li><a th:href="@{wlist_do(currpage=${1 },btn=${session.btn},wname=${session.wname},yyy=${session.yyy},yyyy=${session.yyyy},wstatu=${session.wstatu})}">
 									首页&nbsp;</a></li>
-							<li><a
-								href="wlist.do?currpage=${currpages-1 }&btn=${btn }&wname=${wname}&yyy=${yyy}&yyyy=${yyyy}&wstatu=${wstatu}">上一页</a>
+							<li><a th:href="@{wlist_do(currpage=${session.currpages-1 },btn=${session.btn},wname=${session.wname},yyy=${session.yyy},yyyy=${session.yyyy},wstatu=${session.wstatu})}">上一页</a>
 							</li>
-							<c:forEach begin="1" end="${totalpage }" varStatus="i">
-								<li><a
-									href="wlist.do?currpage=${i.index }&btn=${btn }&wname=${wname}&yyy=${yyy}&yyyy=${yyyy}&wstatu=${wstatu}">${i.index}</a>
-								</li>
-							</c:forEach>
-
-							<li><a
-								href="wlist.do?currpage=${currpages+1 }&btn=${btn }&wname=${wname}&yyy=${yyy}&yyyy=${yyyy}&wstatu=${wstatu}">下一页</a>
+							<li>
+								<a th:href="@{wlist_do(currpage=${session.currpages+1 },btn=${session.btn},wname=${session.wname},yyy=${session.yyy},yyyy=${session.yyyy},wstatu=${session.wstatu})}">下一页</a>
 							</li>
-							<li><a
-								href="wlist.do?currpage=${totalpage }&btn=${btn }&wname=${wname}&yyy=${yyy}&yyyy=${yyyy}&wstatu=${wstatu}">
-									&nbsp;尾页</a></li>
+							<li>
+								<a th:href="@{wlist_do(currpage=${session.totalpage},btn=${session.btn},wname=${session.wname},yyy=${session.yyy},yyyy=${session.yyyy},wstatu=${session.wstatu})}">
+									&nbsp;尾页</a>
+							</li>
 						</ul>
 
 					</div>

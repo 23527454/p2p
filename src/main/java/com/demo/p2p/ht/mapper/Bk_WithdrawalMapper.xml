@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_WithdrawalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Withdrawal">
+        <id column="wID" property="wID" />
+        <result column="uID" property="uID" />
+        <result column="uname" property="uname" />
+        <result column="zname" property="zname" />
+        <result column="txnum" property="txnum" />
+        <result column="txbank" property="txbank" />
+        <result column="txmoney" property="txmoney" />
+        <result column="dzmoney" property="dzmoney" />
+        <result column="sxf" property="sxf" />
+        <result column="txtime" property="txtime" />
+        <result column="zztime" property="zztime" />
+        <result column="statu" property="statu" />
+        <result column="shwho" property="shwho" />
+        <result column="shtime" property="shtime" />
+        <result column="nothing" property="nothing" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        wID, uID, uname, zname, txnum, txbank, txmoney, dzmoney, sxf, txtime, zztime, statu, shwho, shtime, nothing
+    </sql>
+
+    <select id="sellist" resultMap="BaseResultMap" parameterType="map">
+        SELECT *  FROM  withdrawal
+        where 1 = 1
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
+
+    <select id="sumtxmoney" resultType="Double" parameterType="map">
+        SELECT SUM(txmoney) FROM  withdrawal
+        where 1 = 1
+        <if test="uname != null">
+            and uname = #{uname}
+        </if>
+        <if test="yyy != null">
+            and txtime &gt;= #{yyy}
+        </if>
+        <if test="yyyy != null">
+            and txtime &lt;= #{yyyy}
+        </if>
+        <if test="statu != null">
+            and statu = #{statu}
+        </if>
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
+
+    <select id="sumdzmoney" resultType="Double" parameterType="map">
+        SELECT SUM(dzmoney)  FROM  withdrawal
+        where 1 = 1
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
+
+    <select id="sumsxf" resultType="Double" parameterType="map">
+        SELECT SUM(sxf)  FROM  withdrawal
+        where 1 = 1
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
+</mapper>
