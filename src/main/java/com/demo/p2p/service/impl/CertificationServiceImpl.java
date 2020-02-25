@@ -45,6 +45,11 @@ public CertificationMapper certificationMapper;
     }
 
     @Override
+    public int updateMoney(int id, String cashFine) {
+        return certificationMapper.updateMoney(id,cashFine);
+    }
+
+    @Override
     public Certification getcserial(String cusername) {
         return certificationMapper.getcserial(cusername);
     }

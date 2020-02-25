@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author gzd
@@ -17,9 +17,14 @@ import java.util.List;
  */
 public interface CertificationService extends IService<Certification> {
     public Integer saveCertification(Certification certification);
+
     public Integer certification();
+
     public Certification selById(int id);
+
     public List<Certification> getcserial(QueryWrapper<Certification> queryWrapper);
+
+    public int updateMoney(int id, String cashFine);
 
     public Certification getcserial(String cusername);
 }
