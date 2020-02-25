@@ -118,16 +118,16 @@
 				<div class="mod-right mod-status">
 					<div class="inner">
 						<p>
-							<span th:if="${session.loginUser.uid == null }">
+							<span th:if="${session.loginUser == null }">
 								可用余额：<span id="canUseSum">登录后可显示余额</span>
 							</span>
-							<span th:if="${session.loginUser.uid != null }">
+							<span th:if="${session.loginUser != null }">
 								您的可用余额为:<span class="f24 c-333" th:text="${session.kymoney }"></span>
 							</span>
 						</p>
 					</div>
 					<br />
-					<div class="inner">
+					<div class="inner" th:if="${session.loginUser != null }">
 						<p>
 							剩余可投：
 							<span class="f24 c-333" id="investAmount" th:text="${session.Product.ptotalmoney - session.Product.pmoney}">元
@@ -139,20 +139,20 @@
 						</p>
 					</div>
 					<br />
-					<div class="inner">
+					<div class="inner"  th:if="${session.loginUser != null }">
 
 						<input class="input _userName" maxlength="24" tabindex="1"
 							type="text" placeholder="请输入投资金额" id="amount" onkeyup="reckon();"
 							onblur="focusblur(this)" />
 						<!--<input type="text" name="unickname" id="userName" class="input _userName" maxlength="24" tabindex="1" />-->
-						<button type="button" id="pushAll">全投</button>
+						<!--<button type="button" id="pushAll">全投</button>-->
 					</div>
 					<div class="inner">
-						<a
-							href="calculator.html?repayWay=3&amp;annualRate=9.00&amp;time=5"
-							class="icon icon-cal" id="calculator">详细收益明细</a>
 					</div>
-					<br /> <a class="ui-btn btn-gray" onclick="investA();">立即投标</a>
+					<br />
+					<span  th:if="${session.loginUser != null }">
+						<a class="ui-btn btn-gray" onclick="investA();">立即投标</a>
+					</span>
 					<!-- -------onclick="submit();"-------添加数据到后台 -->
 					<!-- 				<p class="agreement">点击按钮，即表示您已经阅读并认可《<a href="javascript:AgreeMent(0);">普金资本服务协议</a>》和《<a href="javascript:AgreeMent(1);">风险提示书</a>》，投资有风险，理财需谨慎。</p>
 				<div id="productJump"></div> -->

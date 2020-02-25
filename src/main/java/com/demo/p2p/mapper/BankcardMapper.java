@@ -19,4 +19,10 @@ public interface BankcardMapper extends BaseMapper<Bankcard> {
     @Select("SELECT * FROM bankcard WHERE uid = #{uid}")
     public List<Bankcard> getbank(@Param("uid")int uid);
 
+    /**
+     * 根据id查询账户
+     */
+    @Select("SELECT * FROM bankcard WHERE bid =  #{bid}")
+    public Bankcard getInfo(@Param("bid") int bid);
+
 }

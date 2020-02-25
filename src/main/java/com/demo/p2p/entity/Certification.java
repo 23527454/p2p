@@ -37,7 +37,7 @@ private static final long serialVersionUID=1L;
     /**
      * 可用余额
      */
-    private Double cbalance;
+    private String cbalance;
 
     /**
      * 冻结金额 
@@ -92,11 +92,11 @@ private static final long serialVersionUID=1L;
         this.crealname = crealname;
     }
 
-    public Double getCbalance() {
+    public String getCbalance() {
         return cbalance;
     }
 
-    public void setCbalance(Double cbalance) {
+    public void setCbalance(String cbalance) {
         this.cbalance = cbalance;
     }
 

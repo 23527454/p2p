@@ -27,4 +27,9 @@ public class BankcardServiceImpl extends ServiceImpl<BankcardMapper, Bankcard> i
     public List<Bankcard> getbank(int uid) {
         return bankcardMapper.getbank(uid);
     }
+
+    @Override
+    public Bankcard getInfo(int bid) {
+        return bankcardMapper.getInfo(bid);
+    }
 }

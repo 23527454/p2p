@@ -30,7 +30,7 @@
         SELECT *  FROM  withdrawal
         where 1 = 1
         <if test="uname != null">
-            and uname = #{uname}
+            and uname LIKE "%"#{uname}"%"
         </if>
         <if test="yyy != null">
             and txtime &gt;= #{yyy}

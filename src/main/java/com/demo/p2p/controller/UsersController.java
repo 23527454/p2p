@@ -183,7 +183,7 @@ public class UsersController {
         users.setUregisterdate(date);
         usersService.saveUser(users);
         certification.setCserial(usersService.getUserMaxId());
-        certification.setCbalance(0.0);
+        certification.setCbalance("0.0");
         certification.setCdue(0.0);
         certification.setCfreeze(0.0);
         certification.setCpaid(0.0);

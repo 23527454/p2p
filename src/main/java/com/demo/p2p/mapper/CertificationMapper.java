@@ -4,6 +4,7 @@ import com.demo.p2p.entity.Certification;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * <p>
@@ -26,4 +27,12 @@ public interface CertificationMapper extends BaseMapper<Certification> {
      */
     @Select("SELECT * FROM certification WHERE cusername =  #{cusername}")
     public Certification getcserial(@Param("cusername") String cusername);
+
+    /**
+     * 提现修改金额
+     */
+    @Update("UPDATE certification  SET cbalance = cbalance - #{cashFine}  \n" +
+            " WHERE id = #{id}")
+    public int updateMoney(@Param("id") int id,@Param("cashFine") String cashFine);
+
 }
