@@ -58,28 +58,28 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${list}" var="list" varStatus="status">
-								<tr>
-								
-									<td>${status.index+1 }</td>
-									<td>${list.bname }</td>
-									<td><a href=" biao/input.do?id=${list.id}">编辑</a>
-										&nbsp;&nbsp; <a
-										href=" biao/delete.do?id=${list.id}">删除</a></td>
-								</tr>
-							</c:forEach>
-							<tr align="center">
-								<td colspan="13">
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=1" class="btn btn-success btn-ms ">首页</a>
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=${currpages-1}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=${currpages+1}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=${totalpage}" class="btn btn-success btn-ms "> 尾页</a>
-									<font size="3">共<font
-										color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-										color="red">/${totalpage}</font>页
-									</font>
-								</td>
-							</tr>
+						<tr th:each="list,listStat:${lists}">
+							<td th:text="${listStat.count}"></td>
+							<td th:text="${list.bname }"></td>
+							<td>
+								<a th:href="@{/bk/biao/input(id=${list.id})}">编辑</a>&nbsp;&nbsp;
+								<a th:href="@{/bk/biao/delete(id=${list.id})}">删除</a>
+							</td>
+						</tr>
+						<tr align="center" th:if="${page.pages>0}">
+							<td colspan="19">
+								<a th:href="@{/bk/biao/list(current=1)}" class="btn btn-success btn-ms ">首页</a>
+								<a th:if="${page.current>1}" th:href="@{/bk/biao/list(current=${page.current-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
+								<a th:if="${page.current<page.pages}" th:href="@{/bk/biao/list(current=${page.current+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
+								<a th:href="@{/bk/biao/list(current=${page.pages})}" class="btn btn-success btn-ms "> 尾页</a>
+								<font size="3">共<font color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font color="red">/[[${page.pages}]]</font>页</font>
+							</td>
+						</tr>
+						<tr th:if="${page.pages<1}">
+							<td colspan="19">
+								<h3 style="text-align: center">未找到任何数据！</h3>
+							</td>
+						</tr>
 						</tbody>
 						<tbody>
 					</table>
