@@ -52,7 +52,7 @@
 
 	}
 	function only(id) {
-		$.post("ajax.do", {
+		$.post("ajax_do", {
 			"id" : id
 		}, function(date) {
 			//alert(date.uname);
@@ -93,7 +93,7 @@
 		}else{
 			gg=0;
 		}
-		location.href="zhuans.do?gg="+gg+"&wid="+wid;
+		location.href="zhuans_do?gg="+gg+"&wid="+wid;
 	}
 	function shens(wid){
 		var gg = null;
@@ -103,7 +103,7 @@
 		}else{
 			gg=0;
 		}
-		location.href="shen.do?gg="+gg+"&wid="+wid;
+		location.href="shen_do?gg="+gg+"&wid="+wid;
 	}
 </script>
 </head>
@@ -129,12 +129,12 @@
 				&nbsp; &nbsp; &nbsp;
 				<button type="button" class="btn btn-default btn-danger"
 					onclick="findother()">查找</button>
-				&nbsp; <a href="putexcel.do"><button type="button"
+				&nbsp; <a href="putexcel_do"><button type="button"
 						class="btn btn-default btn-inverse">导出excel</button></a> &nbsp; 用户名：<input
 					type="text" style="width: 170px" id="wname">&nbsp; 提交时间：<input
-					type="text" readonly="readonly" id="yyy" class="Wdate"
+					type="date" id="yyy" class="Wdate"
 					onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})">
-				&nbsp;<input type="text" readonly="readonly" id="yyyy" class="Wdate"
+				&nbsp;<input type="date" id="yyyy" class="Wdate"
 					onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})">
 				状态：<select id="wstatu">
 					<option value="">请选择</option>

@@ -105,4 +105,7 @@
             limit #{candp},#{pandc};
         </if>
     </select>
+    <update id="updmoney" parameterType="map"  >
+  	    update certification set cbalance = #{txmoney}+cbalance , ctotalmoney = #{txmoney}+ctotalmoney where cserial=#{uid}
+  	</update>
 </mapper>

@@ -80,22 +80,13 @@
 								<tr>
 									<td data-target="#${status.index+1}" data-toggle="modal"><a href="javascript:;">${status.index+1}</a>
 									</td>
-									<%--<td>${list.pmoney}</td>--%>		
 									<td data-target="#${status.index+1}" data-toggle="modal">${list.pincome}%</td>
 									<td data-target="#${status.index+1}" data-toggle="modal"><fmt:formatDate value="${list.ptime}" /></td>
 									<td data-target="#${status.index+1}" data-toggle="modal">${list.biao.bname }</td>
 									
-									<%-- <td>${list.pway}</td>
-									<td><fmt:formatDate value="${list.pcount}" /></td>
-									<td>${list.progress }%</td>
-									<td>${list.psaveway }</td>
-									<td>${list.prateben }</td> --%>
-									
 									<td data-target="#${status.index+1}" data-toggle="modal"><fmt:formatDate value="${list.ppublishtime}" /></td>
 									<td data-target="#${status.index+1}" data-toggle="modal">${list.pname }</td>
 									<td data-target="#${status.index+1}" data-toggle="modal">${list.ptotalmoney }</td>
-									<%-- <td>${list.prange }</td>
-									<td>${list.puse }</td> --%>
 									<td data-target="#${status.index+1}" data-toggle="modal"><c:if test="${list.pstate==1}">筹集中</c:if> <c:if
 											test="${list.pstate==2}">已筹集完</c:if> <c:if
 											test="${list.pstate==3}">失效</c:if></td>
@@ -105,9 +96,6 @@
 										</c:if> <c:if test="${list.picture==null}">
 											<input type="hidden" src=" ${list.picture}" />
 										</c:if></td>
-									<%-- <td>${list.users.uname}</td>
-									<td>${list.pdesc }</td>
-									<td>${list.psafe }</td> --%>
 									<td><a
 										href=" /product/biaolist.do?bid=${list.biao.id }">查看投标数</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/><a
 										href=" /product/delete.do?pid=${list.id}">删除</a>
