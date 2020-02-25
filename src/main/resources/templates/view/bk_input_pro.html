@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,101 +110,162 @@
 				<h4>
 					<i class="fa fa-angle-right"></i> 添加投标
 				</h4>
+
+				<script>
+					function tj() {
+                        var pincome=$("#pincome").val();
+                        var ptime=$("#ptime").val();
+                        var btype=$("#btype").val();
+                        var pway=$("#pway").val();
+                        var pcount=$("#pcount").val();
+                        var progress=$("#progress").val();
+                        var psaveway=$("#psaveway").val();
+                        var prateben=$("#prateben").val();
+                        var ppublishtime=$("#ppublishtime").val();
+                        var pname=$("#pname").val();
+                        var ptotalmoney=$("#ptotalmoney").val();
+                        var prange=$("#prange").val();
+                        var puse=$("#puse").val();
+                        var pstate=$("#pstate").val();
+                        var pictures=$("#pictures").get(0).files[0]
+                        var pproduce=$("#pproduce").val();
+                        var psafe=$("#psafe").val();
+                        var pdesc=$("#pdesc").val();
+
+						if (pincome==null || pincome==""){
+						    alert("预期年化收益不可为空！");
+						}else if(ptime==null || ptime==""){
+                            alert("项目期限不可为空！");
+                        }else if(btype==null || btype==""){
+                            alert("类型不可为空！");
+                        }else if(pway==null || pway==""){
+                            alert("还款方式不可为空！");
+                        }else if(pcount==null || pcount==""){
+                            alert("借款期限不可为空！");
+                        }else if(progress==null || progress==""){
+                            alert("投资进度不可为空！");
+                        }else if(psaveway==null || psaveway==""){
+                            alert("保障方式不可为空！");
+                        }else if(prateben==null || prateben==""){
+                            alert("需还本息不可为空！");
+                        }else if(ppublishtime==null || ppublishtime==""){
+                            alert("发布时间不可为空！");
+                        }else if(pname==null || pname==""){
+                            alert("产品名称不可为空！");
+                        }else if(ptotalmoney==null || ptotalmoney==""){
+                            alert("募集资金不可为空！");
+                        }else if(prange==null || prange==""){
+                            alert("投资范围不可为空！");
+                        }else if(puse==null || puse==""){
+                            alert("资金用途不可为空！");
+                        }else if(pstate==null || pstate==""){
+                            alert("状态不可为空！");
+                        }else if(!pictures){
+                            alert("封面不可为空！");
+                        }else if(pictures.size>1048576){
+                            alert("封面不可大于1m！");
+                        }else if(pproduce==null || pproduce==""){
+                            alert("标主ID不可为空！");
+                        }else if(pproduce!=null && pproduce!=""){
+							$.post("/bk/users/checkId","ids="+pproduce,function (data) {
+								if (data){
+                                    if(psafe==null || psafe==""){
+                                        alert("保障措施不可为空！");
+                                    }else if(pdesc==null || pdesc==""){
+                                        alert("项目描述不可为空！");
+                                    }else{
+                                        $("#inputForm").submit();
+                                    }
+								}else{
+                                    alert("不存在该用户！");
+								}
+                            });
+						}
+                    }
+				</script>
 				<!-- 页面内容 -->
-				<form:form id="inputForm" modelAttribute="domain"
+				<form id="inputForm" modelAttribute="domain"
 					class="form-horizontal tasi-form"
-					action="${pageContext.request.contextPath}/product/save.do"
+					action="/bk/product/save"
 					method="post" enctype="multipart/form-data">
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">预期年化收益<font
+						<label class="col-sm-2 control-label col-lg-2" >预期年化收益<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pincome" path="pincome"
+							<input id="pincome" name="pincome"
 								cssClass="form-control input-sm" maxlength="11" />
-
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">项目期限<font
+						<label class="col-sm-2 control-label col-lg-2" >项目期限<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="ptime" path="ptime"
-								cssClass="form-control input-sm" maxlength="11" readonly="true"
+							<input type="date" id="ptime" name="xmqx"
+								cssClass="form-control input-sm" maxlength="11"
 								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
-
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2  control-label"> 类型：</label>
 						<div class="col-sm-5">
-							<select class="form-control" name="btype"><option value="请选择">请选择</option>
-								<c:forEach var="list" items="${blist}">
-									<option >${list.bname}</option>
-								</c:forEach>
+							<select class="form-control" id="btype" name="ptype">
+								<option th:each="list,listStat:${blist}" th:value="${list.id}" th:text="${list.bname}"></option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">还款方式<font
+						<label class="col-sm-2 control-label col-lg-2" >还款方式<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pway" path="pway"
-								cssClass="form-control input-sm" maxlength="11" />
-
+							<select class="form-control" id="pway" name="pway">
+								<option value="到期还本付息">到期还本付息</option>
+								<option value="按月付息,到期还本">按月付息,到期还本</option>
+								<option value="等额本息">等额本息</option>
+							</select>
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">借款期限<font
+						<label class="col-sm-2 control-label col-lg-2" >借款期限<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pcount" path="pcount"
-								cssClass="form-control input-sm" maxlength="11" readonly="true"
+							<input type="date" id="pcount" name="jkqx"
+								cssClass="form-control input-sm" maxlength="11"
 								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"  />
-
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">投资进度<font
+						<label class="col-sm-2 control-label col-lg-2" >投资进度<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="progress" path="progress"
+							<input id="progress" name="progress"
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">投资进度<font
+						<label class="col-sm-2 control-label col-lg-2" >保障方式<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="progress" path="progress"
+							<input id="psaveway" name="psaveway"
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">保障方式<font
+						<label class="col-sm-2 control-label col-lg-2" >需还本息<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="psaveway" path="psaveway"
+							<input id="prateben" name="prateben"
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">需还本息<font
+						<label class="col-sm-2 control-label col-lg-2" >发布时间<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="prateben" path="prateben"
-								cssClass="form-control input-sm" maxlength="11" />
-
-						</div>
-					</div>
-					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">发布时间<font
-							color="red"> *</font></label>
-						<div class="col-lg-5">
-							<form:input id="ppublishtime" path="ppublishtime"
-								cssClass="form-control input-sm" readonly="true"
+							<input type="date" id="ppublishtime" name="fbsj"
+								cssClass="form-control input-sm"
 								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
 						</div>
 					</div>
@@ -212,7 +273,7 @@
 						<label class="col-sm-2 control-label col-lg-2" for="pname">产品名称<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pname" path="pname"
+							<input id="pname" name="pname"
 								cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
@@ -221,16 +282,16 @@
 						<label class="col-sm-2 control-label col-lg-2" for="ptotalmoney">募集资金<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="ptotalmoney" path="ptotalmoney"
+							<input id="ptotalmoney" name="ptotalmoney"
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="prate">投资范围<font
+						<label class="col-sm-2 control-label col-lg-2" >投资范围<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="prange" path="prange"
+							<input id="prange" name="prange"
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
@@ -239,26 +300,29 @@
 						<label class="col-sm-2 control-label col-lg-2" for="puse">资金用途<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="puse" path="puse"
+							<input id="puse" name="puse"
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="pinway">状态<font
+						<label class="col-sm-2 control-label col-lg-2">状态<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pstate" path="pstate"
-								cssClass="form-control input-sm" maxlength="11" />
-
+							<select class="form-control" id="pstate" name="pstate">
+								<option value="1">筹资中</option>
+								<option value="2">筹资完</option>
+								<option value="3">失效</option>
+								<option value="4">项目完成</option>
+							</select>
 						</div>
 					</div>
 
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="psource">封面<font
+						<label class="col-sm-2 control-label col-lg-2">封面<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input type="file" name="pictures"
+							<input type="file" id="pictures" name="ufile"
 								cssClass="form-control input-sm" />
 						</div>
 					</div>
@@ -266,7 +330,7 @@
 						<label class="col-sm-2 control-label col-lg-2" for="pproduce">标主ID<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pproduce" path="pproduce"
+							<input id="pproduce" name="pproduce"
 								cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
@@ -274,7 +338,7 @@
 						<label class="col-sm-2 control-label col-lg-2" for="pproduce">保障措施<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="psafe" path="psafe"
+							<input id="psafe" name="psafe"
 								cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
@@ -282,25 +346,17 @@
 						<label class="col-sm-2 control-label col-lg-2" for="pdesc">项目描述<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="pdesc" path="pdesc"
+							<input id="pdesc" name="pdesc"
 								cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
-					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="psafe">保障措施<font
-							color="red"> *</font></label>
-						<div class="col-lg-5">
-							<form:input id="psafe" path="psafe"
-								cssClass="form-control input-sm" maxlength="11" />
-						</div>
-					</div>
+<!--
 
-					<%-- 
 					<div class="form-group has-success">
 						<label class="col-sm-2 control-label col-lg-2" for="details.dname">详情标题<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="details.dname" path="details.dname"
+							<input id="details.dname" name="details.dname"
 								cssClass="form-control input-sm" maxlength="11" />
 							 
 						</div>
@@ -309,12 +365,12 @@
 						<label class="col-sm-2 control-label col-lg-2" for="details.dcontent">详情内容<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<form:input id="details.dcontent" path="details.dcontent"
+							<input id="details.dcontent" name="details.dcontent"
 								cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="details.dtype">详情类型<font
+						<label class="col-sm-2 control-label col-lg-2">详情类型<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
 						<select class="form-control" name="details.dtype"><option>请选择</option>
@@ -323,12 +379,13 @@
 									<option value="2">图片信息模块</option>
 							</select>
 						</div>
-					</div> --%>
+					</div>
+-->
 					<br />
 					<br />
-					<button type="submit" class="btn btn-primary btn-lg btn-block">点击提交</button>
+					<button type="button" onclick="tj()" class="btn btn-primary btn-lg btn-block">点击提交</button>
 
-				</form:form>
+				</form>
 				<!-- 页面内容 -->
 			</div>
 			<!-- 内容结束 -->

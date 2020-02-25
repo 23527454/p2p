@@ -53,56 +53,43 @@
 						<thead>
 							<tr>
 								<th>序号</th>
-								<!-- <th>已募集总金额</th> -->
 								<th>预期年化收益</th>
 								<th>项目期限</th>
 								<th>类型</th>
-								<!-- <th>还款方式</th>--
-								<th>借款期限</th>--
-								<th>投资进度</th>--
-								<th>保障方式</th>--
-								<th>需还本息</th>-- -->
 								<th>发布时间</th>
 								<th>产品名称</th>
 								<th>募集资金</th>
-								<!-- <th>投资范围</th>--
-								<th>资金用途</th>-- -->
 								<th>状态</th>
-								<!-- <th>封面</th>--
-								<th>标主姓名</th>--
-								<th>项目描述</th>--
-								<th>保障措施</th>-- -->
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${list}" var="list" varStatus="status">
+							<div th:each="list,listStat:${lists}">
 								<tr>
-									<td data-target="#${status.index+1}" data-toggle="modal"><a href="javascript:;">${status.index+1}</a>
+									<td data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal">
+										<a href="javascript:;" th:text="${listStat.count}"></a>
 									</td>
-									<td data-target="#${status.index+1}" data-toggle="modal">${list.pincome}%</td>
-									<td data-target="#${status.index+1}" data-toggle="modal"><fmt:formatDate value="${list.ptime}" /></td>
-									<td data-target="#${status.index+1}" data-toggle="modal">${list.biao.bname }</td>
-									
-									<td data-target="#${status.index+1}" data-toggle="modal"><fmt:formatDate value="${list.ppublishtime}" /></td>
-									<td data-target="#${status.index+1}" data-toggle="modal">${list.pname }</td>
-									<td data-target="#${status.index+1}" data-toggle="modal">${list.ptotalmoney }</td>
-									<td data-target="#${status.index+1}" data-toggle="modal"><c:if test="${list.pstate==1}">筹集中</c:if> <c:if
-											test="${list.pstate==2}">已筹集完</c:if> <c:if
-											test="${list.pstate==3}">失效</c:if></td>
-									<td data-target="#${status.index+1}" data-toggle="modal"><c:if test="${list.picture!=null&&list.picture!=''}">
-											<img  width="70px" heigth="70px"
-												src="${list.picture}" />
-										</c:if> <c:if test="${list.picture==null}">
-											<input type="hidden" src=" ${list.picture}" />
-										</c:if></td>
-									<td><a
-										href=" /product/biaolist.do?bid=${list.biao.id }">查看投标数</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/><a
-										href=" /product/delete.do?pid=${list.id}">删除</a>
+									<td th:text="${list.pincome}+'%'" data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal"></td>
+									<td th:text="${#dates.format(list.ptime,'yyyy-MM-dd')}" data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal"></td>
+									<td th:text="${list.biao.bname }" data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal"></td>
+									<td th:text="${#dates.format(list.ppublishtime,'yyyy-MM-dd')}" data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal"></td>
+									<td th:text="${list.pname }" data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal"></td>
+									<td th:text="${list.ptotalmoney }" data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal"></td>
+									<td data-target="#" th:attr="data-target=${listStat.count}" data-toggle="modal">
+										<span th:if="${list.pstate=='1'}">筹集中</span>
+										<span th:if="${list.pstate=='2'}">已筹集完</span>
+										<span th:if="${list.pstate=='3'}">失效</span>
+									</td>
+									<td data-target="#" th:attr="data-target=${listStat.count}">
+										<img th:if="${list.picture!=null&&list.picture!=''}" width="70px" heigth="70px" th:src="${list.picture}" />
+										<input th:if="${list.picture==null}" type="hidden" th:src="${list.picture}" />
+									</td>
+									<td><a th:href="@{/bk/product/biaolist(pid=${list.id })}">查看投标数</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+										<a th:href="@{/bk/product/delete(pid=${list.id })}">删除</a>
 										</td>
 								</tr>
 								<!-- 弹出框 -->
-								<div class="modal fade" id="${status.index+1}" tabindex="-1"
+								<div class="modal fade" th:id="${listStat.count}" tabindex="-1"
 									role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -114,81 +101,79 @@
 											<div class="modal-body">
 												<div class="alert alert-success">
 													<b><font><font>序号 </font></font></b><font><font>
-															${status.index+1}</font></font>
+															[[${listStat.count}]]</font></font>
 												</div>
 												<div class="alert alert-success">
 													<b><font><font>已募集总金额 </font></font></b><font><font>
-															${list.pmoney}</font></font>
+															[[${list.pmoney}]]</font></font>
 												</div>
 												<div class="alert alert-info">
-													<b><font><font>预期年化收益 </font></font></b><font><font>${list.pincome}%</font></font>
+													<b><font><font>预期年化收益 </font></font></b><font><font>[[${list.pincome}]]%</font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>项目期限 </font></font></b><font><font>${list.pmoney }</font></font>
+													<b><font><font>项目期限 </font></font></b><font><font>[[${list.pmoney }]]</font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>类型</font></font></b><font><font>${list.biao.bname }</font></font>
+													<b><font><font>类型</font></font></b><font><font>[[${list.biao.bname }]]</font></font>
 												</div>
 												<div class="alert alert-success">
-													<b><font><font>还款方式 </font></font></b><font><font>${list.pway}
+													<b><font><font>还款方式 </font></font></b><font><font>[[${list.pway}]]
 													</font></font>
 												</div>
 												<div class="alert alert-success">
-													<b><font><font>借款期限 </font></font></b><font><font>${list.pcount}
+													<b><font><font>借款期限 </font></font></b><font><font>[[${list.pcount}]]
 													</font></font>
 												</div>
 												<div class="alert alert-success">
-													<b><font><font>投资进度 </font></font></b><font><font>${list.progress }
+													<b><font><font>投资进度 </font></font></b><font><font>[[${list.progress }]]
 													</font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>保障方式 </font></font></b><font><font>
-															${list.psaveway } </font></font>
+															[[${list.psaveway }]] </font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>需还本息</font></font></b><font><font>
-															${list.prateben } </font></font>
+															[[${list.prateben }]] </font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>发布时间 </font></font></b><font><font>
-															<fmt:formatDate value="${list.ppublishtime}" />
-													</font></font>
+													<b><font><font>发布时间 </font></font></b><font><font th:text="${#dates.format(list.ppublishtime,'yyyy-MM-dd')}"></font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>产品名称 </font></font></b><font><font>
-															${list.pname } </font></font>
+															[[${list.pname }]] </font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>募集资金 </font></font></b><font><font>${list.ptotalmoney }
+													<b><font><font>募集资金 </font></font></b><font><font>[[${list.ptotalmoney }]]
 													</font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>投资范围 </font></font></b><font><font>${list.prange }
+													<b><font><font>投资范围 </font></font></b><font><font>[[${list.prange }]]
 													</font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>资金用途 </font></font></b><font><font>
-															${list.puse } </font></font>
+															[[${list.puse }]] </font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>状态 </font></font></b><font><font>
-															${list.pstate } </font></font>
+															[[${list.pstate }]] </font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>封面 </font></font></b><font><font>${list.picture }
+													<b><font><font>封面 </font></font></b><font><font>[[${list.picture }]]
 													</font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>标主姓名 </font></font></b><font><font>
-															${list.users.uname} </font></font>
+															[[${list.users.uname}]] </font></font>
 												</div>
 												<div class="alert alert-danger">
-													<b><font><font>项目描述 </font></font></b><font><font>${list.pdesc }
+													<b><font><font>项目描述 </font></font></b><font><font>[[${list.pdesc }]]
 													</font></font>
 												</div>
 												<div class="alert alert-danger">
 													<b><font><font>保障措施 </font></font></b><font><font>
-															${list.psafe } </font></font>
+															[[${list.psafe }]] </font></font>
 												</div>
 											</div>
 											<div class="modal-footer">
@@ -199,23 +184,23 @@
 									</div>
 								</div>
 								<!--  -->
-							</c:forEach>
+							</div>
 
 						</tbody>
 						<tbody>
-							<tr align="center">
-								<td colspan="19"><a
-									href="${pageContext.request.contextPath}/product/list.do?currpage=1"
-									class="btn btn-success btn-ms ">首页</a> <a
-									href="${pageContext.request.contextPath}/product/list.do?currpage=${currpages-1}"
-									class="btn btn-success btn-ms ">&lt;&lt;上一页</a> <a
-									href="${pageContext.request.contextPath}/product/list.do?currpage=${currpages+1}"
-									class="btn btn-success btn-ms "> 下一页&gt;&gt;</a> <a
-									href="${pageContext.request.contextPath}/product/list.do?currpage=${totalpage}"
-									class="btn btn-success btn-ms "> 尾页</a> <font size="3">共<font
-										color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-										color="red">/${totalpage}</font>页
-								</font></td>
+							<tr align="center" th:if="${page.pages>0}">
+								<td colspan="19">
+									<a th:href="@{/bk/product/list(current=1)}" class="btn btn-success btn-ms ">首页</a>
+									<a th:if="${page.current>1}" th:href="@{/bk/product/list(current=${page.current-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
+									<a th:if="${page.current<page.pages}" th:href="@{/bk/product/list(current=${page.current+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
+									<a th:href="@{/bk/product/list(current=${page.pages})}" class="btn btn-success btn-ms "> 尾页</a>
+									<font size="3">共<font color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font color="red">/[[${page.pages}]]</font>页</font>
+								</td>
+							</tr>
+							<tr th:if="${page.pages<1}">
+								<td colspan="19">
+									<h3 style="text-align: center">未找到任何数据！</h3>
+								</td>
 							</tr>
 						</tbody>
 
