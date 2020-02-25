@@ -9,6 +9,7 @@ import com.demo.p2p.ht.service.Bk_UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,6 +27,18 @@ import java.util.List;
 public class Bk_UsersController {
     @Resource
     private Bk_UsersService usersService;
+
+    @RequestMapping(value = "/checkId")
+    @ResponseBody
+    public boolean checkId(String ids){
+        Integer id=Integer.parseInt(ids);
+        Users users=usersService.getById(id);
+        if (users!=null) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     @RequestMapping(value = "/list")
     public String list(Integer current, String unickname,Model model){

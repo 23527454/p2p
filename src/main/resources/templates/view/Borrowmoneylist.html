@@ -146,7 +146,7 @@
 							&nbsp; &nbsp;&nbsp; 共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页
 							<ul class="pagination">
 								<li>
-									<a  th:href="@{/bk/brower/hjyList(current=1)}">首页</a>
+									<a th:href="@{/bk/brower/hjyList(current=1)}">首页</a>
 								</li>
 								<li th:if="${page.current>1}">
 									<a th:href="@{/bk/brower/hjyList(current=${page.current-1 })}">上一页</a>
