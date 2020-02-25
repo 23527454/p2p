@@ -194,10 +194,9 @@ public class InvestinfoController {
         }
         if (pro.getPstate().equals("1")) {
             Users us = (Users) req.getSession().getAttribute("loginUser");
-            us.getUname();
             if (us != null) {
                 Certification certification = certificationService.selById(us.getUid());
-                Double kymoney = certification.getCbalance();
+                String kymoney = "" + certification.getCbalance();
                 System.out.println("进入到输入金额页面  用户余额" + kymoney);
                 session.setAttribute("kymoney", kymoney);
             }
@@ -245,8 +244,9 @@ public class InvestinfoController {
             session.removeAttribute("Details");
             investinfoService.addInfo(ii);//添加投资记录
 
-            double kym = (Double) session.getAttribute("kymoney");//可用总金额
-            double nkym = kym - money;//扣除投资后剩余的可用金额
+            String kym1 = (String) session.getAttribute("kymoney");//可用总金额
+            double kym = Double.valueOf(kym1);
+            String nkym = "" + (kym - money);//扣除投资后剩余的可用金额
             Certification certification = new Certification();
             certification.setId(user.getUid());
             certification.setCbalance(nkym);

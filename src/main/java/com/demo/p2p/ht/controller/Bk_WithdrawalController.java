@@ -35,22 +35,27 @@ public class Bk_WithdrawalController {
         int totalrow = 0;// 总行数
         Map<String, Object> parameters = new HashMap<String, Object>();
         if (wname != null && wname != ""){
+            System.out.println("uname："+wname);
             parameters.put("uname",wname);
             session.setAttribute("wname",wname);
         }
         if (yyy != null && yyy != ""){
+            System.out.println("yyy："+yyy);
             parameters.put("yyy",yyy);
             session.setAttribute("yyy",yyy);
         }
         if (yyyy != null && yyyy != ""){
+            System.out.println("yyyy："+yyyy);
             parameters.put("yyyy",yyyy);
             session.setAttribute("yyyy",yyyy);
         }
         if (wstatu != null){
+            System.out.println("statu："+wstatu);
             parameters.put("statu",wstatu);
             session.setAttribute("statu",wstatu);
         }
         if (btn != null){
+            System.out.println("statu："+btn);
             parameters.put("statu",btn);
             session.setAttribute("btn",btn);
         }
@@ -93,8 +98,8 @@ public class Bk_WithdrawalController {
         double sumsxf = 0;
         parameters.put("pandc", 5);
         parameters.put("candp", candp);
-        list = bk_withdrawalService.sellist(parameters);
-        for (Withdrawal withdrawal : list) {
+        List<Withdrawal> sellist = bk_withdrawalService.sellist(parameters);
+        for (Withdrawal withdrawal : sellist) {
             sumtxmoney += withdrawal.getTxmoney();
             sumdzmoney += withdrawal.getDzmoney();
             sumsxf += withdrawal.getSxf();
@@ -105,7 +110,7 @@ public class Bk_WithdrawalController {
         session.setAttribute("sumtxmoney",sumtxmoney);
         session.setAttribute("sumdzmoney",sumdzmoney);
         session.setAttribute("sumsxf",sumsxf);
-        session.setAttribute("wdlist",list);
+        session.setAttribute("wdlist",sellist);
         return "view/Withdrawallist";
     }
 }
