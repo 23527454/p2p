@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.mapper.PoundageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.entity.Poundage">
+        <id column="pID" property="pID" />
+        <result column="uID" property="uID" />
+        <result column="uname" property="uname" />
+        <result column="zname" property="zname" />
+        <result column="sxmoney" property="sxmoney" />
+        <result column="what" property="what" />
+        <result column="sxtime" property="sxtime" />
+        <result column="Localaccount" property="Localaccount" />
+        <result column="bookaccount" property="bookaccount" />
+        <result column="paytype" property="paytype" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        pID, uID, uname, zname, sxmoney, what, sxtime, Localaccount, bookaccount, paytype
+    </sql>
+
+</mapper>
