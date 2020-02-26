@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_BorrowcordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Borrowcord">
+        <id column="boid" property="boid" />
+        <result column="bid" property="bid" />
+        <result column="bdate" property="bdate" />
+        <result column="bstatue" property="bstatue" />
+        <result column="bcs" property="bcs" />
+        <result column="bz1" property="bz1" />
+        <result column="bz2" property="bz2" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        boid, bid, bdate, bstatue, bcs, bz1, bz2
+    </sql>
+
+</mapper>

@@ -53,6 +53,11 @@ public class Bk_TradeController {
         Page<Trade> page=new Page<>(current,5);
         IPage<Trade> iPage=tradeService.page(page,queryWrapper);
         List<Trade> list=iPage.getRecords();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=tradeService.page(page,queryWrapper);
+            list=iPage.getRecords();
+        }
 
         model.addAttribute("page",iPage);
         model.addAttribute("lts",list);

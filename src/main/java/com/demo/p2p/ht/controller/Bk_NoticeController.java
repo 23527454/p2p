@@ -235,6 +235,11 @@ public class Bk_NoticeController {
         Page<Notice> page=new Page<>(current,5);
         IPage<Notice> iPage=noticeService.page(page,queryWrapper);
         List<Notice> noticeList=iPage.getRecords();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=noticeService.page(page,queryWrapper);
+            noticeList=iPage.getRecords();
+        }
 
         model.addAttribute("list",noticeList);
         model.addAttribute("page",page);

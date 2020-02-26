@@ -53,6 +53,11 @@ public class Bk_BankcardController {
         Page<Bankcard> page=new Page<>(current,5);
         IPage<Bankcard> iPage=bankcardService.page(page,queryWrapper);
         List<Bankcard> list=iPage.getRecords();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=bankcardService.page(page,queryWrapper);
+            list=iPage.getRecords();
+        }
 
         model.addAttribute("page",iPage);
         model.addAttribute("bc",list);

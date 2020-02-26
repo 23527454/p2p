@@ -53,6 +53,11 @@ public class Bk_PoundageController {
         Page<Poundage> page=new Page<>(current,5);
         IPage<Poundage> iPage=poundageService.page(page,queryWrapper);
         List<Poundage> list=iPage.getRecords();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=poundageService.page(page,queryWrapper);
+            list=iPage.getRecords();
+        }
 
         model.addAttribute("page",iPage);
         model.addAttribute("lpa",list);

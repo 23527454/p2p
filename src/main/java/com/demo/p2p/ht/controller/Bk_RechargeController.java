@@ -57,6 +57,12 @@ public class Bk_RechargeController {
         Page<Recharge> page=new Page<>(current,5);
         IPage<Recharge> iPage=rechargeService.page(page,queryWrapper);
         List<Recharge> list=iPage.getRecords();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=rechargeService.page(page,queryWrapper);
+            list=iPage.getRecords();
+        }
+
         model.addAttribute("page",iPage);
         model.addAttribute("lrc",list);
         model.addAttribute("uname",uname);
