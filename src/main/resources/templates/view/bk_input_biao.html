@@ -78,17 +78,17 @@
 					<i class="fa fa-angle-right"></i> 添加标种
 				</h4>
 				<!-- 页面内容 -->
-				<form:form id="inputForm" modelAttribute="domain"
+				<form id="inputForm" modelAttribute="domain"
 					class="form-horizontal tasi-form"
-					action="${pageContext.request.contextPath}/biao/save.do"
+					action="${pageContext.request.contextPath}/biao/save_do"
 					method="post">
 					<div class="form-group has-success">
 						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">标种名<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-						<form:hidden id="id" path="id"
+						<input type="hidden"  id="id" path="id"
 								cssClass="form-control input-sm" maxlength="11" />
-							<form:input id="bname" path="bname"
+							<input type="text" id="bname" path="bname"
 								cssClass="form-control input-sm" maxlength="11" />
 							<font color="red">*最多可填5个字符*</font>
 						</div>
@@ -99,7 +99,7 @@
 					<button type="submit" class="btn btn-primary btn-lg btn-block"
 						>点击提交</button>
 
-				</form:form>
+				</form>
 				<!-- 页面内容 -->
 			</div>
 			<!-- 内容结束 -->

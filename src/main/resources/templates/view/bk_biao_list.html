@@ -58,25 +58,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${list}" var="list" varStatus="status">
+							<span th:each="list,status:${session.list}">
 								<tr>
 								
-									<td>${status.index+1 }</td>
-									<td>${list.bname }</td>
-									<td><a href=" biao/input.do?id=${list.id}">编辑</a>
+									<td th:text="${status.index+1 }"></td>
+									<td th:text="${list.bname }"></td>
+									<td><a th:href=" @{input_do(id=${list.id})}">编辑</a>
 										&nbsp;&nbsp; <a
-										href=" biao/delete.do?id=${list.id}">删除</a></td>
+										th:href=" @{delete_do(id=${list.id})}">删除</a></td>
 								</tr>
-							</c:forEach>
+							</span>
 							<tr align="center">
 								<td colspan="13">
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=1" class="btn btn-success btn-ms ">首页</a>
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=${currpages-1}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=${currpages+1}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
-									<a href="${pageContext.request.contextPath}/biao/list.do?currpage=${totalpage}" class="btn btn-success btn-ms "> 尾页</a>
+									<a th:href="@{/biao/list(currpage=1)}" class="btn btn-success btn-ms ">首页</a>
+									<a th:href="@{/biao/list(currpage=${session.currpages-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
+									<a th:href="@{/biao/list(currpage=${session.currpages+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
+									<a th:href="@{/biao/list(currpage=${session.totalpage})}" class="btn btn-success btn-ms "> 尾页</a>
 									<font size="3">共<font
-										color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-										color="red">/${totalpage}</font>页
+											color="red"><span th:text="${session.totalrow}"></span></font>条数据，当前<font color="#0000ff"><span th:text="${session.currpages}"></span></font><font
+										color="red">/<span th:text="${session.totalpage}"></span></font>页
 									</font>
 								</td>
 							</tr>
