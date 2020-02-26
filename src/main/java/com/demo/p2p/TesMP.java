@@ -21,7 +21,7 @@ public class TesMP {
     private static String username = "root";//数据库用户名
     private static String password = "root";//数据库密码
     //private static String tablePrefix ="sys";//数据库表的前缀，如tbl_user
-    private static String[] tables = {"borrowmoney"};    //生成的表
+    private static String[] tables = {"borrowcord"};    //生成的表
     private static String parentPackage = "com.demo.p2p.ht";//顶级包结构
     private static String dao = "mapper";//数据访问层包名称
     private static String service = "service";//业务逻辑层包名称
