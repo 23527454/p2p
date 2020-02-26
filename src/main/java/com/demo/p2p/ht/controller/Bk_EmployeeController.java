@@ -132,6 +132,11 @@ public class Bk_EmployeeController {
         IPage<Employee> iPage=employeeService.page(page,queryWrapper);
         List<Employee> employees=iPage.getRecords();
         List<Dept> depts=deptService.list();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=employeeService.page(page,queryWrapper);
+            employees=iPage.getRecords();
+        }
         model.addAttribute("emps",employees);
         model.addAttribute("depts",depts);
         model.addAttribute("ename",ename);

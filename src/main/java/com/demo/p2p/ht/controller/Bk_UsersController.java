@@ -56,6 +56,11 @@ public class Bk_UsersController {
         if(users!=null && users.size()>0){
             stas=0;
         }
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=usersService.page(page,queryWrapper);
+            users=iPage.getRecords();
+        }
         model.addAttribute("ulist",users);
         model.addAttribute("unickname",unickname);
         model.addAttribute("page",page);

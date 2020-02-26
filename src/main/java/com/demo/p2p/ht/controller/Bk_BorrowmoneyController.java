@@ -38,6 +38,54 @@ public class Bk_BorrowmoneyController {
     @Resource
     private Bk_BorrowcordService borrowcordService;
 
+    /**
+     * 所有借款
+     * @param current
+     * @param brelname
+     * @param btype
+     * @param bstate
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/qurey")
+    public String qurey(Integer current,String brelname,String btype,String bstate,Model model){
+        if(current==null || current==0){
+            current=1;
+        }
+        QueryWrapper<Borrowmoney> queryWrapper=new QueryWrapper<>();
+        if(brelname!=null && brelname!=""){
+            queryWrapper.like("brelname",brelname);
+        }
+        if (btype!=null && btype!="" && !btype.equals("0")){
+            queryWrapper.eq("btype",btype);
+        }
+        if (bstate!=null && bstate!="" && !bstate.equals("-1")){
+            queryWrapper.eq("bstate",bstate);
+        }
+        Page<Borrowmoney> page=new Page<>(current,5);
+        IPage<Borrowmoney> iPage=borrowmoneyService.page(page,queryWrapper);
+        List<Borrowmoney> list=iPage.getRecords();
+        List<Biao> biaos=biaoService.list();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=borrowmoneyService.page(page,queryWrapper);
+            list=iPage.getRecords();
+        }
+        model.addAttribute("lists",list);
+        model.addAttribute("bList",biaos);
+        model.addAttribute("page",iPage);
+        model.addAttribute("brelname",brelname);
+        model.addAttribute("bstate",bstate);
+        model.addAttribute("btype",btype);
+        return "view/bk_moneylist";
+    }
+
+    /**
+     * 借款审核不通过
+     * @param id
+     * @param status
+     * @return
+     */
     @RequestMapping(value = "/audit")
     public String audit(Integer id,Integer status){
         Borrowmoney borrowmoney = borrowmoneyService.getById(id);

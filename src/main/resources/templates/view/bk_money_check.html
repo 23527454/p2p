@@ -165,13 +165,18 @@
 							</div>
 							<!--  -->
 						</div>
-						<tr align="center">
+						<tr align="center" th:if="${page.pages>0}">
 							<td colspan="13">
 								<a th:href="@{/bk/brower/check(current=1)}" class="btn btn-success btn-ms ">首页</a>
 								<a th:if="${page.current>1}" th:href="@{/bk/brower/check(current=${page.current-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
 								<a th:if="${page.current<page.pages}" th:href="@{/bk/brower/check(current=${page.current+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
 								<a th:href="@{/bk/brower/check(current=${page.pages})}" class="btn btn-success btn-ms "> 尾页</a>
 								<font size="3">共<font color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font color="red">/[[${page.pages}]]</font>页</font></font>
+							</td>
+						</tr>
+						<tr th:if="${page.pages<1}">
+							<td colspan="19">
+								<h3 style="text-align: center">未找到任何数据！</h3>
 							</td>
 						</tr>
 					</tbody>
