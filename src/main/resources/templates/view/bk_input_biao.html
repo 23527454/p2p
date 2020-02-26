@@ -77,26 +77,34 @@
 				<h4>
 					<i class="fa fa-angle-right"></i> 添加标种
 				</h4>
+				<script>
+					function checkInput() {
+                        var bname=$("#bname").val();
+                        if(bname==null || bname==""){
+                            alert("标种名不能为空！");
+                        }else{
+                            $("#inputForm").submit();
+                        }
+                    }
+				</script>
 				<!-- 页面内容 -->
 				<form id="inputForm" modelAttribute="domain"
 					class="form-horizontal tasi-form"
-					action="${pageContext.request.contextPath}/biao/save_do"
+					action="/bk/biao/save"
 					method="post">
 					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="inputSuccess">标种名<font
+						<label class="col-sm-2 control-label col-lg-2">标种名<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-						<input type="hidden"  id="id" path="id"
-								cssClass="form-control input-sm" maxlength="11" />
-							<input type="text" id="bname" path="bname"
-								cssClass="form-control input-sm" maxlength="11" />
+							<input type="hidden" id="id" name="id" th:value="${b.id==null?0:b.id}" cssClass="form-control input-sm" maxlength="11" />
+							<input type="text" id="bname" name="bname" th:value="${b.bname}" maxlength="11" />
 							<font color="red">*最多可填5个字符*</font>
 						</div>
 					</div>
 					 
 					<br />
 					<br />
-					<button type="submit" class="btn btn-primary btn-lg btn-block"
+					<button type="button" onclick="checkInput()" class="btn btn-primary btn-lg btn-block"
 						>点击提交</button>
 
 				</form>

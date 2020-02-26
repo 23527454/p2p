@@ -43,7 +43,24 @@
 	<section id="main-content">
 		<section class="wrapper">
 
-
+			<script>
+				function showInfo(data) {
+                    var windowWidth = document.documentElement.clientWidth;
+                    var windowHeight = document.documentElement.clientHeight;
+                    var popupHeight = $("#"+data).height();
+                    var popupWidth = $("#"+data).width();
+                    $("#"+data).css({
+                        "position": "absolute",
+                        "z-index":100,
+                        "top": (windowHeight-popupHeight)/2+$(document).scrollTop(),
+                        "left": (windowWidth-popupWidth)/2
+                    });
+                    $("#"+data).show();
+                }
+                function closeInfo(data) {
+                    $("#"+data).hide();
+                }
+			</script>
 			<!-- 内容开始 -->
 			<div class="showback">
 				<table class="table table-bordered table-striped table-condensed">
@@ -62,37 +79,35 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${page}" var="list" varStatus="status">
+						<div th:each="list,listStat:${lists}">
 							<tr>
-								<td>${status.index+1}</td>
-								<td>${list.busername}</td>
-								<td>${list.brelname}</td>
-								<td>${list.bpass}</td>
-								<td><c:forEach items="${bList}" var="li">
-										<c:if test="${li.id==list.btype}">${li.bname}</c:if>
-									</c:forEach></td>
-								<td>${list.btitle}</td>
-								<td>${list.bmoney}</td>
-								<td><c:if test="${list.bstate==0}">提交申请未处理</c:if> <c:if
-										test="${list.bstate==1}">后台审核通过</c:if> <c:if
-										test="${list.bstate==2}">审核失败</c:if> <c:if
-										test="${list.bstate==3}">已还款</c:if></td>
-								<td>${list.brecommend}</td>
-								<td><a href="javascript:;" data-target="#${status.index+1}"
-									data-toggle="modal">查看</a>&nbsp;&nbsp;&nbsp;&nbsp;<a
-									href="<%=request.getContextPath()%>/brower/borqr.do?ids=${list.id}"
-									data-toggle="modal">通过</a>&nbsp;&nbsp;&nbsp;&nbsp; <a
-									href="<%=request.getContextPath()%>/brower/audit.do?id=${list.id}&status=0"
-									data-target="" data-toggle="modal">不通过</a></td>
+								<td th:text="${listStat.count}"></td>
+								<td th:text="${list.busername}"></td>
+								<td th:text="${list.brelname}"></td>
+								<td th:text="${list.bpass}"></td>
+								<td>
+									<span th:each="li,liStat:${bList}" th:if="${''+li.id==list.btype}" th:text="${li.bname}"></span>
+								</td>
+								<td th:text="${list.btitle}"></td>
+								<td th:text="${list.bmoney}"></td>
+								<td>
+									<span th:if="${list.bstate=='0'}">提交申请未处理</span>
+									<span th:if="${list.bstate=='1'}">后台审核通过</span>
+									<span th:if="${list.bstate=='2'}">审核失败</span>
+									<span th:if="${list.bstate=='3'}">已还款</span>
+								</td>
+								<td th:text="${list.brecommend}"></td>
+								<td><!---->
+									<a href="javascript:;" th:onclick="showInfo([[${listStat.count}]])" th:attr="data-target=${listStat.count}" data-toggle="modal">查看</a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a th:href="@{/bk/brower/borqr(ids=${list.id})}" data-toggle="modal">通过</a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a th:href="@{/bk/brower/audit(id=${list.id},status=2)}" data-target="" data-toggle="modal">不通过</a></td>
 							</tr>
-							<%-- <%=request.getContextPath()%>/brower/audit.do?id=${list.id}&status=1 --%>
 							<!-- 弹出框 -->
-							<div class="modal fade" id="${status.index+1}" tabindex="-1"
-								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div th:id="${listStat.count}" style="display: none;overflow: scroll;height: 70%">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal"
+											<button type="button" class="close" th:onclick="closeInfo([[${listStat.count}]])" data-dismiss="modal"
 												aria-hidden="true">&times;</button>
 											<h4 class="modal-title" id="myModalLabel">借款详情</h4>
 										</div>
@@ -100,70 +115,64 @@
 
 											<div class="alert alert-success">
 												<b><font><font>用户名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>
-														${list.busername}</font></font>
+														[[${list.busername}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>真实姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.brelname}</font></font>
+												<b><font><font>真实姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.brelname}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>手机号码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.bpass}</font></font>
+												<b><font><font>手机号码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.bpass}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>标ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.btype}</font></font>
+												<b><font><font>标ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.btype}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>借款标题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.btitle}</font></font>
+												<b><font><font>借款标题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.btitle}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>借款金额&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.bmoney}</font></font>
+												<b><font><font>借款金额&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.bmoney}]]</font></font>
 											</div>
 
 											<div class="alert alert-info">
 												<b><font><font>状态&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>
-														<c:if test="${list.bstate==0}">提交申请未处理</c:if> <c:if
-															test="${list.bstate==1}">后台审核通过</c:if> <c:if
-															test="${list.bstate==2}">审核失败</c:if> <c:if
-															test="${list.bstate==3}">已还款</c:if>
+												<span th:if="${list.bstate=='0'}">提交申请未处理</span>
+												<span th:if="${list.bstate=='1'}">后台审核通过</span>
+												<span th:if="${list.bstate=='2'}">审核失败</span>
+												<span th:if="${list.bstate=='3'}">已还款</span>
 												</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>所在区域&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.brecommend}</font></font>
+												<b><font><font>所在区域&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.brecommend}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font><c:forEach
-															items="${bList}" var="li">
-															<c:if test="${li.id==list.btype}">${li.bname}</c:if>
-														</c:forEach> </font></font>
+												<b><font><font>类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>
+													<span th:each="li,liStat:${bList}" th:if="${li.id==list.btype}" th:text="${li.bname}"></span>
+												</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>备注1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.beizhu1}</font></font>
+												<b><font><font>备注1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.beizhu1}]]</font></font>
 											</div>
 											<div class="alert alert-info">
-												<b><font><font>备注2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>${list.beizhu2}</font></font>
+												<b><font><font>备注2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font></b><font><font>[[${list.beizhu2}]]</font></font>
 											</div>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-default"
+											<button type="button" th:onclick="closeInfo([[${listStat.count}]])" class="btn btn-default"
 												data-dismiss="modal">关闭</button>
 										</div>
 									</div>
 								</div>
 							</div>
 							<!--  -->
-						</c:forEach>
+						</div>
 						<tr align="center">
-							<td colspan="13"><a
-								href="${pageContext.request.contextPath}/brower/check.do?currpage=1"
-								class="btn btn-success btn-ms ">首页</a> <a
-								href="${pageContext.request.contextPath}/brower/check.do?currpage=${currpages-1}"
-								class="btn btn-success btn-ms ">&lt;&lt;上一页</a> <a
-								href="${pageContext.request.contextPath}/brower/check.do?currpage=${currpages+1}"
-								class="btn btn-success btn-ms "> 下一页&gt;&gt;</a> <a
-								href="${pageContext.request.contextPath}/brower/check.do?currpage=${totalpage}"
-								class="btn btn-success btn-ms "> 尾页</a> <font size="3">共<font
-									color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-									color="red">/${totalpage}</font>页
-							</font></td>
+							<td colspan="13">
+								<a th:href="@{/bk/brower/check(current=1)}" class="btn btn-success btn-ms ">首页</a>
+								<a th:if="${page.current>1}" th:href="@{/bk/brower/check(current=${page.current-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
+								<a th:if="${page.current<page.pages}" th:href="@{/bk/brower/check(current=${page.current+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
+								<a th:href="@{/bk/brower/check(current=${page.pages})}" class="btn btn-success btn-ms "> 尾页</a>
+								<font size="3">共<font color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font color="red">/[[${page.pages}]]</font>页</font></font>
+							</td>
 						</tr>
 					</tbody>
 
