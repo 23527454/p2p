@@ -49,11 +49,11 @@ public class WithdrawalController {
 
     @RequestMapping("/withdrawpay")
     @ResponseBody
-    public Object tixian(String actualMoney, String bankl, String id,
+    public Object tixian(String actualMoney, String bankl, String id, String bankname, String bankhao,
                          HttpServletRequest request, HttpSession session) throws ParseException {
         System.out.println("tixian-------------------------------");
         Date now = new Date();
-        Map<String,Object> map=new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间
 
@@ -93,8 +93,10 @@ public class WithdrawalController {
         wl.setuID(user.getUid());
         wl.setUname(user.getUnickname());
         wl.setZname(user.getUname());
-        wl.setTxnum(bankcard.getCardid());
-        wl.setTxbank(bankcard.getKhh());
+        wl.setTxnum(bankcard.getCardid());//提现银行卡号
+        System.out.println("bankname"+bankname);
+        wl.setTxbank(bankcard.getKhh());//提现银行名称
+        System.out.println("bankhao"+bankhao);
         wl.setTxmoney(actualMoney);
         wl.setTxtime(time);
         wl.setStatu("3");
@@ -108,14 +110,18 @@ public class WithdrawalController {
         pe.setSxmoney(actualMoney);
         pe.setWhat("提现");
         pe.setSxtime(time);
-
-        int num = certificationService.updateMoney(id, actualMoney);//提现功能对certidication表  提现得钱扣在此表中
-        boolean pbol = poundageService.save(pe);
-        boolean wbol = withdrawalService.save(wl);//添加数据到witdrawal表中  提现记录
+        int num = 0;
+        boolean pbol = false;
+        boolean wbol = false;
+     /*   num = certificationService.updateMoney(id, actualMoney);//提现功能对certidication表  提现得钱扣在此表中
+         pbol = poundageService.save(pe);
+         wbol = withdrawalService.save(wl);//添加数据到witdrawal表中  提现记录*/
 //        System.out.println("num:\t"+num + "pbol:\t" + pbol + "wbol:\t" + wbol);
 
         if (num > 0 && pbol == true && wbol == true) {
-          map.put("result",true);
+            map.put("result", true);
+        } else {
+            map.put("result", false);
         }
         return map;
      /*   System.out.println("uid:\t"+pe.getuID());
