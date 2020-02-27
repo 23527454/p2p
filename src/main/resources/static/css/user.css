@@ -1111,7 +1111,7 @@ transition: transform 1s linear;}
 .deposit-form .btn-depositcancel{ float:left; margin-left:13px; width:113px; height:40px; line-height:40px; background-color:#F6F6F6; border:none; color:#959595; text-align:center; border-radius:2px; font-size:16px;cursor:pointer;transition: background 0.2s ease-in-out}
 .deposit-form .btn-depositcancel:hover{ background:#E5E5E5;}
 
-.deposit-tip{ float:left; width:708px; height:148px; margin-top:0px; line-height:20px; padding:25px; background:#FFF5E7; border:1px solid #FFE3BC; border-radius:2px; font-size:12px;}
+.deposit-tip{ float:left; width:708px; height:148px; margin-top:30px; line-height:20px; padding:25px; background:#FFF5E7; border:1px solid #FFE3BC; border-radius:2px; font-size:12px;}
 .deposit-tip .text20{ text-indent:20px;}
 
 

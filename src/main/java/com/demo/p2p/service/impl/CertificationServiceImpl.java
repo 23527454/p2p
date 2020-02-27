@@ -45,7 +45,7 @@ public CertificationMapper certificationMapper;
     }
 
     @Override
-    public int updateMoney(int id, String cashFine) {
+    public int updateMoney(String id, String cashFine) {
         return certificationMapper.updateMoney(id,cashFine);
     }
 

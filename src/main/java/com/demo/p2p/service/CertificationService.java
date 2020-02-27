@@ -24,7 +24,7 @@ public interface CertificationService extends IService<Certification> {
 
     public List<Certification> getcserial(QueryWrapper<Certification> queryWrapper);
 
-    public int updateMoney(int id, String cashFine);
+    public int updateMoney(String id, String cashFine);
 
     public Certification getcserial(String cusername);
 }

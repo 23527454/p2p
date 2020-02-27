@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -68,7 +69,7 @@ private static final long serialVersionUID=1L;
     /**
      * 提现时间
      */
-    private String txtime;
+    private Date txtime;
 
     /**
      * 转账时间
@@ -168,11 +169,11 @@ private static final long serialVersionUID=1L;
         this.sxf = sxf;
     }
 
-    public String getTxtime() {
+    public Date getTxtime() {
         return txtime;
     }
 
-    public void setTxtime(String txtime) {
+    public void setTxtime(Date txtime) {
         this.txtime = txtime;
     }
 

@@ -33,6 +33,6 @@ public interface CertificationMapper extends BaseMapper<Certification> {
      */
     @Update("UPDATE certification  SET cbalance = cbalance - #{cashFine}  \n" +
             " WHERE id = #{id}")
-    public int updateMoney(@Param("id") int id,@Param("cashFine") String cashFine);
+    public int updateMoney(@Param("id") String id,@Param("cashFine") String cashFine);
 
 }
