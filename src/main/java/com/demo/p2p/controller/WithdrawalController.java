@@ -47,16 +47,20 @@ public class WithdrawalController {
     @Resource
     private PoundageService poundageService;
 
+
     @RequestMapping("/withdrawpay")
     @ResponseBody
     public Object tixian(String actualMoney, String bankl, String id, String bankname, String bankhao,
                          HttpServletRequest request, HttpSession session) throws ParseException {
         System.out.println("tixian-------------------------------");
+//        System.out.println("bankl:" + bankl);
+//        System.out.println("bankname" + bankname);
+//        System.out.println("bankhao" + bankhao);
+
         Date now = new Date();
         Map<String, Object> map = new HashMap<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间
-
         Users user = (Users) session.getAttribute("loginUser");
     /*    int id = 0;
         String actualMoney = null;
@@ -75,9 +79,7 @@ public class WithdrawalController {
         if (request.getParameter("id") != null) {
             id = Integer.parseInt(request.getParameter("id"));//certification实体类得id
         }*/
-        System.out.println("actualMoney:\t" + actualMoney);
-        System.out.println("bankl:\t" + bankl);
-        System.out.println("id:\t" + id);
+
 
         double sxf = Double.parseDouble(actualMoney) * 0.001;
         double dzmoney = Double.parseDouble(actualMoney) - sxf;
@@ -87,16 +89,40 @@ public class WithdrawalController {
         //      double sum =  blances - actualMoneys;//总额扣除提现金额
         //      System.out.println("需要提交得提现金额" + actualMoneys + "\t提现金额" + actualMoney /*+ "总额:" + blances + "总额减提现金额" + sum*/);
         //      System.out.println("actualMoney" + actualMoney);
-        Bankcard bankcard = bankcardService.getInfo(Integer.parseInt(bankl));//查询下拉列表数据
+        Bankcard bankcard = null;
+        if (!bankl.equals("未选择")) {
+            bankcard = bankcardService.getInfo(Integer.parseInt(bankl));//查询下拉列表数据
+        }
 
+
+        Bankcard bd = new Bankcard();
+        System.out.println(bankhao + bankname + user.getUid());
+        if (!bankname.equals("") && !bankhao.equals("")) {
+            bd.setuID(user.getUid());
+            bd.setUname(user.getUnickname());
+            bd.setZname(user.getUname());
+            bd.setSfz(user.getUcardid());
+            bd.setKhh(bankname);
+            bd.setCardid(bankhao);
+            bd.setTjtime(String.valueOf(time));
+            bd.setStatu("成功");
+        }
+
+        System.out.println("bd" + bd);
         Withdrawal wl = new Withdrawal();
         wl.setuID(user.getUid());
         wl.setUname(user.getUnickname());
         wl.setZname(user.getUname());
-        wl.setTxnum(bankcard.getCardid());//提现银行卡号
-        System.out.println("bankname"+bankname);
-        wl.setTxbank(bankcard.getKhh());//提现银行名称
-        System.out.println("bankhao"+bankhao);
+        if (bankcard != null) {
+            System.out.println(1111111);
+            wl.setTxnum(bankcard.getCardid());//提现银行卡号
+            wl.setTxbank(bankcard.getKhh());//提现银行名称
+        } else {
+            System.out.println(2222222);
+            wl.setTxnum(bankhao);//提现银行卡号
+            wl.setTxbank(bankname);//提现银行名称
+        }
+
         wl.setTxmoney(actualMoney);
         wl.setTxtime(time);
         wl.setStatu("3");
@@ -113,12 +139,15 @@ public class WithdrawalController {
         int num = 0;
         boolean pbol = false;
         boolean wbol = false;
-     /*   num = certificationService.updateMoney(id, actualMoney);//提现功能对certidication表  提现得钱扣在此表中
-         pbol = poundageService.save(pe);
-         wbol = withdrawalService.save(wl);//添加数据到witdrawal表中  提现记录*/
-//        System.out.println("num:\t"+num + "pbol:\t" + pbol + "wbol:\t" + wbol);
+        boolean bbol = false;
+        num = certificationService.updateMoney(id, actualMoney);//提现功能对certidication表  提现得钱扣在此表中
+        pbol = poundageService.save(pe);
+        wbol = withdrawalService.save(wl);//添加数据到witdrawal表中  提现记录
+        if (bd.getuID() != null && bd.getUname() != null && bd.getZname() != null && bd.getSfz() != null && bd.getKhh() != null && bd.getCardid() != null && bd.getTjtime() != null && bd.getStatu() != null) {
+            bbol = bankcardService.save(bd);
+        }
 
-        if (num > 0 && pbol == true && wbol == true) {
+        if ((num > 0 && pbol == true && wbol == true) || (num > 0 && pbol == true && wbol == true && bbol == true)) {
             map.put("result", true);
         } else {
             map.put("result", false);

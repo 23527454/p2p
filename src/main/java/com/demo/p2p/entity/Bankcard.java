@@ -58,7 +58,7 @@ private static final long serialVersionUID=1L;
     /**
      * 提交时间
      */
-    private LocalDateTime tjtime;
+    private String tjtime;
 
     /**
      * 状态
@@ -122,11 +122,11 @@ private static final long serialVersionUID=1L;
         this.cardid = cardid;
     }
 
-    public LocalDateTime getTjtime() {
+    public String getTjtime() {
         return tjtime;
     }
 
-    public void setTjtime(LocalDateTime tjtime) {
+    public void setTjtime(String tjtime) {
         this.tjtime = tjtime;
     }
 

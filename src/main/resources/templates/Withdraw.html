@@ -85,7 +85,7 @@
                 if (nullFlag == false || ay.test(actualMoney) == true) {
                     $(actualMessage).hide();
                 }
-                if (bankl != "0") {
+                if (bankl != "未选择") {
                     $("#banklsesw").hide();
                 }
                 if (bankname != null || bankname != "") {
@@ -120,27 +120,29 @@
                       $("#formjidt").submit();
                   }*/
 
-                // var actualMoney = $("#actualMoney").val();
-                // var bankl = $("#bankl").val();
-                // var id = $("#id").val();
-                // $.ajax({
-                //     type: "GET",
-                //     url: "/withdrawal/withdrawpay",
-                //     data: {
-                //         actualMoney: actualMoney,
-                //         bankl: bankl,
-                //         id: id,
-                //         bankname:bankname,
-                //         bankhao:bankhao
-                //     },//发送到服务器的数据
-                //     dataType: "json",
-                //     success: function (data) {
-                //         if (data.result) {
-                //             alert("提现完成！！！");
-                //             location.href = "/grzx/grzx";
-                //         }
-                //     }
-                // });
+                var actualMoney = $("#actualMoney").val();
+                var bankl = $("#bankl").val();
+                var id = $("#id").val();
+                $.ajax({
+                    type: "GET",
+                    url: "/withdrawal/withdrawpay",
+                    data: {
+                        actualMoney: actualMoney,
+                        bankl: bankl,
+                        id: id,
+                        bankname:bankname,
+                        bankhao:bankhao
+                    },//发送到服务器的数据
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result) {
+                            alert("提现完成！！！");
+                            location.href = "/grzx/grzx";
+                        }else {
+                            alert("提现失败！！！")
+                        }
+                    }
+                });
             }
 
             function amount(th) {
@@ -166,7 +168,7 @@
                 var deposit = $(".deposit-tip")
                 document.getElementById("bankname").value = "";
                 document.getElementById("bankhao").value="";
-                $("#bankl").val("0")
+                $("#bankl").val("未选择")
                 deposit.css({"margin-top": "100px"})
                 xbanks.hide();
                 bankes.show();
@@ -180,7 +182,7 @@
                 var deposit = $(".deposit-tip")
                 document.getElementById("bankname").value = "";
                 document.getElementById("bankhao").value="";
-                $("#bankl").val("0")
+                $("#bankl").val("未选择")
                 deposit.css({"margin-top": "30px"})
                 xbanks.show()
                 bankes.hide()
@@ -210,7 +212,7 @@
 
                             <li id="xbanks"><span class="deposit-formleft">银行卡</span> <span class="deposit-formright">
                    <select name="bankl" id="bankl" style="width: 170px;height: 40px;">
-                       <option value="0">请选择银行卡</option>
+                          <option value="未选择">请选择银行卡</option>
                          <option th:each="banks : ${bankls}" th:value="${banks.bID}" style="size: 15px">[[${banks.khh}]][[${banks.cardid}]]</option>
                    </select></span><span id="banklsesw" style="display:none" class="error"></span>
                                 <input type="button" name="addbank" id="addbank" onclick="addbanks()" value="添 加 银 行 卡">
