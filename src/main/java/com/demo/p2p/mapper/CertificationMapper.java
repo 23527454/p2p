@@ -31,7 +31,7 @@ public interface CertificationMapper extends BaseMapper<Certification> {
     /**
      * 提现修改金额
      */
-    @Update("UPDATE certification  SET ctotalmoney = ctotalmoney - #{cashFine}  \n" +
+    @Update("UPDATE certification  SET ctotalmoney   = ctotalmoney - #{cashFine}  \n" +
             " WHERE id = #{id}")
     public int updateMoney(@Param("id") String id,@Param("cashFine") String cashFine);
 
