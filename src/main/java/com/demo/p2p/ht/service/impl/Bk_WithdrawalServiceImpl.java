@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,5 +43,51 @@ public class Bk_WithdrawalServiceImpl extends ServiceImpl<Bk_WithdrawalMapper, W
     @Override
     public double sumsxf(Map<String, Object> map) {
         return bk_withdrawalMapper.sumsxf(map);
+    }
+
+    @Override
+    public int updmoney(double txmoney, int uid) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("txmoney", txmoney);
+        map.put("uid", uid);
+        return bk_withdrawalMapper.updmoney(map);
+    }
+
+    @Override
+    public int updwith(int gg, int wid) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("gg", gg);
+        map.put("wid", wid);
+        return	bk_withdrawalMapper.updwith(map);
+    }
+
+    @Override
+    public int updwiths(int gg, int wid, String wname) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("gg", gg);
+        map.put("wid", wid);
+        map.put("shwho", wname);
+        map.put("zztime", new Date());
+        map.put("shtime", new Date());
+        return bk_withdrawalMapper.updwiths(map);
+    }
+
+    @Override
+    public int intmoney(Withdrawal w, int i) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("uid", w.getuID());
+        map.put("uname", w.getUname());
+        map.put("zname", w.getZname());
+        map.put("jymoney",w.getTxmoney());
+        if(i==0){
+            map.put("what", "提现失败");
+        }else if(i==1){
+            map.put("what", "转账失败");
+        }else if(i==2){
+            map.put("what", "转账成功");
+        }
+        map.put("jytime", new Date());
+        map.put("other", "无");
+        return bk_withdrawalMapper.intmoney(map);
     }
 }

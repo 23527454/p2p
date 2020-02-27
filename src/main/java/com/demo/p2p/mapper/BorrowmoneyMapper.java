@@ -2,7 +2,11 @@ package com.demo.p2p.mapper;
 
 import com.demo.p2p.entity.Borrowmoney;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.demo.p2p.entity.Investinfo;
 import org.apache.ibatis.annotations.Insert;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,4 +24,6 @@ public interface BorrowmoneyMapper extends BaseMapper<Borrowmoney> {
             "\tVALUES(#{busername},#{brelname}, #{bpass},#{btitle}, #{bmoney},#{bserial}, \n" +
             "\t#{bstate}, #{brecommend}, #{bleixing}, #{beizhu1}, #{beizhu2});")
     public int addMoney(Borrowmoney borrowmoney);
+
+    public List<Borrowmoney> selInfo(Map<String, Object> map);
 }

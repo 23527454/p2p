@@ -19,4 +19,8 @@ public interface Bk_WithdrawalMapper extends BaseMapper<Withdrawal> {
     public double sumtxmoney(Map<String, Object> map);
     public double sumdzmoney(Map<String, Object> map);
     public double sumsxf(Map<String, Object> map);
+    int updwith(Map<String, Object> ma);
+    int updwiths(Map<String, Object> ma);
+    int updmoney(Map<String, Object> ma);
+    int intmoney(Map<String, Object> ma);
 }

@@ -13,4 +13,13 @@
         id, bname
     </sql>
 
+    <select id="sellist" resultType="com.demo.p2p.ht.entity.Biao">
+        select
+        *
+        from biao where 1=1
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
+
 </mapper>

@@ -19,4 +19,8 @@ public interface Bk_WithdrawalService extends IService<Withdrawal> {
     public double sumtxmoney(Map<String, Object> map);
     public double sumdzmoney(Map<String, Object> map);
     public double sumsxf(Map<String, Object> map);
+    public int updmoney(double txmoney,int uid);
+    public int updwith(int gg,int wid);
+    public int updwiths(int gg,int wid,String wname);
+    int intmoney(Withdrawal w,int i);
 }
