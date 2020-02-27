@@ -16,4 +16,6 @@ import java.util.Map;
  */
 public interface BiaoService extends IService<Biao> {
     public List<Biao> selList();
+
+    public List<Biao> biaoList();
 }

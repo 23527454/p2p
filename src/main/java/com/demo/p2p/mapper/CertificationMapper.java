@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  *  Mapper 接口
@@ -35,4 +38,11 @@ public interface CertificationMapper extends BaseMapper<Certification> {
             " WHERE id = #{id}")
     public int updateMoney(@Param("id") String id,@Param("cashFine") String cashFine);
 
+    @Select("SELECT * FROM certification")
+    public List<Certification> certificationList();
+
+    public boolean upmoney(Map<String, Object> map);
+
+    @Update("update certification set cbalance = #{cbalance} where id = #{id}")
+    public int certificationupup(Certification certification);
 }

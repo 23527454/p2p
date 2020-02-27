@@ -89,6 +89,7 @@ public class WithdrawalController {
         //      System.out.println("actualMoney" + actualMoney);
         Bankcard bankcard = bankcardService.getInfo(Integer.parseInt(bankl));//查询下拉列表数据
 
+        Date date = new Date();
         Withdrawal wl = new Withdrawal();
         wl.setuID(user.getUid());
         wl.setUname(user.getUnickname());
@@ -107,7 +108,7 @@ public class WithdrawalController {
         pe.setZname(user.getUname());
         pe.setSxmoney(actualMoney);
         pe.setWhat("提现");
-        pe.setSxtime(time);
+        pe.setSxtime(date);
 
         int num = certificationService.updateMoney(id, actualMoney);//提现功能对certidication表  提现得钱扣在此表中
         boolean pbol = poundageService.save(pe);

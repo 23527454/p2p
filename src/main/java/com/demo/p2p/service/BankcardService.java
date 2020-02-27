@@ -17,5 +17,8 @@ import java.util.List;
 public interface BankcardService extends IService<Bankcard> {
     public List<Bankcard> getbank( int uid);
     public Bankcard getInfo(int bid);
+    public List<Bankcard> bankcardList();
+
+
 
 }

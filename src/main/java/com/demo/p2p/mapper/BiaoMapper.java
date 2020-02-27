@@ -3,6 +3,7 @@ package com.demo.p2p.mapper;
 import com.demo.p2p.entity.Biao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -17,4 +18,7 @@ import java.util.Map;
  */
 public interface BiaoMapper extends BaseMapper<Biao> {
     public List<Biao> selList(@Param("params") Map<String, Object> map);
+
+    @Select("SELECT * FROM Biao")
+    public List<Biao> biaoList();
 }

@@ -8,6 +8,7 @@ import com.demo.p2p.service.UsersService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>
@@ -86,5 +87,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Users find(Map<String, Object> map) {
+        Users user = baseMapper.find(map);
+        return user;
     }
 }

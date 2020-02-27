@@ -17,6 +17,12 @@
 <header>
 
   <!--header--> <header th:include="common/header :: header"></header>
+
+  <style type="text/css">
+    .xuanzhe{
+
+    }
+  </style>
 </header>
 <!--个人中心-->
 <div class="wrapper wbgcolor">
@@ -26,20 +32,18 @@
 		<script>
 			
 			function getShowPayVal1(){
-				
 				var Money = document.getElementById("Money").value;
 				var raiseends = document.getElementById("bankCardNo").value;
-				var uID = document.getElementById("id").value;				
-				$.post('${pageContext.request.contextPath}/userpay.do',{"uID":uID,"Localaccount":raiseends,"sxmoney":Money},function(data){
-					 if(data==200){
+				var uID = document.getElementById("id").value;
+				$.post('/dope/userpay',{"uID":uID,"Localaccount":raiseends,"sxmoney":Money},function(data){
+					 if(data=='200'){
 						alert("充值成功");
-						location.href = "${pageContext.request.contextPath}/find.do?id="+uID;
+						location.href = "/dope/find?id="+uID;
 					 }else{
 						 alert("充值失败");
 					 }
 				},"json");
 			}
-
 			
 		</script>
 		<div class="personal-main">
@@ -50,12 +54,16 @@
             <div class="quick-main">
               <div class="fl quick-info">
                 <div class="info-1"> <span class="info-tit">充值金额</span> <span class="info1-input">
-                	<input type="hidden" name="id" id="id" value="${globaluser.uid}">
-                  <input id="Money" type="text" name="Money" class="pay-money-txt" maxlength="10" >
+                	<input type="hidden" name="id" id="id" th:value="${session.loginUser.uid}" >
+                  <input id="Money" type="text" name="Money" class="pay-money-txt" maxlength="10">
                   <em>元</em> </span> <span class="quick-error"> </span> </div>
-                <div class="info-tips">亿人宝提醒您：充值金额超过50000元时，请切换到网银充值</div>
-                <div class="info-2"> <span class="info-tit">银行卡号</span> <span class="info2-input">
-                  <input id="bankCardNo" type="text" name="bankCardNo" class="tx-txt">
+                <div class="info-tips"></div>
+                <div class="info-2"><span class="info-tit" >银行卡号</span> <span class="info2-input">
+                  <select id="bankCardNo"  name="bankCardNo"  style="width: 130px;height:30px; position:absolute;top:20px; right:-130px;">
+                    <option id="xuanzhe">请选择</option>
+                    <!--<option th:if="${i3.uid==session.loginUser.uid}" >111</option>-->
+                    <option th:each="bankcard:${bankcards}"  th:value="${bankcard.cardid}" th:text="${bankcard.cardid}"></option>
+                  </select>
                   <em class="info2-bank" style="display: none;">
                   <label id="form:defaultBankName" style="font-size:16px;"> </label>
                   </em> </span> <span class="quick-error3" id="bankCardError"></span> </div>

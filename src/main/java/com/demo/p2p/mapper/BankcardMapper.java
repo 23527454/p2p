@@ -25,4 +25,6 @@ public interface BankcardMapper extends BaseMapper<Bankcard> {
     @Select("SELECT * FROM bankcard WHERE bid =  #{bid}")
     public Bankcard getInfo(@Param("bid") int bid);
 
+    @Select("SELECT * FROM bankcard")
+    public List<Bankcard> bankcardList();
 }

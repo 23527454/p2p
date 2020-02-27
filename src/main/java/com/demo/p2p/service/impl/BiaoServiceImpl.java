@@ -29,4 +29,11 @@ public class BiaoServiceImpl extends ServiceImpl<BiaoMapper, Biao> implements Bi
         QueryWrapper<Biao> wrapper = new QueryWrapper<Biao>();
         return biaoMapper.selectList(wrapper);
     }
+
+    @Override
+    public List<Biao> biaoList() {
+        return this.baseMapper.biaoList();
+    }
+
+
 }
