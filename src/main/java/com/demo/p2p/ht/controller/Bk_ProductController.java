@@ -136,13 +136,26 @@ public class Bk_ProductController {
         return "view/bk_list_biaos";
     }
 
+    /**
+     * 投标列表
+     * @param current
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/list")
-    public String list(Integer current, Model model){
+    public String list(Integer current,String status, Model model){
         if(current==null || current==0){
             current=1;
         }
+        QueryWrapper<Product> queryWrapper=new QueryWrapper<>();
+        if (status != null && status.equals("ing")) {
+            queryWrapper.eq("pstate","1");
+        }
+        if (status != null && status.equals("over")) {
+            queryWrapper.eq("pstate","2");
+        }
         Page<Product> page=new Page<>(current,5);
-        IPage<Product> iPage=productService.page(page);
+        IPage<Product> iPage=productService.page(page,queryWrapper);
         List<Product> list=iPage.getRecords();
         for (int i=0;i<list.size();i++){
             Integer uid=list.get(i).getPproduce();

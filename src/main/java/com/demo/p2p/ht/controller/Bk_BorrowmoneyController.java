@@ -39,6 +39,85 @@ public class Bk_BorrowmoneyController {
     private Bk_BorrowcordService borrowcordService;
 
     /**
+     * 还款
+     * @param ids
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/tohuankuanupds")
+    public String tohuankuanupds(Integer ids,Integer id){
+        Borrowcord borrowcord=borrowcordService.getById(ids);
+        borrowcord.setBstatue(1);
+        borrowcordService.updateById(borrowcord);
+        return "redirect:/bk/brower/tohuankuanupd?id="+id;
+    }
+
+    /**
+     * 获取还款列表
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/tohuankuanupdison")
+    @ResponseBody
+    public List<Borrowcord> tohuankuanupdison(Integer id){
+        QueryWrapper<Borrowcord> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("bid",id);
+        List<Borrowcord> lists=borrowcordService.list(queryWrapper);
+        return lists;
+    }
+
+    /**
+     * 进入还款详情
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/tohuankuanupd")
+    public String tohuankuanupd(Integer id,Model model){
+        Borrowmoney borrowmoney=borrowmoneyService.getById(id);
+        QueryWrapper<Borrowcord> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("bid",id);
+        List<Borrowcord> lists=borrowcordService.list(queryWrapper);
+        //如果全部还完了就修改状态
+        Integer num=0;
+        for(Borrowcord b:lists){
+            if (b.getBstatue()==1){
+                num++;
+            }
+        }
+        if (num==lists.size()){
+            borrowmoney.setBstate("3");
+            borrowmoneyService.updateById(borrowmoney);
+        }
+        model.addAttribute("borr",borrowmoney);
+        model.addAttribute("list",lists);
+        return "view/bk_huankuanupdeta";
+    }
+
+    /**
+     * 进入还款列表
+     * @param current
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/tohk")
+    public String tohk(Integer current,Model model){
+        if(current==null || current==0){
+            current=1;
+        }
+        QueryWrapper<Borrowmoney> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("bstate","1");
+        Page<Borrowmoney> page=new Page<>(current,5);
+        IPage<Borrowmoney> iPage=borrowmoneyService.page(page,queryWrapper);
+        List<Borrowmoney> list=iPage.getRecords();
+        List<Biao> biaos=biaoService.list();
+        model.addAttribute("lists",list);
+        model.addAttribute("bList",biaos);
+        model.addAttribute("page",iPage);
+        return "view/bk_huankuanlist";
+    }
+
+    /**
      * 所有借款
      * @param current
      * @param brelname
