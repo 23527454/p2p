@@ -26,6 +26,4 @@
     <sql id="Base_Column_List">
         id, bserial, busername, brelname, bpass, btype, btitle, bmoney, brate, btimelimit, blimit, bstate, brecommend, bleixing, beizhu1, beizhu2
     </sql>
-
-
 </mapper>
