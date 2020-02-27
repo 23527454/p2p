@@ -141,7 +141,7 @@ public class UsersController {
 
     @RequestMapping(value = "/modifyIdentity")
     @ResponseBody
-    public void modifyIdentity(Users users, Approveitem approveitem,HttpServletResponse response) throws IOException {
+    public void modifyIdentity(Users users, Approveitem approveitem,HttpServletResponse response,HttpSession session) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out=response.getWriter();
@@ -155,6 +155,7 @@ public class UsersController {
         users.setUname(name);
         users.setUcardid(sfz);
         boolean result2=usersService.updateById(users);
+        session.setAttribute("loginUser",users);
         if (result1==result2 && result1==true){
             out.print("<script>alert('认证成功！');window.location.href='/grzx/grzx_zhsz';</script>");
         }else{

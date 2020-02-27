@@ -265,42 +265,45 @@
     <div class="personal-main">
       <div class="personal-zhsz">
         <h3><i>账户设置</i></h3>
-        <div class="personal-level"> <span class="wzd">您的账户完整度</span>
-	        <i class="grzxbg level3" style="border: none; margin: 37px 0px 0px 20px; height: 17px; background-position: 0px -550px;"></i>
-	        <span class="state">[中]
-	        </span> <i id="zhwzd" class="markicon fl mt35"></i>
-	        <span class="arrow-personal">请尽快完成账户安全设置，以确保您的账户安全</span>
-	        <span class="grzxbg icon-personal"></span>
-        </div>
+
         <ul>
           <li><i class="grzxbg p-right"></i><span class="zhsz-span1">手机号</span>
           <span id="pone" class="zhsz-span2" th:text="${session.loginUser.uphonenumber}"></span>
           <span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-checkOldMobile')">更改</a></span></li>
           <input type="hidden" value="false" id="authenticationMobile">
           <li>
-            <div th:if="${session.loginUser.ucardid==null}">
+            <div th:if="${session.loginUser.ucardid==null || session.loginUser.ucardid==''}">
               <i class="grzxbg p-danger"></i>
               <input type="hidden" th:value="${list.aiid}"/>
               <span class="zhsz-span1">[[${list.ainame}]]</span>
               <span class="zhsz-span2">未认证</span><span class="zhsz-span3">
               <a href="#" onclick="showSpan('alert-identity')">认证</a></span>
             </div>
-            <div th:if="${session.loginUser.ucardid!=null}">
+            <div th:if="${session.loginUser.ucardid!=null &&session.loginUser.ucardid!=''}">
               <i class="grzxbg p-right"></i>
               <span class="zhsz-span1">身份认证</span>
               <span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
              </div>
           </li>
+          <script>
+            function checkSfz(data) {
+                if(data!=null && data!=""){
+                    window.location.href="/grzx/grzx_ktdsf";
+                }else{
+                    alert("请先进行身份认证！");
+                }
+            }
+          </script>
           <li>
-            <div th:if="${session.loginUser.ucertnumber==null}">
+            <div th:if="${session.loginUser.ucertnumber==null ||session.loginUser.ucertnumber==''}">
               <i class="grzxbg p-danger"></i>
               <span class="zhsz-span1">第三方支付</span>
               <span class="zhsz-span2">未开通</span>
               <span class="zhsz-span3">
-	          <a href="/grzx/grzx_ktdsf">开通</a>
+	          <a href="#" th:onclick="checkSfz([[${session.loginUser.ucertnumber}]])">开通</a>
 	          </span>
             </div>
-            <div th:if="${session.loginUser.ucertnumber!=null}">
+            <div th:if="${session.loginUser.ucertnumber!=null &&session.loginUser.ucertnumber!=''}">
               <i class="grzxbg p-right"></i>
               <span class="zhsz-span1">第三方支付</span>
               <span class="zhsz-span2">已开通</span>
@@ -308,7 +311,7 @@
             </div>
           </li>
           <li>
-            <div th:if="${session.loginUser.umailbox!=null}">
+            <div th:if="${session.loginUser.umailbox!=null && session.loginUser.umailbox!=''}">
               <i class="grzxbg p-right"></i>
               <span class="zhsz-span1">电子邮箱</span>
               <span class="zhsz-span2" th:text="${session.loginUser.umailbox}"></span>
@@ -316,7 +319,7 @@
 			        	 <a href="#" onclick="showSpan('alert-updateEmail')">更改</a>
 			         </span>
             </div>
-            <div th:if="${session.loginUser.umailbox==null}">
+            <div th:if="${session.loginUser.umailbox==null ||session.loginUser.umailbox==''}">
               <i class="grzxbg p-danger"></i>
               <span class="zhsz-span1">电子邮箱</span>
               <span class="zhsz-span3">
@@ -1892,50 +1895,7 @@
     <div class="clear"></div>
   </div>
 </div>
-<!--网站底部-->
-<div id="footer" class="ft">
-  <div class="ft-inner clearfix">
-    <div class="ft-helper clearfix">
-      <dl>
-        <dt>关于我们</dt>
-        <dd><a href="公司简介.html">公司简介</a><a href="管理团队.html">管理团队</a><a href="网站公告.html">网站公告</a></dd>
-      </dl>
-      <dl>
-        <dt>相关业务</dt>
-        <dd><a href="list.html">我要投资</a><a href="我要借款.html">我要借款</a></dd>
-      </dl>
-      <dl>
-        <dt>帮助中心</dt>
-        <dd><a href="帮助中心.html">新手入门</a><a href="个人中心首页.html">我的账户</a><a href="list.html">债权转让</a></dd>
-      </dl>
-      <dl>
-        <dt>联系我们</dt>
-        <dd><a href="联系我们.html">联系我们</a></dd>
-      </dl>
-    </div>
-    <div class="ft-service">
-      <dl>
-        <dd>
-          <p><strong>400-660-1268</strong><br>
-            工作日 9:00-22:00<br>
-            官方交流群:<em>12345678</em><br>
-            工作日 9:00-22:00 / 周六 9:00-18:00<br>
-          </p>
-          <div class="ft-serv-handle clearfix"><a class="icon-hdSprite icon-ft-sina a-move a-moveHover" title="亿人宝新浪微博" target="_blank" href="#"></a><a class="icon-hdSprite icon-ft-qqweibo a-move a-moveHover" title="亿人宝腾讯微博" target="_blank" href="#"></a><a class="icon-ft-qun a-move a-moveHover" title="亿人宝QQ群" target="_blank" href="#"></a><a class="icon-hdSprite icon-ft-email a-move a-moveHover mrn" title="阳光易贷email" target="_blank" href="mailto:xz@yirenbao.com"></a></div>
-        </dd>
-      </dl>
-    </div>
-    <div class="ft-wap clearfix">
-      <dl>
-        <dt>官方二维码</dt>
-        <dd><span class="icon-ft-erweima"><img src="/images/code.png" style="display: inline;"></span></dd>
-      </dl>
-    </div>
-  </div>
-  <div class="ft-record">
-    <div class="ft-approve clearfix"><a class="icon-approve approve-0 fadeIn-2s" target="_blank" href="#"></a><a class="icon-approve approve-1 fadeIn-2s" target="_blank" href="#"></a><a class="icon-approve approve-2 fadeIn-2s" target="_blank" href="#"></a><a class="icon-approve approve-3 fadeIn-2s" target="_blank" href="#"></a></div>
-    <div class="ft-identity">©2015 亿人宝 All rights reserved&nbsp;&nbsp;&nbsp;<span class="color-e6">|</span>&nbsp;&nbsp;&nbsp;安徽省亿人宝投资管理有限公司&nbsp;&nbsp;&nbsp;<span class="color-e6">|</span>&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn/">皖ICP备12345678号-1</a></div>
-  </div>
-</div>
+  <!--网站底部-->
+  <div th:include="common/footer :: footer" id="footer" class="ft"></div>
 </body>
 </html>
