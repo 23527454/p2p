@@ -157,7 +157,7 @@ public class Bk_WithdrawalController {
     @RequestMapping("shen")
     public String shen(int gg,int wid, HttpServletRequest req){
         HttpSession session = req.getSession();
-        Employee emp = (Employee) session.getAttribute("globalemp");
+        Employee emp = (Employee) session.getAttribute("loginEmp");
         String shname = emp.getEname();
         if(gg==0){
             bk_withdrawalService.updwiths(gg, wid, shname);
