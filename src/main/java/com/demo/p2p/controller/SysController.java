@@ -455,6 +455,15 @@ public class SysController {
         return "个人中心-我的红包2";
     }
 
+    /**
+     * 刷新兑换红包
+     *
+     * @return
+     */
+    @RequestMapping(value = "/sxduhb")
+    public String sxduhb(HttpServletRequest request, HttpSession session){
+        return "redirect:/grzx/grzx_zhzl";
+    }
 
     /**
      * 个人中心——红包兑换
@@ -477,21 +486,21 @@ public class SysController {
         System.out.println(certi.getId() + "pa.getId()");
         System.out.println(certi.getId() + "certification.getId()");
         certification.setId(certi.getId());
-        String cbalance1 = certi.getCbalance();
+        String cbalance1 = certi.getCtotalmoney();
         Integer cbalance2=0;
         Integer cbalance3=0;
         if(cbalance2!=null){
             cbalance2 = Integer.parseInt(cbalance1);
         }
         cbalance3  = cbalance2 +50;
-        certification.setCbalance(String.valueOf(cbalance3));
+        certification.setCtotalmoney(String.valueOf(cbalance3));
         System.out.println(certification.getCbalance());
         int certificationupup = certificationService.certificationupup(certification);
         int packetredupdate = packetredService.packetredupdate(pa);
         System.out.println(packetredupdate + "============");
         if (packetredupdate > 0) {
             if (certificationupup > 0) {
-                out.print("<script>alert('兑换成功！');window.location.href='/sys/grzx_wdhb';</script>");
+                out.print("<script>alert('兑换成功！');window.location.href='/sys/sxduhb';</script>");
             }
         } else {
             out.print("<script>alert('兑换失败！');window.location.href='/sys/grzx_wdhb';</script>");

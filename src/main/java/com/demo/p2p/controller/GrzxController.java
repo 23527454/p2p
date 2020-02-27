@@ -265,4 +265,14 @@ public class GrzxController {
         request.setAttribute("packetredss", packetredss);
         return "个人中心-我的红包";
     }
+
+    /**
+     *  添加银行卡
+     *
+     * @return
+     */
+    @RequestMapping(value = "/pay1")
+    public String pay1(HttpSession session,HttpServletRequest request) {
+        return "pay1";
+    }
 }

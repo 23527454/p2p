@@ -13,4 +13,5 @@ import org.apache.ibatis.annotations.Insert;
  * @since 2020-02-25
  */
 public interface WithdrawalMapper extends BaseMapper<Withdrawal> {
+
 }

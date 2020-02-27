@@ -61,9 +61,10 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
     }
 
     @Override
-    public boolean undate(Map<String, Object> map) {
-        return this.baseMapper.upmoney(map);
+    public int upmoney(Certification certification) {
+        return this.baseMapper.upmoney(certification);
     }
+
 
     @Override
     public int certificationupup(Certification certification) {

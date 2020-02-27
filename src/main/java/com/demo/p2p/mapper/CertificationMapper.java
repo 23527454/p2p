@@ -41,8 +41,8 @@ public interface CertificationMapper extends BaseMapper<Certification> {
     @Select("SELECT * FROM certification")
     public List<Certification> certificationList();
 
-    public boolean upmoney(Map<String, Object> map);
+    public int upmoney(Certification certification);
 
-    @Update("update certification set cbalance = #{cbalance} where id = #{id}")
+    @Update("update certification set ctotalmoney = #{ctotalmoney} where id = #{id}")
     public int certificationupup(Certification certification);
 }

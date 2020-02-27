@@ -31,7 +31,7 @@ public interface CertificationService extends IService<Certification> {
 
     public List<Certification> certificationList();
 
-    public boolean undate(Map<String, Object> map);
+    public int upmoney(Certification certification);
 
     public int certificationupup(Certification certification);
 }

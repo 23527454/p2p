@@ -19,11 +19,6 @@
   <!--header--> <header th:include="common/header :: header"></header>
 
   <style type="text/css">
-    #addbanks{
-      /*position:absolute;*/
-      /*top:-200px;*/
-      /*right:0px;*/
-    }
   </style>
 </header>
 <!--个人中心-->
@@ -32,51 +27,17 @@
               <!--上方图片+左侧导航栏-->
               <div th:include="common/left :: left"></div>
 		<script>
-			function getShowPayVal1(){
-				var Money = document.getElementById("Money").value;
-				var raiseends = document.getElementById("bankCardNo").value;
-				var uID = document.getElementById("id").value;
-				$.post('/dope/userpay',{"uID":uID,"Localaccount":raiseends,"sxmoney":Money},function(data){
-					 if(data=='200'){
-						alert("充值成功");
-						location.href = "/dope/find?id="+uID;
-					 }else{
-						 alert("充值失败");
-					 }
-				},"json");
-			}
-			function addbanks() {
-                location.href='/grzx/pay1';
-            }
-			
 		</script>
 		<div class="personal-main">
         	<div class="personal-pay">
-        <h3><i>充值</i></h3>
+        <h3><i>银行卡添加</i></h3>
         <div class="quick-pay-wrap">
-          <h4> <span class="quick-tit pay-cur"><em>快捷支付</em></span> </h4>
-            <div class="quick-main">
-              <div class="fl quick-info">
-                <div class="info-1"> <span class="info-tit">充值金额</span> <span class="info1-input">
-                	<input type="hidden" name="id" id="id" th:value="${session.loginUser.uid}" >
-                  <input id="Money" type="text" name="Money" class="pay-money-txt" maxlength="10">
-                  <em>元</em><input type="button" id="addbanks" onclick="addbanks()" style="color: #0a0a0a" value="添 加 银 行 卡"></span> <span class="quick-error"> </span> </div>
-                <div class="info-tips"></div>
-                <div class="info-2"><span class="info-tit" id="yhk">银行卡号</span>
-                  <span class="info2-input">
-                  <select id="bankCardNo"  name="bankCardNo"  style="width: 130px;height:30px; position:absolute;top:20px; right:-130px;">
-                    <option id="xuanzhe">请选择</option>
-                    <!--<option th:if="${i3.uid==session.loginUser.uid}" >111</option>-->
-                    <option th:each="bankcard:${bankcards}"  th:value="${bankcard.cardid}">[[${bankcard.khh}]][[${bankcard.cardid}]]</option>
-                  </select>
-                  <em class="info2-bank" style="display: none;">
-                  <label id="form:defaultBankName" style="font-size:16px;"> </label>
-                  </em> </span> <span class="quick-error3" id="bankCardError"></span>
-                </div>
-                <div class="bank-check" id="bank-check2"> <b class="selected" id="bankProtocol1"></b><span class="bank-agree">我同意并接受<a href="#" target="_blank">《亿人宝投资咨询与管理服务电子协议》</a></span> <span class="error" id="bankProtocol_message" style="display:none;margin-top:-3px;">请同意协议内容！</span> </div>
-                <input type="button" name="" value="充值" class="btn-paycz" onclick="getShowPayVal1();">
-              </div>
-            </div>
+          <form id="codeForm" name="codeForm" method="post" action="/dope/saveBank">
+            银行名字:<input id="name" type="text" name="name" class="pay-money-txt"><br/><br/><br/>
+            银行卡号:&nbsp<input id="kahao" type="text" name="kahao" class="pay-money-txt">
+            <input type="submit" name="codeForm:j_idt73" value="添加" class="btn-dh">
+            <span class="cz-error" style="display:none;"> <span class="error">红包兑换码不能为空！</span> </span>
+          </form>
           <div class="pay-tipcon" style="display:none;"> <b>充值提示：</b><br>
             1．亿人宝充值过程免费，不向用户收取任何手续费。<br>
             2．为了您的账户安全，请在充值前进行身份认证、手机绑定以及交易密码设置。<br>
