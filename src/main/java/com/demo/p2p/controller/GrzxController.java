@@ -1,13 +1,11 @@
 package com.demo.p2p.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.demo.p2p.entity.Bankcard;
-import com.demo.p2p.entity.Certification;
-import com.demo.p2p.entity.Investinfo;
-import com.demo.p2p.entity.Users;
+import com.demo.p2p.entity.*;
 import com.demo.p2p.service.BankcardService;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.InvestinfoService;
+import com.demo.p2p.service.PacketredService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +33,8 @@ public class GrzxController {
     @Resource
     private BankcardService bankcardService;
 
+    @Resource
+    private PacketredService packetredService;
     /**
      * 个人中心——账户总览/首页
      *
@@ -61,18 +61,18 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zhzl")
-    public String grzx_zhzl(HttpServletRequest request, HttpSession session, Model model) {
+    public String grzx_zhzl(HttpServletRequest request, HttpSession session,Model model) {
         Users user = (Users) session.getAttribute("loginUser");
         if (user == null) {
             return "redirect:/sys/login";
         } else {
-            QueryWrapper<Certification> queryWrapper = new QueryWrapper<Certification>();
-            queryWrapper.eq("cserial", user.getUid());
+            QueryWrapper<Certification> queryWrapper= new QueryWrapper<Certification>();
+            queryWrapper.eq("cserial",user.getUid());
             List<Certification> list1 = certificationService.getcserial(queryWrapper);
             List<Investinfo> list = investinfoService.getFive(user.getUid());
             System.out.println(list.size() + "集合数据一共就有这么多");
             request.setAttribute("infolist", list);
-            model.addAttribute("list", list1);
+            model.addAttribute("list",list1);
             return "personalpage";
         }
     }
@@ -83,7 +83,7 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zhsz")
-    public String grzx_zhsz(Model model, HttpSession session) {
+    public String grzx_zhsz(Model model,HttpSession session) {
         Users user = (Users) session.getAttribute("loginUser");
         if (user == null) {
             return "redirect:/sys/login";
@@ -176,14 +176,22 @@ public class GrzxController {
      *
      * @return
      */
+    /**
+     * 个人中心——充值
+     *
+     * @return
+     */
     @RequestMapping(value = "/grzx_cz1")
-    public String grzx_cz1(HttpSession session) {
-        Users user = (Users) session.getAttribute("loginUser");
-        if (user == null) {
-            return "redirect:/sys/login";
-        } else {
-            return "Payno";
+    public String grzx_cz (HttpSession session, HttpServletRequest request){
+        Users users = (Users) session.getAttribute("loginUser");
+        if (users.getUcertnumber() != null) {
+            System.out.println(1);
+            List<Bankcard> bankcards = bankcardService.bankcardList();
+            request.setAttribute("bankcards", bankcards);
+            return "pay";
         }
+        System.out.println(2);
+        return "Payno";
     }
 
     /**
@@ -192,26 +200,26 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_tx1")
-    public String grzx_tx1(HttpSession session, HttpServletRequest request) {
-        System.out.println("grzx_tx1================================================================");
-        Users user = (Users) session.getAttribute("loginUser");
+    public String grzx_tx1(HttpSession session,HttpServletRequest request) {
+        Users user = (Users)session.getAttribute("loginUser");
         if (user == null) {
             return "redirect:/sys/login";
         } else {
-            if (user.getUcertnumber() != null) {
+            if(user.getUcertnumber() != null){
+                System.out.println(1);
                 List<Bankcard> list = bankcardService.getbank(user.getUid());
-                for (Bankcard ls : list
-                        ) {
-                    String strhours = String.valueOf(ls.getCardid());
-                    String strh = strhours.substring(strhours.length() - 2, strhours.length());   //截取
-                    String strm = strhours.substring(0, 2);   //截掉
-                    String cardid = strm + "***" + strh;
+                for (Bankcard ls: list
+                ) {
+                    String strhours = String.valueOf( ls.getCardid());
+                    String strh = strhours.substring(strhours.length() -2,strhours.length());   //截取
+                    String strm = strhours.substring(0,2);   //截掉
+                    String cardid = strm + "***" +strh;
                     ls.setCardid(cardid);
                 }
                 Certification certification = certificationService.getcserial(user.getUnickname());
                 System.out.println(certification.getCtotalmoney());
-                request.setAttribute("bankls", list);
-                request.setAttribute("certification", certification);
+                request.setAttribute("certification",certification);
+                request.setAttribute("bankls",list);
                 return "Withdraw";
             }
             return "Withdrawno";
@@ -239,13 +247,11 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_dhls")
-    public String grzx_dhls(HttpSession session) {
-        Users user = (Users) session.getAttribute("loginUser");
-        if (user == null) {
-            return "redirect:/sys/login";
-        } else {
-            return "个人中心-兑换历史";
-        }
+    public String grzx_dhls(HttpSession session,HttpServletRequest request) {
+        System.out.println("兑换历史+++++++++++++");
+        List<Packetred> packetreds = packetredService.packetredList();
+        request.setAttribute("packetreds", packetreds);
+        return "个人中心-兑换历史";
     }
 
     /**
@@ -254,12 +260,9 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_wdhb")
-    public String grzx_wdhb(HttpSession session) {
-        Users user = (Users) session.getAttribute("loginUser");
-        if (user == null) {
-            return "redirect:/sys/login";
-        } else {
-            return "个人中心-我的红包";
-        }
+    public String grzx_wdhb(HttpSession session,HttpServletRequest request) {
+        List<Packetred> packetredss = packetredService.packetredList();
+        request.setAttribute("packetredss", packetredss);
+        return "个人中心-我的红包";
     }
 }

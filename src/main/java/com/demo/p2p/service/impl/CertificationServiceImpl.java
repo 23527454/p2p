@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,8 +22,8 @@ import java.util.List;
 @Service
 public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, Certification> implements CertificationService {
 
-@Resource
-public CertificationMapper certificationMapper;
+   @Resource
+   public CertificationMapper certificationMapper;
     @Override
     public Integer saveCertification(Certification certification) {
         return this.baseMapper.insert(certification);
@@ -52,6 +53,21 @@ public CertificationMapper certificationMapper;
     @Override
     public Certification getcserial(String cusername) {
         return certificationMapper.getcserial(cusername);
+    }
+
+    @Override
+    public List<Certification> certificationList() {
+        return this.baseMapper.certificationList();
+    }
+
+    @Override
+    public boolean undate(Map<String, Object> map) {
+        return this.baseMapper.upmoney(map);
+    }
+
+    @Override
+    public int certificationupup(Certification certification) {
+        return this.baseMapper.certificationupup(certification);
     }
 
 }

@@ -43,6 +43,8 @@ public class InvestinfoController {
     private DetailsService detailsService;
     @Resource
     private CertificationService certificationService;
+    @Resource
+    private BorrowcordService borrowcordService;
 
     /**
      * 获取信息进入投资记录页面
@@ -168,8 +170,9 @@ public class InvestinfoController {
 
         List<Biao> biao = biaoService.selList();
         session.setAttribute("biao", biao);
-
-
+        Map<String,Object> map1 = new HashMap<String, Object>();
+        List<Borrowcord> borrowcords = borrowcordService.selInfo(map1);
+        session.setAttribute("bwm",borrowcords);
         Product pro = productService.selById(Integer.parseInt(bmid));
         session.setAttribute("Borrowmoney", pro);
 

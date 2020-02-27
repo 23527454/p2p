@@ -47,7 +47,6 @@ public class WithdrawalController {
     @Resource
     private PoundageService poundageService;
 
-
     @RequestMapping("/withdrawpay")
     @ResponseBody
     public Object tixian(String actualMoney, String bankl, String id, String bankname, String bankhao,

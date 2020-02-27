@@ -28,8 +28,8 @@
       <div class="personal-zqzr personal-xtxx" style="min-height: 500px;">
         <h3><i>我的红包</i></h3>
         <div class="lx-wdhb"> <span class="pay-title">兑换红包</span> <span class="pay-number">
-          <form id="codeForm" name="codeForm" method="post" action="/sys/grzx_hbdh">
-            <input id="code" type="text" name="code" class="pay-money-txt">
+          <form id="codeForm" name="codeForm" method="post" action="">
+            <input id="codeForm:code" type="text" name="codeForm:code" class="pay-money-txt">
             <input type="submit" name="codeForm:j_idt73" value="兑换" class="btn-dh">
             <span class="cz-error" style="display:none;"> <span class="error">红包兑换码不能为空！</span> </span>
           </form>
@@ -80,23 +80,17 @@
           <div class="wdhb-title"><span class="wdhb-name">红包名称</span>
             <span class="wdhb-con">红包简介</span>
             <span>
-               <span class="wdhb-deadline">截止日期</span>
+               <span class="wdhb-deadline">过期日期</span>
             </span>
-             <!--<span  th:if="${session.pack.ptype==2}">-->
-               <!--<span class="wdhb-deadline">兑换日期</span>-->
-            <!--</span>-->
-            <!--<span  th:if="${session.pack.ptype==3}">-->
-               <!--<span class="wdhb-deadline">过期时间日期</span>-->
-            <!--</span>-->
             <span class="wdhb-status">状态</span>
           </div>
-          <div class="zqzr-list" th:each="i:${packetredss}">
+          <div class="zqzr-list" th:each="i:${packetredss}" >
              <ul th:if="${i.uid == session.loginUser.uid}">
-              <li th:if="${i.ptype==1}">
+              <li th:if="${i.ptype==3}">
                 <span class="wdhb-name" th:text="${i.rmoney}"></span>
                 <span class="wdhb-con" th:text="${i.jjname}"></span>
                 <span>
-                  <span class="wdhb-deadline"  th:text="${#dates.format(i.dhtime, 'yyyy-MM-dd')}"></span>
+                  <span class="wdhb-deadline"  th:text="${#dates.format(i.gqtime, 'yyyy-MM-dd')}"></span>
                 </span>
                 <span class="wdhb-status"><a href="#" th:text="${i.pname}"  ></a></span>
               </li>

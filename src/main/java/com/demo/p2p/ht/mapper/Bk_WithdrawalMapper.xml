@@ -105,4 +105,16 @@
             limit #{candp},#{pandc};
         </if>
     </select>
+    <update id="updmoney" parameterType="map"  >
+  	    update certification set cbalance = #{txmoney}+cbalance , ctotalmoney = #{txmoney}+ctotalmoney where cserial=#{uid}
+  	</update>
+    <update id="updwith" parameterType="map"  >
+  	    update withdrawal set statu = #{gg} where wID=#{wid}
+  	</update>
+    <update id="updwiths" parameterType="map"  >
+  	    update withdrawal set statu = #{gg},zztime = #{zztime},shtime = #{shtime},shwho = #{shwho}  where wID=#{wid}
+  	</update>
+    <insert id="intmoney" parameterType="map">
+  	    INSERT INTO trade(uid,uname,zname,jymoney,what,jytime,other) VALUES(#{uid},#{uname},#{zname},#{jymoney},#{what},#{jytime},#{other})
+  	</insert>
 </mapper>

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.p2p.entity.Users;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -36,4 +38,6 @@ public interface UsersService extends IService<Users> {
     public boolean resetPhone(Integer uid,String phone);
 
     public boolean resetUfldate(Users users);
+
+    public Users find(Map<String, Object> map);
 }

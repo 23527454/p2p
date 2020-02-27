@@ -27,11 +27,8 @@
         <div class="wdhb-title wdhb-dhls"> <span class="wdhb-yzm">验证码</span><span class="wdhb-con">兑换红包名称</span><span class="wdhb-deadline">兑换日期</span> </div>
         <form id="form" name="form" method="post" action="">
           <div class="zqzr-list">
-            <ul>
-              <li><span class="wdhb-yzm">12345678</span><span class="wdhb-con">现金红包50元</span><span class="wdhb-deadline">2015-10-1</span></li>
-              <li><span class="wdhb-yzm">12345678</span><span class="wdhb-con">现金红包50元</span><span class="wdhb-deadline">2015-10-1</span></li>
-              <li><span class="wdhb-yzm">12345678</span><span class="wdhb-con">现金红包50元</span><span class="wdhb-deadline">2015-10-1</span></li>
-              <li><span class="wdhb-yzm">12345678</span><span class="wdhb-con">现金红包50元</span><span class="wdhb-deadline">2015-10-1</span></li>
+            <ul th:each="i:${packetreds}" th:if="${i.uid == session.loginUser.uid}">
+              <li><span class="wdhb-yzm" th:text="${i.dhma}"></span><span class="wdhb-con" th:text="${i.rmoney}"></span><span class="wdhb-deadline" th:text="${#dates.format(i.dhtime, 'yyyy-MM-dd')}"></span></li>
             </ul>
           </div>
           <!--<div style="float:left; width:760px;height:200px;padding-top:100px; text-align:center;color:#d4d4d4; font-size:16px;">
