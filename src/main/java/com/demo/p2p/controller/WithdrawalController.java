@@ -57,10 +57,10 @@ public class WithdrawalController {
 //        System.out.println("bankname" + bankname);
 //        System.out.println("bankhao" + bankhao);
 
-        Date now = new Date();
+        Date time = new Date();
         Map<String, Object> map = new HashMap<>();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String time = df.format(new Date());// new Date()为获取当前系统时间
+        /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String time = df.format(new Date());// new Date()为获取当前系统时间*/
         Users user = (Users) session.getAttribute("loginUser");
     /*    int id = 0;
         String actualMoney = null;
@@ -104,7 +104,7 @@ public class WithdrawalController {
             bd.setSfz(user.getUcardid());
             bd.setKhh(bankname);
             bd.setCardid(bankhao);
-            bd.setTjtime(String.valueOf(time));
+            bd.setTjtime(time);
             bd.setStatu("成功");
         }
 
