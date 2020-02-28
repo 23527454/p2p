@@ -57,14 +57,14 @@
          		<div class="showback">
       					<h4><i class="fa fa-angle-right"></i> 添加认证项</h4>
 				  		<!-- 页面内容 -->
-				  		<form id="frm1"  class="form-horizontal tasi-form" action="${pageContext.request.contextPath}/approve/updateApprove.do" method="post">
+				  		<form id="frm1"  class="form-horizontal tasi-form" action="/bk/approve/updateApprove" method="post">
                               <div class="form-group has-success">
                                   <label class="col-sm-2 control-label col-lg-2" for="inputSuccess">认证项名称<font color="red"> *</font></label>
                                   <div class="col-lg-5">
-                                      <input type="text" class="form-control" id="ainame" name="ainame" maxlength="15" value="${approve.ainame}" required="required" >
+                                      <input type="text" class="form-control" id="ainame" name="ainame" maxlength="15" th:value="${approve.ainame}" required="required" >
 										<font color="red">*最多可填15个字符*</font>
-										<input type="hidden" name="aiid" value="${approve.aiid }"> 
-										<input type="hidden" name="aistate" value="${approve.aistate }"> 
+										<input type="hidden" name="aiid" th:value="${approve.aiid }">
+										<input type="hidden" name="aistate" th:value="${approve.aistate }">
                                   </div>
                               </div>
                               <div class="form-group has-success">
@@ -72,7 +72,7 @@
 								  <div class="radio">
 								  	<label >
 								  	&nbsp;&nbsp;
-								    <input type="radio" name="aitype" id="aitype" value="1" ${approve.aitype=='1'?'checked':''}>
+                                        <input type="radio" name="aitype" id="aitype" value="1" th:checked="${approve.aitype=='1'}">
 								   基本认证项
 								  </label>
 								  		  &nbsp;&nbsp;&nbsp;&nbsp;
@@ -81,7 +81,7 @@
 										  &nbsp;&nbsp;&nbsp;&nbsp;
 
 								  <label>
-								    <input type="radio" name="aitype" id="aitype" value="2" ${approve.aitype=='2'?'checked':''}>
+                                      <input type="radio" name="aitype" id="aitype" value="2" th:checked="${approve.aitype=='2'}">
 								   可选认证项
 								  </label>
 								  </div><br/><br/>

@@ -15,4 +15,10 @@
         aiid, ainame, aitype, aistate
     </sql>
 
+    <select id="selList" resultMap="BaseResultMap" parameterType="map">
+        SELECT *  FROM  approveitem
+        <if test="candp != null and pandc != null">
+            limit #{candp},#{pandc};
+        </if>
+    </select>
 </mapper>
