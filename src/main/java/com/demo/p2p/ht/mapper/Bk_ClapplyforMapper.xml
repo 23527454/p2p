@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_ClapplyforMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Clapplyfor">
+        <id column="clpid" property="clpid" />
+        <result column="clpubcid" property="clpubcid" />
+        <result column="clpuname" property="clpuname" />
+        <result column="clpporiginal" property="clpporiginal" />
+        <result column="clpidpaper" property="clpidpaper" />
+        <result column="clphpoc" property="clphpoc" />
+        <result column="clpf" property="clpf" />
+        <result column="clpdate" property="clpdate" />
+        <result column="clpauditor" property="clpauditor" />
+        <result column="clpstate" property="clpstate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        clpid, clpubcid, clpuname, clpporiginal, clpidpaper, clphpoc, clpf, clpdate, clpauditor, clpstate
+    </sql>
+
+</mapper>

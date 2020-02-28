@@ -134,11 +134,14 @@
                     },//发送到服务器的数据
                     dataType: "json",
                     success: function (data) {
-                        if (data.result) {
+                        if (data.result == "true") {
                             alert("提现完成，请等待金额到账！！！");
                             location.href = "/grzx/grzx";
-                        }else {
+                        }else if(data.result == "false"){
                             alert("提现失败！！！！")
+                        }else {
+                            alert("身份证未提交！！！")
+                            location.href = "/withdrawal/account";
                         }
                     }
                 });

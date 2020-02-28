@@ -51,16 +51,41 @@
 					</h4>
 					
 					<div class="col-md-14">
-					<form action="${pageContext.request.contextPath}/approve/limitApplyfor.do" method="post"> 
+
+					<script>
+                        function setCurrent(data) {
+                            $("#current").val(data);
+                            $("#myForm").submit();
+                        }
+                        function showInfo(data) {
+                            var windowWidth = document.documentElement.clientWidth;
+                            var windowHeight = document.documentElement.clientHeight;
+                            var popupHeight = $("#"+data).height();
+                            var popupWidth = $("#"+data).width();
+                            $("#"+data).css({
+                                "position": "absolute",
+                                "z-index":100,
+                                "top": (windowHeight-popupHeight)/2+$(document).scrollTop(),
+                                "left": (windowWidth-popupWidth)/2
+                            });
+                            $("#"+data).show();
+                        }
+                        function closeInfo(data) {
+                            $("#"+data).hide();
+                        }
+					</script>
+					<form id="myForm" action="/bk/approve/limitApplyfor" method="post">
 						<button type="submit">查找</button>
-						用户名：<input type="text" name="clpuname" id="clpuname"/>
-						申请时间：<input type="text" name="mindate" id="mindate" onclick="WdatePicker()" readonly="readonly"/>至<input type="text" name="maxdate" id="maxdate" onclick="WdatePicker({minDate:'#F{$dp.$D(\'mindate\')}'})" readonly="readonly"/>
+						<input type="hidden" name="current" id="current" th:value="${page.current}">
+						用户名：<input type="text" name="clpuname" id="clpuname" th:value="${clpuname}"/>
+						申请时间：<input type="date" name="mindate" id="mindate" th:value="${mindate}" onclick="WdatePicker()" />至
+						<input type="date" name="maxdate" id="maxdate" th:value="${maxdate}" onclick="WdatePicker({minDate:'#F{$dp.$D(\'mindate\')}'})" />
 						状态：
 						<select name="clpstate" id="clpstate">
-									<option value="" selected="selected">==请选择==</option>
-									<option value="0">待审核</option>
-									<option value="1">审核成功</option>
-									<option value="1">审核失败</option>
+									<option value="-1" th:selected="${clpstate=='-1'}">==请选择==</option>
+									<option value="0" th:selected="${clpstate=='0'}">待审核</option>
+									<option value="1" th:selected="${clpstate=='1'}">审核成功</option>
+									<option value="2" th:selected="${clpstate=='2'}">审核失败</option>
 						</select>
 						</form>
 					</div>
@@ -80,147 +105,108 @@
 								<th>操作</th>
 							</tr>
 						</thead>
-						<c:if test="${empty cps}">
+						<div th:if="${page.pages<1}">
 							<tr align="center">
 								<td colspan="9" align="center">
 										没有找到你想要的数据
 								</td>
 							</tr>
-						</c:if>
-						<c:if test="${!empty cps}">
-						<c:forEach items="${cps}" var="cp" varStatus="status">
+						</div>
+						<div th:if="${page.pages>0}">
+						<div th:each="cp,cpStat:${cps}">
 							<tr>
-								<td>
-									${status.index+1}
-								</td>
-								<td>
-									${cp.clpuname}
-								</td>
-								<td>${cp.clpubcid}</td>
-								<td>${cp.clpporiginal}</td>
-								<td>${cp.clpf}</td>
-								<td><fmt:formatDate value="${cp.clpdate}"/></td>
+								<td th:text="${cpStat.count}"></td>
+								<td th:text="${cp.clpuname}"></td>
+								<td th:text="${cp.clpubcid}"></td>
+								<td th:text="${cp.clpporiginal}"></td>
+								<td th:text="${cp.clpf}"></td>
+								<td th:text="${#dates.format(cp.clpdate,'yyyy-MM-dd HH:mm:s')}"></td>
 								
-								<td>${cp.clpauditor}</td>
+								<td th:text="${cp.clpauditor}"></td>
 								<td>
-								<c:if test="${cp.clpstate=='0'}">
-									待审核
-								</c:if>
-								<c:if test="${cp.clpstate=='1'}">
-									审核成功
-								</c:if>
-								<c:if test="${cp.clpstate=='2'}">
-									审核失败
-								</c:if>
+									<span th:if="${cp.clpstate=='0'}">待审核</span>
+									<span th:if="${cp.clpstate=='1'}">审核成功</span>
+									<span th:if="${cp.clpstate=='2'}">审核失败</span>
 								</td>
 								<td>
-								<a href="javascript:;"  data-target="#${status.index+1}" data-toggle="modal">详情</a>
+								<a href="javascript:;" th:onclick="showInfo([[${cpStat.count}]])" th:attr="data-target=${cpStat.count}" data-target="#${status.index+1}" data-toggle="modal">详情</a>
 								</td>
 							</tr>
 							<!-- 弹出框· -->
-							<div class="modal fade" id="${status.index+1}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div th:id="${cpStat.count}" style="display: none;overflow: scroll;">
 							  <div class="modal-dialog">
 							    <div class="modal-content">
 							      <div class="modal-header">
-							        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							        <button type="button" class="close" data-dismiss="modal" th:onclick="closeInfo([[${cpStat.count}]])" aria-hidden="true">&times;</button>
 							        <h4 class="modal-title" id="myModalLabel">申请详情</h4>
 							      </div>
 							      <div class="modal-body">
-							        <div class="alert alert-info"><b><font><font>用户名称：</font></font></b><font>${cp.clpuname} </font></div>
-							        <div class="alert alert-danger"><b><font><font>用户账号：</font></font></b><font><font>${cp.clpubcid}</font></font></div>
-							        <div class="alert alert-success"><b><font><font>原来额度：</font></font></b><font><font>${cp.clpporiginal}</font></font></div>
-							        <div class="alert alert-danger"><b><font><font>申请额度：</font></font></b><font><font> ${cp.clpf}</font></font></div>
-							        <div class="alert alert-danger"><b><font><font>申请时间：</font></font></b><font><font> <fmt:formatDate value="${cp.clpdate}" pattern="yyyy-MM-dd HH:mm:ss" /></font></font></div>
-							        <div class="alert alert-danger"><b><font><font>跟踪审核：</font></font></b><font><font> ${cp.clpauditor}</font></font></div>
+							        <div class="alert alert-info"><b><font><font>用户名称：</font></font></b><font>[[${cp.clpuname}]] </font></div>
+							        <div class="alert alert-danger"><b><font><font>用户账号：</font></font></b><font><font>[[${cp.clpubcid}]]</font></font></div>
+							        <div class="alert alert-success"><b><font><font>原来额度：</font></font></b><font><font>[[${cp.clpporiginal}]]</font></font></div>
+							        <div class="alert alert-danger"><b><font><font>申请额度：</font></font></b><font><font> [[${cp.clpf}]]</font></font></div>
+							        <div class="alert alert-danger"><b><font><font>申请时间：</font></font></b><font><font th:text="${#dates.format(cp.clpdate,'yyyy-MM-dd HH:mm:ss')}"></font></font></div>
+							        <div class="alert alert-danger"><b><font><font>跟踪审核：</font></font></b><font><font> [[${cp.clpauditor}]]</font></font></div>
 							        <div class="alert alert-danger"><b><font><font>身份认证： </font></font></b><font><font>
-							        	<c:if test="${empty cr}">
-							        		未申请
-							        	</c:if>
-							        	<c:forEach items="${cr }" var="cr">
-							        			<c:if test="${cp.clpuname == cr.crusername && cr.craiid==1}">
-							        				<c:if test="${cr.crispass == '1' }">
-														待审核
-													</c:if>
-													<c:if test="${cr.crispass == '2' }">
-														审核通过
-													</c:if>
-													<c:if test="${cr.crispass == '3' }">
-														审核失败
-													</c:if>
-							        			</c:if>
-							        	</c:forEach>
-							        
+							        	<span th:if="${cr==null || cr==''}">未申请</span>
+							        	<div th:each="cr,crStat:${crs }">
+							        			<span th:if="${cp.clpuname == cr.crusername && cr.craiid==1}">
+													<span th:if="${cr.crispass == '1' }">待审核</span>
+													<span th:if="${cr.crispass == '2' }">审核成功</span>
+													<span th:if="${cr.crispass == '3' }">审核失败</span>
+							        			</span>
+							        	</div>
 							        </font></font></div>
 							        <div class="alert alert-danger"><b><font><font></font>收入认证：</font></b><font><font>
-										
-										
-										<c:if test="${empty cr}">
-							        		未申请
-							        	</c:if>
-							        	<c:set var="iscontain" value="true" /> 
-							        	<c:forEach items="${cr}" var="cr">
-							        			<c:if test="${cp.clpuname == cr.crusername && cr.craiid==5}">
-							        				<c:if test="${cr.crispass == '1' }">
-														待审核
-													</c:if>
-													<c:if test="${cr.crispass == '2' }">
-														审核通过
-													</c:if>
-													<c:if test="${cr.crispass == '3' }">
-														审核失败
-													</c:if>
-													<c:set var="iscontain" value="false" /> 
-							        			</c:if>
-							        	</c:forEach>
-										<c:if test="${iscontain}">
-										未提交
-										</c:if>
+										<span th:if="${cr==null || cr==''}">未申请</span>
+										<span th:with="iscontain=false"></span>
+										<div th:each="cr,crStat:${crs }">
+							        			<span th:if="${cp.clpuname == cr.crusername && cr.craiid==5}">
+													<span th:if="${cr.crispass == '1' }">待审核</span>
+													<span th:if="${cr.crispass == '2' }">审核成功</span>
+													<span th:if="${cr.crispass == '3' }">审核失败</span>
+													<span th:with="iscontain=true"></span>
+							        			</span>
+										</div>
+										<span th:if="${iscontain}">未提交</span>
 									</font></font></div>
 							        <div class="alert alert-danger"><b><font><font>状态： </font></font></b><font><font>
-							        	<c:if test="${cp.clpstate=='0'}">
-											待审核
-										</c:if>
-										<c:if test="${cp.clpstate=='1'}">
-											审核成功
-										</c:if>
-										<c:if test="${cp.clpstate=='2'}">
-											审核失败
-										</c:if></font></font></div>
+										<span th:if="${cp.clpstate=='0'}">待审核</span>
+										<span th:if="${cp.clpstate=='1'}">审核成功</span>
+										<span th:if="${cp.clpstate=='2'}">审核失败</span>
+									</font></font></div>
 							      </div>
 							      <div class="modal-footer">
 							      <input type="hidden" id="clpid" value="${cp.clpid}"/>
 							      <input type="hidden" id="clpubcid" value="${cp.clpubcid}"/>
 							       <input type="hidden" id="clpf" value="${cp.clpf}"/>
 							        <input type="hidden" id="clpporiginal" value="${cp.clpporiginal}"/>
-							      	<c:if test="${cp.clpstate=='0'}">
+							      	<div th:if="${cp.clpstate=='0'}">
 											<button type="button" class="btn btn-default"  onclick="onsubt('1');">审核通过</button>
 											<button type="button" class="btn btn-default"  onclick="onsubt('2');">审核不通过</button>
-										</c:if>
+										</div>
 										
-							        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							        <button type="button" class="btn btn-default" th:onclick="closeInfo([[${cpStat.count}]])" data-dismiss="modal">关闭</button>
 							      </div>
 							    </div>
 							  </div>
 							 </div>
-							</c:forEach>
+							</div>
 							<tr align="center">
 							<td colspan="9">
-									
-									<a href="${pageContext.request.contextPath}/approve/limitApplyfor.do?currpage=1&clpuname=${clpuname }&mindate=${mindate}&maxdate=${maxdate}&clpstate=${clpstate}" class="btn  ">首页</a>
-									<a href="${pageContext.request.contextPath}/approve/limitApplyfor.do?currpage=${currpages-1}&clpuname=${clpuname }&mindate=${mindate}&maxdate=${maxdate}&clpstate=${clpstate}" class="btn  ">&lt;&lt;上一页</a>
-									<a href="${pageContext.request.contextPath}/approve/limitApplyfor.do?currpage=${currpages+1}&clpuname=${clpuname }&mindate=${mindate}&maxdate=${maxdate}&clpstate=${clpstate}" class="btn "> 下一页&gt;&gt;</a>
-									<a href="${pageContext.request.contextPath}/approve/limitApplyfor.do?currpage=${totalpage}&clpuname=${clpuname }&mindate=${mindate}&maxdate=${maxdate}&clpstate=${clpstate}" class="btn  "> 尾页</a>
+									<!--href="${pageContext.request.contextPath}/approve/limitApplyfor.do?currpage=1&clpuname=${clpuname }&mindate=${mindate}&maxdate=${maxdate}&clpstate=${clpstate}"-->
+									<a th:onclick="setCurrent(1)" class="btn  ">首页</a>
+									<a th:if="${page.current>1}" th:onclick="setCurrent([[${page.current-1 }]])" class="btn  ">&lt;&lt;上一页</a>
+									<a th:if="${page.current<page.pages}" th:onclick="setCurrent([[${page.current+1 }]])" class="btn "> 下一页&gt;&gt;</a>
+									<a th:onclick="setCurrent([[${page.pages}]])" class="btn  "> 尾页</a>
 									<font size="3">共<font
-										color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-										color="red">/
-										<c:if test="${totalpage!=0}">${totalpage}</c:if>
-										<c:if test="${totalpage==0}">1</c:if>
-										
+										color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font
+										color="red">/[[${page.pages}]]
 										</font>页
 									</font>
 								</td>
 						</tr>
-						</c:if>
+						</div>
 						
 					</table>
 				</div>
