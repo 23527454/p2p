@@ -139,9 +139,8 @@
                             location.href = "/grzx/grzx";
                         }else if(data.result == "false"){
                             alert("提现失败！！！！")
-                        }else {
-                            alert("身份证未提交！！！")
-                            location.href = "/withdrawal/account";
+                        }else if(data.result == "yhkcz"){
+                            alert("银行卡已存在！！！")
                         }
                     }
                 });
@@ -164,17 +163,31 @@
             }
 
             function addbanks() {
-                var banks = $("#banks")
-                var bankes = $("#bankes")
-                var xbanks = $("#xbanks")
-                var deposit = $(".deposit-tip")
-                document.getElementById("bankname").value = "";
-                document.getElementById("bankhao").value="";
-                $("#bankl").val("未选择")
-                deposit.css({"margin-top": "100px"})
-                xbanks.hide();
-                bankes.show();
-                banks.show();
+                $.ajax({
+                    type: "GET",
+                    url: "/withdrawal/addbanks",
+                    data: {},//发送到服务器的数据
+                    dataType: "json",
+                    success: function (data) {
+                       if(data.result == "sfzwk"){
+                            alert("身份证未提交！！！")
+                            location.href = "/grzx/grzx_zhsz";
+                        }else {
+                           var banks = $("#banks")
+                           var bankes = $("#bankes")
+                           var xbanks = $("#xbanks")
+                           var deposit = $(".deposit-tip")
+                           document.getElementById("bankname").value = "";
+                           document.getElementById("bankhao").value="";
+                           $("#bankl").val("未选择")
+                           deposit.css({"margin-top": "100px"})
+                           xbanks.hide();
+                           bankes.show();
+                           banks.show();
+                       }
+                    }
+                });
+
             }
 
             function xuanbanks() {
