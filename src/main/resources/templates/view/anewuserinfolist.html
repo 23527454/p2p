@@ -104,10 +104,10 @@
 			alert("请选择审核人");
 			return false;
 		}else{
-			$.post('${pageContext.request.contextPath}/approve/affirmCrauditor.do',{"uauditor":auditor,"userid":userid,"uauditorid":auditorid,"username":username},function(data){
+			$.post('/bk/approve/affirmCrauditor',{"uauditor":auditor,"userid":userid,"uauditorid":auditorid,"username":username},function(data){
 				 if(data==200){
 					alert("添加成功");
-					location.href = "${pageContext.request.contextPath}/approve/newuserInfoList.do";
+					location.href = "/bk/approve/newuserInfoList";
 				 }else{
 					 alert("添加失败");
 				 }
@@ -131,7 +131,7 @@
 						<i class="fa "></i>新用户认证资料
 					</h4>
 					<hr>
-					<form id="frm1" name="frm1" action="${pageContext.request.contextPath}/approve/affirmCrauditor.do" method="post">
+					<form id="frm1" name="frm1" action="/bk/approve/affirmCrauditor" method="post">
 					<table class="table table-striped table-advance table-hover">
 						<thead>
 							<tr>
@@ -144,54 +144,36 @@
 							</tr>
 						</thead>
 						<tbody>
-							
-							<c:forEach items="${users}" var="u" varStatus="subscript">
-							
-								<tr>
-									<td>${u.uid}
-									<input type="hidden" name="userid" value="${u.uid}"/>
-									</td>
-									<td>${u.unickname}
-									<input type="hidden" name="username" value="${u.unickname}"/>
-									</td>
-									<td>
-										<c:if test="${cr==null}">
-											0
-										</c:if>
-										<c:if test="${cr!=null}">
-											<c:forEach items="${cr}" var="c">
-												<c:if test="${u.uid==c.cruserid}">
-													${c.crintegral }
-												</c:if>
-											</c:forEach>
-										</c:if>
-									</td>
-									<td>
-										<c:if test="${cr==null}">
-											0
-										</c:if>
-										<c:if test="${cr!=null}">
-											<c:forEach items="${cr}" var="c">
-												<c:if test="${u.uid==c.cruserid}">
-													${c.checkpend }
-												</c:if>
-											</c:forEach>
-										</c:if>
-									</td>
-									
-									<td>
-									<select name="crauditor" id="crauditor" required="required">
-										<option value="" selected="selected">==请选择==</option>
-										<c:forEach items="${employees}" var="emp">
-											<option value="${emp.eid}">${emp.ename}</option>
-										</c:forEach>
-									</select>
-									</td>
-									<td>
-									<button type="button" class="btn btn-primary btn-mg " onclick="check_crauditor(${subscript.index});">确定审核人员</button>
-									</td>
-								</tr>
-							</c:forEach>
+						<tr th:each="u,uStat:${users}">
+							<td th:text="${u.uid}">
+								<input type="hidden" name="userid" th:value="${u.uid}"/>
+							</td>
+							<td th:text="${u.unickname}">
+								<input type="hidden" name="username" th:value="${u.unickname}"/>
+							</td>
+							<td>
+								<span th:if="${cr==null}">0</span>
+								<div th:if="${cr!=null}">
+									<span th:each="c:${cr}" th:if="${u.uid==c.cruserid}" th:text="${c.crintegral }"></span>
+								</div>
+							</td>
+							<td>
+								<span th:if="${cr==null}">0</span>
+								<div th:if="${cr!=null}">
+									<span th:each="c:${cr}" th:if="${u.uid==c.cruserid}" th:text="${c.checkpend }"></span>
+								</div>
+							</td>
+
+							<td>
+								<select name="crauditor" id="crauditor" required="required">
+									<option value="" selected="selected">==请选择==</option>
+									<option th:each="emp:${employees}" th:value="${emp.eid}" th:text="${emp.ename}"></option>
+								</select>
+							</td>
+							<td>
+								<button type="button" class="btn btn-primary btn-mg " th:onclick="check_crauditor([[${uStat.count}]]);">确定审核人员</button>
+							</td>
+						</tr>
 						</tbody>
 					</table>
 					</form>

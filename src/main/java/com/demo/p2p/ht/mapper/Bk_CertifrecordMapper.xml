@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_CertifrecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Certifrecord">
+        <id column="crid" property="crid" />
+        <result column="cruserid" property="cruserid" />
+        <result column="crusername" property="crusername" />
+        <result column="craiid" property="craiid" />
+        <result column="crainame" property="crainame" />
+        <result column="craitype" property="craitype" />
+        <result column="crispass" property="crispass" />
+        <result column="crdate" property="crdate" />
+        <result column="crauditor" property="crauditor" />
+        <result column="crintegral" property="crintegral" />
+        <result column="crviewpoint" property="crviewpoint" />
+        <result column="crimg" property="crimg" />
+        <result column="crupldate" property="crupldate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        crid, cruserid, crusername, craiid, crainame, craitype, crispass, crdate, crauditor, crintegral, crviewpoint, crimg, crupldate
+    </sql>
+
+</mapper>
