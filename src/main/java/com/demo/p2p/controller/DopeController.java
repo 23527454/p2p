@@ -194,16 +194,24 @@ public class DopeController {
         Bankcard bankcard = new Bankcard();
         Bankcard bankcard1 = bankcardMapper.selectById(users.getUid());
         bankcard.setuID(bankcard1.getuID());
+        bankcard.setUname(users.getUnickname());
+        bankcard.setZname(users.getUname());
+        bankcard.setSfz(users.getUcardid());
         bankcard.setKhh(name);
         bankcard.setCardid(kahao);
         bankcard.setTjtime(date);
         bankcard.setStatu("成功");
-        int savebankcard = bankcardService.savebankcard(bankcard);
-        if(savebankcard>0){
-            out.print("<script>alert('添加成功！');window.location.href='/grzx/grzx_cz1';</script>");
+        if(bankcard.getSfz()!=null && bankcard.getSfz().equals("")){
+            int savebankcard = bankcardService.savebankcard(bankcard);
+            if(savebankcard>0){
+                out.print("<script>alert('添加成功！');window.location.href='/grzx/grzx_cz1';</script>");
+            }else{
+                out.print("<script>alert('添加失败！');window.location.href='/grzx/pay1';</script>");
+           }
         }else{
-            out.print("<script>alert('添加失败！');window.location.href='/dope/saveBank';</script>");
+            out.print("<script>alert('身份证为空,请先绑定身份证！');window.location.href='/grzx/pay1';</script>");
         }
+
         out.flush();
         out.close();
     }
