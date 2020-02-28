@@ -201,17 +201,23 @@ public class DopeController {
         bankcard.setCardid(kahao);
         bankcard.setTjtime(date);
         bankcard.setStatu("成功");
-        if(bankcard.getSfz()!=null && bankcard.getSfz().equals("")){
-            int savebankcard = bankcardService.savebankcard(bankcard);
-            if(savebankcard>0){
-                out.print("<script>alert('添加成功！');window.location.href='/grzx/grzx_cz1';</script>");
-            }else{
-                out.print("<script>alert('添加失败！');window.location.href='/grzx/pay1';</script>");
-           }
-        }else{
-            out.print("<script>alert('身份证为空,请先绑定身份证！');window.location.href='/grzx/pay1';</script>");
-        }
-
+        System.out.println(bankcard.getSfz());
+        System.out.println(bankcard.getCardid() + "bankcard.getCardid() ");
+        System.out.println(bankcard1.getCardid() + "bankcard1.getCardid() ");
+        if (!bankcard.getCardid().equals(bankcard1.getCardid())) {
+            if(bankcard.getSfz()!=null && !bankcard.getSfz().equals("")){
+                int savebankcard = bankcardService.savebankcard(bankcard);
+                if (savebankcard > 0) {
+                    out.print("<script>alert('添加成功！');window.location.href='/grzx/grzx_cz1';</script>");
+                } else {
+                    out.print("<script>alert('添加失败！');window.location.href='/grzx/pay1';</script>");
+                }
+          }else {
+                out.print("<script>alert('身份证为空,请先绑定身份证！');window.location.href='/grzx/pay1';</script>");
+            }
+        } else{
+            out.print("<script>alert('已经添加过该银行卡！');window.location.href='/grzx/pay1';</script>");
+            }
         out.flush();
         out.close();
     }
