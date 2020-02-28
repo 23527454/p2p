@@ -61,8 +61,9 @@ public class WithdrawalController {
         /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间*/
         Users user = (Users) session.getAttribute("loginUser");
-        if (user.getUcardid() != null || user.getUcardid() != "") {
-            System.out.println(user.getUcardid());
+        System.out.println("ucardud" + user.getUcardid());
+        if (user.getUcardid().equals("") || user.getUcardid() == null) {
+
             map.put("sfzwk", "sfzwk");
             return map;
         }
