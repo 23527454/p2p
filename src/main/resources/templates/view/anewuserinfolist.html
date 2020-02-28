@@ -36,85 +36,71 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 <script type="text/javascript">
-	function check_crauditor(xb) {
-		var auditoridList = new Array();
-		var auditornameList = new Array();
-		var useridList = new Array();
-		var usernameList = new Array();
-		var auditor="";
-		var userid="";
-		var auditorid="";
-		var username="";
-		$("input[name='userid']").each(function(){
-			//alert($(this).val());
-			useridList.push($(this).val());
-		});
-		$("input[name='username']").each(function(){
-			//alert($(this).val());
-			usernameList.push($(this).val());
-		});
-		
-// 		alert(cruseridList.length);
-	    $("select[name='crauditor']").each(function(){
-	        //显示下拉框中已选文本值 ，同上
-	        //alert("审核人ID=="+$(this).find('option:selected').val());
-	        auditoridList.push($(this).find('option:selected').val());
-	        auditornameList.push($(this).find('option:selected').text());
-	        //alert("=================================");
-	    }); 
-// 	    alert("useridListlength=="+useridList.length);
-// 	    alert("usernameListlength=="+usernameList.length);
-// 	    alert("auditornameListlength=="+auditornameList.length);
-// 	    alert("auditoridListlength=="+auditoridList.length);
-	    
-	    $.each(auditornameList,function(n,value) {
-		    if(n==xb){
-		    	//alert(n+' '+value);
-		    	if(value!="==请选择=="){
-				    auditor=value;
-				}
-		    	
-			}         
-	     });
-	    
-	    $.each(useridList,function(m,value1) {
-		    if(m==xb){
-// 		    	alert(m+' '+value1);
-		    	userid=value1;
-			}         
-	     });
-	    $.each(auditoridList,function(x,value2) {
-		    if(x==xb){
-		    	//alert(n+' '+value);
-		    	if(value2!=""){
-			    	auditorid=value2;
-				}
-		    	
-			}         
-	     });
-	    $.each(usernameList,function(y,value3) {
-		    if(y==xb){
-		    	//alert(n+' '+value);
-		    	username = value3
-		    	
-			}         
-	     });
-//     		alert(userid+"  "+username+"  "+auditorid+"  "+auditor);
-		if(auditorid=='' && auditor==''){
-			alert("请选择审核人");
-			return false;
-		}else{
-			$.post('/bk/approve/affirmCrauditor',{"uauditor":auditor,"userid":userid,"uauditorid":auditorid,"username":username},function(data){
-				 if(data==200){
-					alert("添加成功");
-					location.href = "/bk/approve/newuserInfoList";
-				 }else{
-					 alert("添加失败");
-				 }
-			},"json");
-		}
-	    
-	}
+    function check_crauditor(xb) {
+        var auditoridList = new Array();
+        var auditornameList = new Array();
+        var useridList = new Array();
+        var usernameList = new Array();
+        var auditor="";
+        var userid="";
+        var auditorid="";
+        var username="";
+        $("input[name='userid']").each(function(){
+            useridList.push($(this).val());
+        });
+
+        $("input[name='username']").each(function(){
+            usernameList.push($(this).val());
+        });
+
+        $("select[name='crauditor']").each(function(){
+            auditoridList.push($(this).find('option:selected').val());
+            auditornameList.push($(this).find('option:selected').text());
+        });
+
+        $.each(auditornameList,function(n,value) {
+            if(n==xb){
+                if(value!="==请选择=="){
+                    auditor=value;
+                }
+
+            }
+        });
+
+        $.each(useridList,function(m,value1) {
+            if(m==xb){
+                userid=value1;
+            }
+        });
+        $.each(auditoridList,function(x,value2) {
+            if(x==xb){
+                if(value2!=""){
+                    auditorid=value2;
+                }
+
+            }
+        });
+        $.each(usernameList,function(y,value3) {
+            if(y==xb){
+                username = value3
+
+            }
+        });
+        if(auditorid=='' && auditor==''){
+            alert("请选择审核人");
+            return false;
+        }else{
+            $.post('/bk/approve/affirmCrauditor',{"uauditor":auditor,"userid":userid,"uauditorid":auditorid,"username":username},function(data){
+                if(data==200){
+                    alert("添加成功");
+                    location.href = "/bk/approve/newuserInfoList";
+                }else{
+                    alert("添加失败");
+                }
+            },"json");
+        }
+
+    }
 </script>
 
 </head>
@@ -145,12 +131,10 @@
 						</thead>
 						<tbody>
 						<tr th:each="u,uStat:${users}">
-							<td th:text="${u.uid}">
-								<input type="hidden" name="userid" th:value="${u.uid}"/>
-							</td>
-							<td th:text="${u.unickname}">
-								<input type="hidden" name="username" th:value="${u.unickname}"/>
-							</td>
+							<input type="hidden" name="userid" th:value="${u.uid}"/>
+							<input type="hidden" name="username" th:value="${u.unickname}"/>
+							<td th:text="${uStat.count}"></td>
+							<td th:text="${u.unickname}"></td>
 							<td>
 								<span th:if="${cr==null}">0</span>
 								<div th:if="${cr!=null}">
@@ -171,7 +155,7 @@
 								</select>
 							</td>
 							<td>
-								<button type="button" class="btn btn-primary btn-mg " th:onclick="check_crauditor([[${uStat.count}]]);">确定审核人员</button>
+								<button type="button" class="btn btn-primary btn-mg " th:onclick="check_crauditor([[${uStat.index}]]);">确定审核人员</button>
 							</td>
 						</tr>
 						</tbody>

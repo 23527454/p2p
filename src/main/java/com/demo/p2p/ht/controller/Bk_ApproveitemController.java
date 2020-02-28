@@ -9,6 +9,7 @@ import com.demo.p2p.ht.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,32 @@ public class Bk_ApproveitemController {
     private Bk_UsersService usersService;
     @Resource
     private Bk_EmployeeService employeeService;
+
+    /**
+     * 添加审核人
+     * @param userauditor
+     * @return
+     */
+    @RequestMapping(value = "/affirmCrauditor")
+    @ResponseBody
+    public Integer affirmCrauditor(Userauditor userauditor){
+        //添加审核记录
+        boolean result=userauditorService.save(userauditor);
+        if (result){
+            QueryWrapper<Certifrecord> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("cruserid",userauditor.getUserid());
+            //查询指定userid的所有记录
+            List<Certifrecord> list=certifrecordService.list(queryWrapper);
+            for(Certifrecord c:list){
+                //修改审核人
+                c.setCrauditor(userauditor.getUauditor());
+                certifrecordService.updateById(c);
+            }
+            return 200;
+        }else{
+            return 400;
+        }
+    }
 
     @RequestMapping(value = "/newuserInfoList")
     public String newuserInfoList(Model model){
