@@ -2,6 +2,7 @@ package com.demo.p2p.ht.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.ht.entity.*;
@@ -41,6 +42,79 @@ public class Bk_ApproveitemController {
     @Resource
     private Bk_EmployeeService employeeService;
 
+    @RequestMapping(value = "/updateInfoAudit")
+    @ResponseBody
+    public Integer updateInfoAudit(Certifrecord certifrecord){
+        UpdateWrapper<Certifrecord> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.set("crviewpoint",certifrecord.getCrviewpoint());
+        updateWrapper.set("crintegral",certifrecord.getCrintegral());
+        updateWrapper.set("crispass",certifrecord.getCrispass());
+        updateWrapper.set("crauditor",certifrecord.getCrauditor());
+        updateWrapper.set("crdate",new Date());
+        updateWrapper.eq("cruserid",certifrecord.getCruserid());
+        updateWrapper.eq("craiid",certifrecord.getCraiid());
+        boolean result=certifrecordService.update(updateWrapper);
+        if (result){
+            return 200;
+        }
+        return 400;
+    }
+
+    /**
+     * 进入用户资料列表
+     * @param cruserid
+     * @param craiid
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/infoAuditByuser")
+    public String infoAuditByuser(Integer cruserid,Integer craiid,Model model){
+        Users users=usersService.getById(cruserid);
+        List<Approveitem> approveitems=approveitemService.list();
+        QueryWrapper<Certifrecord> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("cruserid",cruserid);
+        queryWrapper.eq("craiid",craiid);
+        //queryWrapper.eq("crispass","1");
+        List<Certifrecord> certifrecords=certifrecordService.list(queryWrapper);
+        List<Userauditor> userauditors=userauditorService.list();
+        Integer jf=0;
+        for (Certifrecord c:certifrecords){
+            if (c.getCrintegral()!=null){
+                jf+=c.getCrintegral();
+            }
+        }
+
+        model.addAttribute("approve",approveitems);
+        model.addAttribute("user",users);
+        model.addAttribute("certrecod",certifrecords);
+        model.addAttribute("useraud",userauditors);
+        model.addAttribute("craiid",craiid);
+        model.addAttribute("jf",jf);
+        return "view/basicuserapprove";
+    }
+
+    /**
+     * 用户资料认证
+     * @param current
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/basicInfoApprove")
+    public String basicInfoApprove(Integer current,Model model){
+        if(current==null){
+            current=1;
+        }
+        Page<Users> page=new Page<>(current,5);
+        IPage<Users> iPage=usersService.page(page);
+        List<Users> users=iPage.getRecords();
+        List<Userauditor> userauditors=userauditorService.list();
+
+        model.addAttribute("page",iPage);
+        model.addAttribute("users",users);
+        model.addAttribute("uas",userauditors);
+        return "view/basicinfoList";
+    }
+
     /**
      * 添加审核人
      * @param userauditor
@@ -67,6 +141,11 @@ public class Bk_ApproveitemController {
         }
     }
 
+    /**
+     * 查询新用户认证资料
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/newuserInfoList")
     public String newuserInfoList(Model model){
         //查出所有用户
@@ -158,9 +237,13 @@ public class Bk_ApproveitemController {
         }
         Page<Clapplyfor> page=new Page<>(current,5);
         IPage<Clapplyfor> iPage=clapplyforService.page(page,queryWrapper);
-
         List<Certifrecord> cr=certifrecordService.list();
         List<Clapplyfor> cps=iPage.getRecords();
+        if (current>iPage.getPages()){
+            page=new Page<>(1,5);
+            iPage=clapplyforService.page(page,queryWrapper);
+            cps=iPage.getRecords();
+        }
         model.addAttribute("cr",cr);
         model.addAttribute("cps",cps);
         model.addAttribute("page",iPage);
