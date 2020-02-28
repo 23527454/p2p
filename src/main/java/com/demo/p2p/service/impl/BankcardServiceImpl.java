@@ -21,7 +21,7 @@ import java.util.List;
 public class BankcardServiceImpl extends ServiceImpl<BankcardMapper, Bankcard> implements BankcardService {
 
     @Resource
-    private  BankcardMapper bankcardMapper;
+    private BankcardMapper bankcardMapper;
 
     @Override
     public List<Bankcard> getbank(int uid) {
@@ -41,5 +41,10 @@ public class BankcardServiceImpl extends ServiceImpl<BankcardMapper, Bankcard> i
     @Override
     public int savebankcard(Bankcard bankcard) {
         return this.baseMapper.insert(bankcard);
+    }
+
+    @Override
+    public List<Bankcard> getBanks(int uid, String khh, String cardid) {
+        return bankcardMapper.getBanks(uid, khh, cardid);
     }
 }

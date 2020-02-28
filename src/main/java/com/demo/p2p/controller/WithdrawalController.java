@@ -9,6 +9,7 @@ import com.demo.p2p.service.BankcardService;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.PoundageService;
 import com.demo.p2p.service.WithdrawalService;
+import org.apache.catalina.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,11 +63,6 @@ public class WithdrawalController {
         /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间*/
         Users user = (Users) session.getAttribute("loginUser");
-        if (user.getUcardid() != null || user.getUcardid() != "") {
-            System.out.println(user.getUcardid());
-            map.put("sfzwk", "sfzwk");
-            return map;
-        }
     /*    int id = 0;
         String actualMoney = null;
         String bid = null;
@@ -83,11 +80,8 @@ public class WithdrawalController {
         if (request.getParameter("id") != null) {
             id = Integer.parseInt(request.getParameter("id"));//certification实体类得id
         }*/
-
-
         double sxf = Double.parseDouble(actualMoney) * 0.001;
         double dzmoney = Double.parseDouble(actualMoney) - sxf;
-
         //        actualMoneys = Double.parseDouble(actualMoney);
         //      double blances =  Double.parseDouble(blance);//总额
         //      double sum =  blances - actualMoneys;//总额扣除提现金额
@@ -97,8 +91,6 @@ public class WithdrawalController {
         if (!bankl.equals("未选择")) {
             bankcard = bankcardService.getInfo(Integer.parseInt(bankl));//查询下拉列表数据
         }
-
-
         Bankcard bd = new Bankcard();
         System.out.println(bankhao + bankname + user.getUid());
         if (!bankname.equals("") && !bankhao.equals("")) {
@@ -111,17 +103,23 @@ public class WithdrawalController {
             bd.setTjtime(time);
             bd.setStatu("成功");
         }
-
-        System.out.println("bd" + bd);
         Withdrawal wl = new Withdrawal();
         wl.setuID(user.getUid());
         wl.setUname(user.getUnickname());
         wl.setZname(user.getUname());
         if (bankcard != null) {
-            System.out.println(1111111);
             wl.setTxnum(bankcard.getCardid());//提现银行卡号
             wl.setTxbank(bankcard.getKhh());//提现银行名称
-        } else {
+        }
+        if(!bankhao.equals("") && !bankname.equals("")){
+            /**
+             * 判断银行卡是否存在
+             */
+            List<Bankcard> bls = bankcardService.getBanks(user.getUid(),bankname,bankhao);
+            if(bls.size() > 0){
+                map.put("result","yhkcz");
+                  return map;
+            }
             System.out.println(2222222);
             wl.setTxnum(bankhao);//提现银行卡号
             wl.setTxbank(bankname);//提现银行名称
@@ -177,13 +175,16 @@ public class WithdrawalController {
 
     }
 
-    @RequestMapping("account")
-    public String account(HttpSession session) {
+    @RequestMapping("addbanks")
+    @ResponseBody
+    public Object addbanks(HttpSession session) {
+        Map<String, Object> map = new HashMap<>();
         Users user = (Users) session.getAttribute("loginUser");
-        if (user == null) {
-            return "redirect:/sys/login";
+        if (user.getUcardid().equals("") || user.getUcardid() == null) {
+            map.put("result", "sfzwk");
+            return map;
         }
-        return "account";
+        return map;
     }
 
 }
