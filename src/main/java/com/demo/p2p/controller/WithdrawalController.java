@@ -61,6 +61,11 @@ public class WithdrawalController {
         /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间*/
         Users user = (Users) session.getAttribute("loginUser");
+        if (user.getUcardid() != null || user.getUcardid() != "") {
+            System.out.println(user.getUcardid());
+            map.put("sfzwk", "sfzwk");
+            return map;
+        }
     /*    int id = 0;
         String actualMoney = null;
         String bid = null;
@@ -147,9 +152,9 @@ public class WithdrawalController {
         }
 
         if ((num > 0 && pbol == true && wbol == true) || (num > 0 && pbol == true && wbol == true && bbol == true)) {
-            map.put("result", true);
+            map.put("result", "true");
         } else {
-            map.put("result", false);
+            map.put("result", "false");
         }
         return map;
      /*   System.out.println("uid:\t"+pe.getuID());
@@ -172,6 +177,14 @@ public class WithdrawalController {
 
     }
 
+    @RequestMapping("account")
+    public String account(HttpSession session) {
+        Users user = (Users) session.getAttribute("loginUser");
+        if (user == null) {
+            return "redirect:/sys/login";
+        }
+        return "account";
+    }
 
 }
 
