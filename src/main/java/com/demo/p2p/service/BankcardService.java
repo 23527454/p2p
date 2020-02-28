@@ -15,10 +15,13 @@ import java.util.List;
  * @since 2020-02-21
  */
 public interface BankcardService extends IService<Bankcard> {
-    public List<Bankcard> getbank( int uid);
+    public List<Bankcard> getbank(int uid);
+
     public Bankcard getInfo(int bid);
+
     public List<Bankcard> bankcardList();
 
     public int savebankcard(Bankcard bankcard);
 
+    public List<Bankcard> getBanks(int uid,String khh,String cardid);
 }

@@ -30,4 +30,7 @@ public interface BankcardMapper extends BaseMapper<Bankcard> {
     public List<Bankcard> bankcardList();
 
     public int savebankcard(Bankcard bankcard);
+
+    @Select("SELECT * FROM bankcard WHERE uid = #{uid} and khh =#{khh} and cardid = #{cardid}")
+    public List<Bankcard> getBanks(@Param("uid")int uid,@Param("khh")String khh,@Param("cardid")String cardid);
 }

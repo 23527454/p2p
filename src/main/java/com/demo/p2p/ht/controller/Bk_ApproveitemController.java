@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -113,6 +112,94 @@ public class Bk_ApproveitemController {
         model.addAttribute("users",users);
         model.addAttribute("uas",userauditors);
         return "view/basicinfoList";
+    }
+
+    @RequestMapping(value = "/addApprove")
+    private String addApprove(String aitype,String ainame) {
+        Approveitem approveitem = new Approveitem();
+        approveitem.setAistate("1");
+        approveitem.setAiname(ainame);
+        approveitem.setAitype(aitype);
+        approveitemService.save(approveitem);
+        return "redirect:/bk/approve/traverseApproves";
+    }
+
+    @RequestMapping(value = "/toupdateApprove")
+    private String toupdateApprove(String aiid, Model model) {
+        Approveitem approve = approveitemService.getById(aiid);
+        model.addAttribute("approve", approve);
+        return "view/approveupdate";
+    }
+
+    @RequestMapping(value = "/toaddApprove")
+    private String toaddApprove() {
+        return "view/approveadd";
+    }
+
+    @RequestMapping(value = "/updateApprove")
+    private String updateApprove(String aiid,String aistate,String aitype,String ainame) {
+        Approveitem approveitem = approveitemService.getById(aiid);
+        if (aistate != null && aistate != ""){
+            approveitem.setAistate(aistate);
+        }
+        if (aitype != null && aitype != ""){
+            approveitem.setAitype(aitype);
+        }
+        if (ainame != null && ainame != ""){
+            approveitem.setAiname(ainame);
+        }
+        approveitemService.updateById(approveitem);
+        return "redirect:/bk/approve/traverseApproves";
+    }
+
+    @RequestMapping(value = "/traverseApproves")
+    public String traverseApproves(Model model, String currpage, HttpSession session){
+        int pagerow = 5;// 每页5行
+        int currpages = 1;// 当前页
+        int totalpage = 0;// 总页数
+        int totalrow = 0;// 总行数
+        Map<String, Object> parameters = new HashMap<String, Object>();
+
+        List<Approveitem> list = approveitemService.list();
+        totalrow = list.size();
+        if (currpage != null && !"".equals(currpage)) {
+            currpages = Integer.parseInt(currpage);
+        }
+
+        int outcount = 0;// 不够一页的数据条数
+        int count = 0;//
+        if (currpage != null && !"".equals(currpage)) {
+            currpages = Integer.parseInt(currpage);
+        }
+
+        outcount = totalrow % pagerow;
+        count = totalrow / pagerow;
+
+        totalpage = count;
+
+        if (outcount > 0) {
+            totalpage = count + 1;
+        }
+
+        if (currpages < 1) {
+            currpages = 1;
+        }
+        if (currpages > totalpage) {
+            currpages = totalpage;
+        }
+
+        Integer candp = (currpages - 1) * pagerow;
+        if (candp < 0) {
+            candp = 0;
+        }
+        parameters.put("pandc", 5);
+        parameters.put("candp", candp);
+        List<Approveitem> lists = approveitemService.selList(parameters);
+        session.setAttribute("totalrow", totalrow);
+        session.setAttribute("currpages", currpages);
+        session.setAttribute("totalpage", totalpage);
+        session.setAttribute("approveitems",lists);
+        return "view/approvelist";
     }
 
     /**
