@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,4 +28,10 @@ public interface CertificationService extends IService<Certification> {
     public int updateMoney(String id, String cashFine);
 
     public Certification getcserial(String cusername);
+
+    public List<Certification> certificationList();
+
+    public int upmoney(Certification certification);
+
+    public int certificationupup(Certification certification);
 }

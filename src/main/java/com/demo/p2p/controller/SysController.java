@@ -2,11 +2,10 @@ package com.demo.p2p.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
-import com.demo.p2p.entity.Notice;
-import com.demo.p2p.service.CertificationService;
-import com.demo.p2p.service.InvestinfoService;
-import com.demo.p2p.service.NoticeService;
-import com.demo.p2p.service.UsersService;
+import com.demo.p2p.entity.*;
+import com.demo.p2p.mapper.CertificationMapper;
+import com.demo.p2p.mapper.PacketredMapper;
+import com.demo.p2p.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +32,25 @@ public class SysController {
     private UsersService usersService;
     @Resource
     private InvestinfoService investinfoService;
+
+    @Resource
+    private ProductService productService;
+
+    @Resource
+    private BiaoService biaoService;
+
+    @Resource
+    private PacketredService packetredService;
+
+    @Resource
+    private PacketredMapper packetredMapper;
+
+    @Resource
+    private CertificationMapper certificationMapper;
+
+    @Resource
+    private BankcardService bankcardService;
+
 
     @RequestMapping(value = "/403")
     public String wqx(){
@@ -73,6 +95,14 @@ public class SysController {
         mode.addAttribute("list2",list2);
         mode.addAttribute("list3",list3);
         mode.addAttribute("sy",list4);
+
+        List<Product> products = productService.productList();
+        List<Product> products2 = productService.productList2();
+        List<Biao> biaos = biaoService.biaoList();
+        mode.addAttribute("products", products);
+        mode.addAttribute("products2", products2);
+        mode.addAttribute("biaos", biaos);
+
         request.setAttribute("sumcertification",certification);
         request.setAttribute("sumuserscount",usersnamecount);
         request.setAttribute("sumInmoney",sumInmoney);
@@ -390,5 +420,92 @@ public class SysController {
         return "statement";
     }
 
+    /**
+     * 个人中心——我的红包
+     *
+     * @return
+     */
+    @RequestMapping(value = "/grzx_wdhb")
+    public String grzx_wdhb (HttpServletRequest request, HttpSession session){
+        List<Packetred> packetredss = packetredService.packetredList();
+        request.setAttribute("packetredss", packetredss);
+        return "个人中心-我的红包";
+    }
+    /**
+     * 个人中心——我的红包1
+     *
+     * @return
+     */
+    @RequestMapping(value = "/grzx_wdhb1")
+    public String grzx_wdhb1 (HttpServletRequest request, HttpSession session){
+        List<Packetred> packetredss = packetredService.packetredList();
+        request.setAttribute("packetredss", packetredss);
+        return "个人中心-我的红包1";
+    }
 
+    /**
+     * 个人中心——我的红包2
+     *
+     * @return
+     */
+    @RequestMapping(value = "/grzx_wdhb2")
+    public String grzx_wdhb2(HttpServletRequest request, HttpSession session){
+        List<Packetred> packetredss = packetredService.packetredList();
+        request.setAttribute("packetredss", packetredss);
+        return "个人中心-我的红包2";
+    }
+
+    /**
+     * 刷新兑换红包
+     *
+     * @return
+     */
+    @RequestMapping(value = "/sxduhb")
+    public String sxduhb(HttpServletRequest request, HttpSession session){
+        return "redirect:/grzx/grzx_zhzl";
+    }
+
+    /**
+     * 个人中心——红包兑换
+     *
+     * @return
+     */
+    @RequestMapping(value = "/grzx_hbdh")
+    public void grzx_hbdh (String code, String dhma, HttpServletRequest request, HttpSession session, HttpServletResponse response, String cbalance) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Packetred pa = new Packetred();
+        pa.setDhma(code);
+        pa.setPname("已使用");
+        pa.setPtype(2);
+
+        Users users = (Users) session.getAttribute("loginUser");
+        Certification certification = new Certification();
+        Certification certi = certificationMapper.selectById(users.getUid());
+        System.out.println(certi.getId() + "pa.getId()");
+        System.out.println(certi.getId() + "certification.getId()");
+        certification.setId(certi.getId());
+        String cbalance1 = certi.getCtotalmoney();
+        Integer cbalance2=0;
+        Integer cbalance3=0;
+        if(cbalance2!=null){
+            cbalance2 = Integer.parseInt(cbalance1);
+        }
+        cbalance3  = cbalance2 +50;
+        certification.setCtotalmoney(String.valueOf(cbalance3));
+        System.out.println(certification.getCbalance());
+        int certificationupup = certificationService.certificationupup(certification);
+        int packetredupdate = packetredService.packetredupdate(pa);
+        System.out.println(packetredupdate + "============");
+        if (packetredupdate > 0) {
+            if (certificationupup > 0) {
+                out.print("<script>alert('兑换成功！');window.location.href='/sys/sxduhb';</script>");
+            }
+        } else {
+            out.print("<script>alert('兑换失败！');window.location.href='/sys/grzx_wdhb';</script>");
+        }
+        out.flush();
+        out.close();
+    }
 }

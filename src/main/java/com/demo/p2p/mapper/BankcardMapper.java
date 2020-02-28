@@ -2,6 +2,7 @@ package com.demo.p2p.mapper;
 
 import com.demo.p2p.entity.Bankcard;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.demo.p2p.entity.Users;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -25,4 +26,8 @@ public interface BankcardMapper extends BaseMapper<Bankcard> {
     @Select("SELECT * FROM bankcard WHERE bid =  #{bid}")
     public Bankcard getInfo(@Param("bid") int bid);
 
+    @Select("SELECT * FROM bankcard")
+    public List<Bankcard> bankcardList();
+
+    public int savebankcard(Bankcard bankcard);
 }

@@ -27,4 +27,7 @@
         uid, unickname, uname, umailbox, uphonenumber, uregisterdate, uflip, ufldate, ureferrer, ureferrername, userpaytoid, ucertnumber, upassword, ucardid, uhead, upwd_zd
     </sql>
 
+    <select id="find" resultType="com.demo.p2p.entity.Users" parameterType="map">
+  	select * from users where uid=${id}
+    </select>
 </mapper>

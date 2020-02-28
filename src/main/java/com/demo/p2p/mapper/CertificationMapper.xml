@@ -19,5 +19,8 @@
     <sql id="Base_Column_List">
         id, cserial, cusername, crealname, cbalance, cfreeze, cdue, cpaid, ctotalmoney
     </sql>
+    <update id="upmoney">
+		update certification set cbalance = #{cbalance},ctotalmoney = #{ctotalmoney} where id = #{id}
+	</update>
 
 </mapper>

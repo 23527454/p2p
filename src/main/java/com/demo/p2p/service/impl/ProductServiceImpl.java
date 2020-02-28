@@ -8,6 +8,7 @@ import com.demo.p2p.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,4 +33,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public Product selById(int id) {
         return productMapper.selectById(id);
     }
+
+    @Override
+    public List<Product> productList() {
+        return this.baseMapper.productList();
+    }
+
+    @Override
+    public List<Product> productList2() {
+        return this.baseMapper.productList2();
+    }
+
 }

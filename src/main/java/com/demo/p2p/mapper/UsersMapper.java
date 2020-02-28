@@ -8,6 +8,8 @@ import com.demo.p2p.entity.Users;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.Map;
+
 
 /**
  * <p>
@@ -30,4 +32,7 @@ public interface UsersMapper extends BaseMapper<Users> {
 
     @Update("update users set uphonenumber=#{phone} where uid=#{uid}")
     public Integer resetPhone(@Param("uid") Integer uid, @Param("phone") String phone);
+
+    // 账户设置
+    public Users find(Map<String, Object> map);
 }
