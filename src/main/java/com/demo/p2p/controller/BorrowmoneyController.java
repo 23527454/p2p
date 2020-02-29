@@ -56,7 +56,6 @@ public class BorrowmoneyController {
             c.add(Calendar.MONTH,inum);
             borrowmoney.setBlimit(df.format(c.getTime()));
             borrowmoney.setBusername(users.getUid().toString());
-            borrowmoney.setBrate("20");
             boolean real = borrowmoneyService.save(borrowmoney);
             map.put("jie",true);
             System.out.println(real);
