@@ -1,5 +1,6 @@
 package com.demo.p2p.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.entity.*;
 import com.demo.p2p.mapper.*;
 import com.demo.p2p.service.ApproveitemService;
@@ -185,7 +186,7 @@ public class DopeController {
 
     //银行卡添加
     @RequestMapping(value = "/saveBank")
-    public void saveBank(HttpSession session, String name, String kahao, HttpServletResponse response) throws IOException {
+    public void saveBank(String  cardid,HttpSession session, String name, String kahao, HttpServletResponse response,HttpServletRequest request) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
@@ -201,9 +202,6 @@ public class DopeController {
         bankcard.setCardid(kahao);
         bankcard.setTjtime(date);
         bankcard.setStatu("成功");
-        System.out.println(bankcard.getSfz());
-        System.out.println(bankcard.getCardid() + "bankcard.getCardid() ");
-        System.out.println(bankcard1.getCardid() + "bankcard1.getCardid() ");
         if (!bankcard.getCardid().equals(bankcard1.getCardid())) {
             if(bankcard.getSfz()!=null && !bankcard.getSfz().equals("")){
                 int savebankcard = bankcardService.savebankcard(bankcard);
@@ -215,9 +213,9 @@ public class DopeController {
           }else {
                 out.print("<script>alert('身份证为空,请先绑定身份证！');window.location.href='/grzx/pay1';</script>");
             }
-        } else{
+        } else {
             out.print("<script>alert('已经添加过该银行卡！');window.location.href='/grzx/pay1';</script>");
-            }
+        }
         out.flush();
         out.close();
     }

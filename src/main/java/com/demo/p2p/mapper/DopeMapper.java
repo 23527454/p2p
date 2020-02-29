@@ -1,5 +1,6 @@
 package com.demo.p2p.mapper;
 
+import com.demo.p2p.entity.Bankcard;
 import com.demo.p2p.entity.Dope;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +21,6 @@ public interface DopeMapper extends BaseMapper<Dope> {
     public List<Dope> findDope(Map<String, Object> map);
     //查询总行数
     public List total();
+
+
 }

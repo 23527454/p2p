@@ -479,31 +479,35 @@ public class SysController {
         pa.setDhma(code);
         pa.setPname("已使用");
         pa.setPtype(2);
-
         Users users = (Users) session.getAttribute("loginUser");
+        Packetred packetred = packetredMapper.selectById(users.getUid());
         Certification certification = new Certification();
         Certification certi = certificationMapper.selectById(users.getUid());
         System.out.println(certi.getId() + "pa.getId()");
         System.out.println(certi.getId() + "certification.getId()");
         certification.setId(certi.getId());
         String cbalance1 = certi.getCtotalmoney();
-        Integer cbalance2=0;
-        Integer cbalance3=0;
-        if(cbalance2!=null){
-            cbalance2 = Integer.parseInt(cbalance1);
+        Float cbalance2 = Float.valueOf(cbalance1) + 50;
+        Integer cbalance3=null;
+        if(cbalance3!=null){
+            cbalance3 = Integer.parseInt(String.valueOf(cbalance2));
         }
-        cbalance3  = cbalance2 +50;
-        certification.setCtotalmoney(String.valueOf(cbalance3));
-        System.out.println(certification.getCbalance());
-        int certificationupup = certificationService.certificationupup(certification);
-        int packetredupdate = packetredService.packetredupdate(pa);
-        System.out.println(packetredupdate + "============");
-        if (packetredupdate > 0) {
-            if (certificationupup > 0) {
-                out.print("<script>alert('兑换成功！');window.location.href='/sys/sxduhb';</script>");
+        certification.setCtotalmoney(String.valueOf(cbalance2));
+        System.out.println(pa.getPname()+"!pa.getPname()");
+        System.out.println(packetred.getPname()+"packetred.getPname()");
+
+        if(!packetred.getPname().equals("已使用") && !packetred.getPname().equals("已过期")) {
+            int certificationupup = certificationService.certificationupup(certification);
+            int packetredupdate = packetredService.packetredupdate(pa);
+            if (packetredupdate > 0) {
+                if (certificationupup > 0) {
+                    out.print("<script>alert('兑换成功！');window.location.href='/sys/sxduhb';</script>");
+                }
+            } else {
+                out.print("<script>alert('验证码错误,兑换失败！');window.location.href='/sys/grzx_wdhb';</script>");
             }
-        } else {
-            out.print("<script>alert('兑换失败！');window.location.href='/sys/grzx_wdhb';</script>");
+        }else {
+            out.print("<script>alert('该验证码已经兑换过了！');window.location.href='/sys/sxduhb';</script>");
         }
         out.flush();
         out.close();

@@ -33,4 +33,6 @@ public interface BankcardMapper extends BaseMapper<Bankcard> {
 
     @Select("SELECT * FROM bankcard WHERE uid = #{uid} and khh =#{khh} and cardid = #{cardid}")
     public List<Bankcard> getBanks(@Param("uid")int uid,@Param("khh")String khh,@Param("cardid")String cardid);
+
+
 }
