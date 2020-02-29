@@ -212,7 +212,7 @@
 					<div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">借款期限</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="month" onchange="changeMonth()" name="btimelimit" >
+                            <input type="number" class="form-control" id="month" name="btimelimit" th:value="${borr.btimelimit}" readonly="readonly">
                             <span class="help-block">以月为单位,共借几个月.</span>
                         </div>
                     </div>
@@ -220,7 +220,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">筹款期限</label>
                         <div class="col-sm-10">
-                            <input type="text" id="blimit" class="form-control" name="blimit" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                            <input type="text" id="blimit" class="form-control" name="blimit" readonly="readonly" th:value="${borr.blimit}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                         </div>
                     </div>
 					
@@ -273,8 +273,6 @@
                             var month=$("#month").val();
                             if(annualRate==null ||annualRate==""){
                                 alert("年利率不可为空！");
-                            }else if(month==null || month==""){
-                                alert("借款期限不可为空！");
                             }else{
                                 $("#inputForm").submit();
                             }
@@ -325,7 +323,6 @@
 
 <script type="text/javascript">
 		function checks(){
-			
 				var repayWay=document.getElementById("repayWay").value;//还款方式
 				var money=document.getElementById("money").value;//借款金额
 				var month=document.getElementById("month").value;//期限
