@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -223,6 +224,13 @@ public class Bk_BorrowmoneyController {
     @RequestMapping(value = "/borqr")
     public String borqr(Integer ids,Model model){
         Borrowmoney borrowmoney=borrowmoneyService.getById(ids);
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());   //设置时间
+        c.add(Calendar.MONTH, Integer.parseInt(borrowmoney.getBtimelimit())); //日期分钟加1,Calendar.DATE(天),Calendar.HOUR(小时)
+        Date date = c.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+        String time = simpleDateFormat.format(date);
+        borrowmoney.setBlimit(time);
         model.addAttribute("borr",borrowmoney);
         return "view/bk_huankuanget";
     }
