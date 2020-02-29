@@ -25,11 +25,12 @@
         <result column="pdesc" property="pdesc" />
         <result column="psafe" property="psafe" />
         <result column="did" property="did" />
+        <result column="bmid" property="bmid" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pmoney, pincome, ptime, ptype, pway, pcount, progress, psaveway, prateben, ppublishtime, pname, ptotalmoney, prange, puse, pstate, picture, pproduce, pdesc, psafe, did
+        id, pmoney, pincome, ptime, ptype, pway, pcount, progress, psaveway, prateben, ppublishtime, pname, ptotalmoney, prange, puse, pstate, picture, pproduce, pdesc, psafe, did, bmid
     </sql>
 
     <select id="findProductPage" parameterType="java.util.HashMap" resultType="com.demo.p2p.entity.Product">

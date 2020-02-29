@@ -2,7 +2,7 @@ package com.demo.p2p.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -43,6 +43,19 @@ private static final long serialVersionUID=1L;
      * 操作时间
      */
     private Date dtime;
+
+    /**
+     * 用户id
+     */
+    private Integer uid;
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
 
 
     public Integer getDid() {
@@ -93,6 +106,7 @@ private static final long serialVersionUID=1L;
         ", dtitle=" + dtitle +
         ", details=" + details +
         ", dtime=" + dtime +
+        ", uid=" + uid +
         "}";
     }
 }

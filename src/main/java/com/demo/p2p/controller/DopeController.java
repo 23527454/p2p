@@ -1,16 +1,14 @@
 package com.demo.p2p.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.entity.*;
 import com.demo.p2p.mapper.*;
 import com.demo.p2p.service.ApproveitemService;
 import com.demo.p2p.service.BankcardService;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.DopeService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -67,7 +65,7 @@ public class DopeController {
      */
     @RequestMapping(value = "/grzx_xtxx")
     public String grzx_xtxx(Model model,@RequestParam(value="currpage",required=false)String conent){
-        int pagecount = 1;//每页显示行数
+        int pagecount = 5;//每页显示行数
         int currpage = 1;//当前行数
         int totalPage = 0;//总页数
         int totalRow = 0;//总行数

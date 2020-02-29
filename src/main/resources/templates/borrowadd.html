@@ -735,6 +735,12 @@
 
         if (i == 0) {
 
+            var uid=[[${session.loginUser==null?'0':'1'}]];
+            if(uid=='0'){
+                alert("请先登录!");
+                return false;
+            }
+
             var  bserial = $("#bserial").val();
             var appname = $("#appname").val();
             var appusername = $("#appusername").val();

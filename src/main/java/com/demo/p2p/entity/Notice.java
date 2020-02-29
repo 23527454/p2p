@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -54,8 +53,6 @@ private static final long serialVersionUID=1L;
      * 公告最后发布人,操作人.
      */
     private Integer noticelastmodifier;
-
-
     public Integer getNoticeid() {
         return noticeid;
     }
@@ -121,7 +118,6 @@ private static final long serialVersionUID=1L;
         ", noticepicture=" + noticepicture +
         ", noticecontent=" + noticecontent +
         ", noticelasttime=" + noticelasttime +
-        ", noticelastmodifier=" + noticelastmodifier +
         "}";
     }
 }
