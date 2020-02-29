@@ -16,5 +16,6 @@ import java.util.Map;
  */
 public interface BorrowcordMapper extends BaseMapper<Borrowcord> {
     public List<Borrowcord> selInfo(Map<String, Object> map);
+    public Double selSum(Map<String, Object> map);
 
 }

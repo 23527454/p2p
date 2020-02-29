@@ -170,11 +170,20 @@ public class InvestinfoController {
 
         List<Biao> biao = biaoService.selList();
         session.setAttribute("biao", biao);
+        Product pro = productService.selById(Integer.parseInt(bmid));
+        System.out.println("proBmid-------------"+pro.getBmid());
+        session.setAttribute("Borrowmoney", pro);
+
         Map<String,Object> map1 = new HashMap<String, Object>();
+        map1.put("bmid",pro.getBmid());
         List<Borrowcord> borrowcords = borrowcordService.selInfo(map1);
         session.setAttribute("bwm",borrowcords);
-        Product pro = productService.selById(Integer.parseInt(bmid));
-        session.setAttribute("Borrowmoney", pro);
+        map1.put("bs",0);
+        Double money1 = borrowcordService.selSum(map1);//查出未还款的总额
+        session.setAttribute("weihuan",money1);
+        map1.put("bs",1);
+        Double money2 = borrowcordService.selSum(map1);//查出已还款的总额
+        session.setAttribute("yihuan",money2);
 
         List<Details> list = detailsService.selList(pro.getDid());
         System.out.println("标详情列表大小" + list.size());

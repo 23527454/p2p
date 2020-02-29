@@ -17,4 +17,5 @@ import java.util.Map;
  */
 public interface BorrowcordService extends IService<Borrowcord> {
     public List<Borrowcord> selInfo(Map<String, Object> map);
+    public Double selSum(Map<String, Object> map);
 }

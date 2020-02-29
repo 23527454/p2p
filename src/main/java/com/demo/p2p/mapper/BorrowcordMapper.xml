@@ -20,7 +20,19 @@
 
 
     <select id="selInfo" resultMap="BaseResultMap" parameterType="map">
-        SELECT bwd.*,bwm.bmoney money,bwm.brate rate FROM borrowcord bwd,borrowmoney bwm
-	    WHERE bwd.bid = bwm.id
+        SELECT bc.*,bm.bmoney money,bm.brate rate
+        FROM borrowcord bc
+        INNER JOIN borrowmoney bm ON bm.id=bc.bid
+        INNER JOIN product p ON p.bmid=bm.id
+        WHERE bm.id=#{bmid}
+        GROUP BY bc.boid
+    </select>
+
+    <select id="selSum" resultType="java.lang.Double" parameterType="map">
+        SELECT 	SUM(bm.bmoney * bm.brate / 200 + bm.bmoney / 2)
+        FROM borrowcord bc
+        INNER JOIN borrowmoney bm ON bm.id=bc.bid
+        INNER JOIN product p ON p.bmid=bm.id
+        WHERE bm.id=#{bmid} AND bc.bstatue = #{bs}
     </select>
 </mapper>
