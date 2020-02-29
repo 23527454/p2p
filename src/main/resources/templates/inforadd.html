@@ -100,7 +100,6 @@
 						<li><span class="c-888">需还本息：</span><span th:text="${(session.Borrowmoney.prateben + session.Borrowmoney.ptotalmoney)}"></span>元</li>
 						<li><span class="c-888">借款用途：</span><span th:text="${session.Borrowmoney.puse }"></span></li>
 						<li class="colspan"> <span class="c-888 fl">投标进度：</span>
-							<div class="progress-bar fl"> <span style="width:100%"></span> </div>
 							<span class="c-green" th:text="${(session.Borrowmoney.pmoney/session.Borrowmoney.ptotalmoney)*(100)}+'%'"></span> </li>
 						<li> <span class="c-888">投资范围：</span> <span id="account_range" th:text="${session.Borrowmoney.prange }"></span> </li>
 					</ul>
