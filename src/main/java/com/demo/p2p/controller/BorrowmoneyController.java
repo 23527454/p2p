@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,10 +49,16 @@ public class BorrowmoneyController {
 
         users  = (Users) session.getAttribute("loginUser");
         if(users !=  null ){
+            System.out.println(borrowmoney.getBtimelimit());
+            DateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            Calendar c = Calendar.getInstance();
+            int inum = Integer.parseInt(borrowmoney.getBtimelimit());
+            c.add(Calendar.MONTH,inum);
+            borrowmoney.setBlimit(df.format(c.getTime()));
             borrowmoney.setBusername(users.getUid().toString());
-            num = borrowmoneyService.addMoney(borrowmoney);
+            boolean real = borrowmoneyService.save(borrowmoney);
             map.put("jie",true);
-            System.out.println(num);
+            System.out.println(real);
         }else {
             map.put("jie",false);
             System.out.println(borrowmoney.getBrecommend());

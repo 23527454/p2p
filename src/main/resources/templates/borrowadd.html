@@ -477,6 +477,26 @@
                                           <option value="0">请选择地区</option>
                                         </select> -->
                                 </tr>
+                                <tr class="trline32">
+
+                                    <td class="w100">借款期限</td>
+                                    <td>
+                                        <select name="btimelimit" id="btimelimit" style="width:90px;">
+                                            <option value="1">1个月</option>
+                                            <option value="2">2个月</option>
+                                            <option value="3">3个月</option>
+                                            <option value="4">4个月</option>
+                                            <option value="5">5个月</option>
+                                            <option value="6">6个月</option>
+                                            <option value="7">7个月</option>
+                                            <option value="8">8个月</option>
+                                            <option value="9">9个月</option>
+                                            <option value="10">10个月</option>
+                                            <option value="11">11个月</option>
+                                            <option value="12">12个月</option>
+                                        </select>
+                                    </td>
+                                </tr>
 
                                 <tr class="trline32">
                                     <td></td>
@@ -745,7 +765,9 @@
                  window.alert("请选择所在区域")
                 return false;
             }
+            var btimelimit = $("#btimelimit").val();
             $.post("/brower/toaddborr.do", {
+                btimelimit:btimelimit,
                 bserial:bserial,
                 btitle: appname,
                 brelname: appusername,
