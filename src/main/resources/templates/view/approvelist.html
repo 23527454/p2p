@@ -37,7 +37,6 @@
     <![endif]-->
 <script type="text/javascript">
 	function check_abandon() {
-
 		if (confirm("确定要弃用该认证项吗")) {
 			return true;
 		} else {
@@ -59,7 +58,7 @@
 				<div class="content-panel">
 					<h4>
 						<i class="fa "></i><a
-							href="${pageContext.request.contextPath}/approve/toaddApprove.do"
+							href="/bk/approve/toaddApprove"
 							class="btn btn-success btn-ls ">点击添加认证项</a>
 					</h4>
 					<hr>
@@ -74,44 +73,52 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${approveitems}" var="ai">
+							<span th:each="ai:${session.approveitems}">
 								<tr>
-									<td>${ai.aiid}</td>
-									<td>${ai.ainame }</td>
-									<td><c:if test="${ai.aitype==1}">
-                                  	基本认证项
-                                  </c:if> <c:if test="${ai.aitype==2}">
-                                  	可选认证项
-                                  </c:if></td>
-									<td><c:if test="${ai.aistate==0}">
+									<td th:text="${ai.aiid}"></td>
+									<td th:text="${ai.ainame }"></td>
+									<td>
+										<span th:if="${ai.aitype == '1'}">
+                                  			基本认证项
+										</span>
+										<span th:if="${ai.aitype == '2'}">
+                                  			可选认证项
+										</span>
+									</td>
+									<td>
+										<span th:if="${ai.aistate == '0'}">
 											<span class="label label-warning label-mini">已弃用</span>
-										</c:if> <c:if test="${ai.aistate==1}">
-											<span class="label label-success label-mini">未弃用</span>
-										</c:if></td>
-									<td><a href="${pageContext.request.contextPath}/approve/toupdateApprove.do?aiid=${ai.aiid}" class="btn btn-success btn-ms fa fa-pencil">修改</a>
-										<c:if test="${ai.aistate==0}">
-											<a
-												href="${pageContext.request.contextPath}/approve/updateApprove.do?aiid=${ai.aiid}&aistate=1"
+										</span>
+										<span th:if="${ai.aistate == '1'}">
+											<span class="label label-warning label-mini">未弃用</span>
+										</span>
+									</td>
+									<td>
+										<a th:href="@{/bk/approve/toupdateApprove(aiid=${ai.aiid})}" class="btn btn-success btn-ms fa fa-pencil">修改</a>
+										<span th:if="${ai.aistate=='0'}">
+											<a th:href="@{/bk/approve/updateApprove(aiid=${ai.aiid},aistate=1)}"
 												class="btn btn-success btn-ms fa fa-check">启用</a>
-										</c:if> <c:if test="${ai.aistate==1}">
-											<a
-												href="${pageContext.request.contextPath}/approve/updateApprove.do?aiid=${ai.aiid}&aistate=0"
-												class="btn btn-danger btn-ms fa fa-trash-o"
-												onclick="check_abandon()">弃用</a>
-										</c:if></td>
+										</span>
+										<span th:if="${ai.aistate=='1'}">
+											<a th:href="@{/bk/approve/updateApprove(aiid=${ai.aiid},aistate=0)}"
+											   class="btn btn-danger btn-ms fa fa-trash-o">弃用</a>
+										</span>
+									</td>
 								</tr>
-							</c:forEach>
+							</span>
 							<tr align="center">
 								<td colspan="5">
-									<a href="${pageContext.request.contextPath}/approve/traverseApproves.do?currpage=1" class="btn btn-success btn-ms ">首页</a>
-									<a href="${pageContext.request.contextPath}/approve/traverseApproves.do?currpage=${currpages-1}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
-									<a href="${pageContext.request.contextPath}/approve/traverseApproves.do?currpage=${currpages+1}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
-									<a href="${pageContext.request.contextPath}/approve/traverseApproves.do?currpage=${totalpage}" class="btn btn-success btn-ms "> 尾页</a>
+									<a th:href="@{/bk/approve/traverseApproves(currpage=1)}" class="btn btn-success btn-ms ">首页</a>
+									<a th:href="@{/bk/approve/traverseApproves(currpage=${session.currpages-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
+									<a th:href="@{/bk/approve/traverseApproves(currpage=${session.currpages+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
+									<a th:href="@{/bk/approve/traverseApproves(currpage=${session.totalpage})}" class="btn btn-success btn-ms "> 尾页</a>
 									
-									<font size="3">共<font
-										color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-										color="red">/${totalpage}</font>页
-									</font>
+									<span size="3">共
+										<span color="red"th:text="${session.totalrow}"></span>
+										条数据，当前
+										<span color="#0000ff" th:text="${session.currpages}"></span>
+										<span color="red">/ <span th:text="${session.totalpage}"></span></span>页
+									</span>
 								</td>
 							</tr>
 						</tbody>

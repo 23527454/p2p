@@ -240,14 +240,14 @@
 						</tr>
 						</tbody>
 						<tbody id="repayment_content">
-							<div th:each="record1:${session.record }">
+							<span th:each="record1:${session.record }">
 								<tr>
 									<td th:text="${record1.uname}"></td>
 									<td><span class="c-orange">￥<span th:text="${record1.inmoney}"></span></span></td>
 									<td th:text="${#dates.format(record1.indate, 'yyyy-MM-dd')}"></td>
 									<td th:text="${record1.instyle }"></td>
 								</tr>
-							</div>
+							</span>
 						</tbody>
 						<tfoot>
 						<tr class="page-outer">

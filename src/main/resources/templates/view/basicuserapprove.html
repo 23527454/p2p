@@ -61,10 +61,10 @@
 			var auditor = document.getElementById("crauditor").value;
 			//alert("integral:"+integral+"<--->viewpoint:"+viewpoint+"<--->:"+crtype+"<--->userid:"+userid+"<--->ispass:"+ispass+"<--->auditor:"+auditor);
 			if(integral!=''){
-				$.post('${pageContext.request.contextPath}/approve/updateInfoAudit.do',{"cruserid":userid,"craiid":crtype,"crviewpoint":viewpoint,"crintegral":integral,"crispass":ispass,"crauditor":auditor},function(data){
+				$.post('/bk/approve/updateInfoAudit',{"cruserid":userid,"craiid":crtype,"crviewpoint":viewpoint,"crintegral":integral,"crispass":ispass,"crauditor":auditor},function(data){
 					 if(data==200){
 						alert("审核成功");
-						location.href = "${pageContext.request.contextPath}/approve/infoAuditByuser.do?cruserid="+userid+"&craiid="+crtype;
+						location.href = "/bk/approve/infoAuditByuser?cruserid="+userid+"&craiid="+crtype;
 					 }else{
 						 alert("审核失败");
 					 }
@@ -89,21 +89,19 @@
 						<i class="fa "></i>用户资料
 					</h5>
 					<div class="col-md-14">
-					<form action="${pageContext.request.contextPath}/approve/infoAuditByuser.do" method="post"> 
+					<form action="/bk/approve/infoAuditByuser" method="post">
 						<button type="submit">查找</button>
 						证件种类：
 						<select name="craiid" id="craiid">
-							<c:forEach items="${approve}" var="ap">
-									<option value="${ap.aiid }" ${craiid == ap.aiid?'selected':''}>${ap.ainame }</option>
-							</c:forEach>
+							<option th:each="ap:${approve}" th:value="${ap.aiid }" th:selected="${craiid == ap.aiid}" th:text="${ap.ainame }"></option>
 						</select>
-						<input type="hidden" name="cruserid" id="cruserid" value="${user.uid}"/>
+						<input type="hidden" name="cruserid" id="cruserid" th:value="${user.uid}"/>
 						</form>
 					</div><hr>
 					<table class="table ">
 						<tr align="center">
 							<td colspan="10">
-								用户名：${user.unickname }
+								用户名：[[${user.unickname }]]
 							</td>
 						</tr>
 						<tr align="center">
@@ -118,103 +116,64 @@
 							<td>上传时间</td>
 							<td>状态</td>
 						</tr>
-						
-						<c:if test="${empty certrecod }">
-							<tr align="center">
+
+						<tr align="center" th:if="${certrecod==null}">
 							<td>${user.uid }</td>
 							<td>${user.unickname }</td>
 							<td>${user.uname }</td>
 							<td colspan="7">暂无数据</td>
 						</tr>
-						</c:if>
-						<c:if test="${ !empty certrecod }">
-						<c:forEach items="${certrecod}" var="cr">
-							<tr align="center">
-							<td>${user.uid }</td>
-							<td>${user.unickname }</td>
-							<td>${user.uname }</td>
-							<td>
-								<c:if test="${user.uid == cr.cruserid}">
-								${cr.crainame }
-								</c:if>
-							</td>
-							<td>
-								<c:if test="${user.uid == cr.cruserid}">
-								
-								<c:if test="${!empty cr.crviewpoint }">
-									<img alt="" src="${cr.crimg }">
-								</c:if>
-								<c:if test="${empty cr.crviewpoint }">
-									未上传
-								</c:if>
-								</c:if>
-							</td>
-							<td>
-								<c:forEach items="${useraud}" var="ua">
-								<c:if test="${user.uid == ua.userid}">
-								${ua.uauditor}
-								<input type="hidden" id="crauditor" name="crauditor" value="${ua.uauditor}"/>
-								</c:if>
-								</c:forEach>
-							</td>
-							<td>
-								<c:forEach items="${useraud}" var="ua">
-								<c:if test="${user.uid == ua.userid}">
-								${ua.uauditor}
-								
-								</c:if>
-								</c:forEach>
-							</td>
-							<td>
-								<c:if test="${user.uid == cr.cruserid}">
-								<c:if test="${!empty cr.crviewpoint }">
-									${cr.crviewpoint }
-								</c:if>
-								<c:if test="${empty cr.crviewpoint }">
-									无数据
-								</c:if>
-								</c:if>
-							</td>
-							<td>
-								<c:if test="${user.uid == cr.cruserid}">
-									<fmt:formatDate value="${cr.crupldate }" timeStyle="yyyy-MM-dd " />
-								</c:if>
-							</td>
-							<td>
-								<c:if test="${user.uid == cr.cruserid}">
-									<c:if test="${cr.crispass == '1' }">
-										待审核
-									</c:if>
-									<c:if test="${cr.crispass == '2' }">
-										审核通过
-									</c:if>
-									<c:if test="${cr.crispass == '3' }">
-										审核失败
-									</c:if>
-								</c:if>
-							</td>
-						</tr>
-						</c:forEach>
-						</c:if>
+						<div th:if="${certrecod!=null }">
+							<tr align="center" th:each="cr,crStat:${certrecod}">
+								<td>[[${crStat.count }]]</td>
+								<td>[[${user.unickname }]]</td>
+								<td>[[${user.uname }]]</td>
+								<td th:if="${user.uid == cr.cruserid}" th:text="${cr.crainame }"></td>
+								<td th:if="${user.uid == cr.cruserid}">
+									<span th:if="${cr.crimg!=null && cr.crimg!=''}">
+										<img alt="" th:src="${cr.crimg }">
+									</span>
+									<span th:if="${cr.crimg==null || cr.crimg=='' }">未上传</span>
+								</td>
+								<td>
+									<span th:each="ua:${useraud}" th:if="${user.uid == ua.userid}">
+										[[${ua.uauditor}]]
+										<input type="hidden" id="crauditor" name="crauditor"  th:value="${ua.uauditor}"/>
+									</span>
+								</td>
+								<td>
+									<span th:each="ua:${useraud}" th:if="${user.uid == ua.userid}" th:text="${ua.uauditor}"></span>
+								</td>
+								<td>
+									<span th:if="${user.uid == cr.cruserid}">
+										<span th:if="${cr.crviewpoint!=null && cr.crviewpoint!=''}" th:text="${cr.crviewpoint }"></span>
+										<span th:if="${cr.crviewpoint==null || cr.crviewpoint==''}">无数据</span>
+									</span>
+								</td>
+								<td>
+									<span th:if="${user.uid == cr.cruserid}" th:text="${#dates.format(cr.crupldate,'yyyy-MM-dd')}"></span>
+								</td>
+								<td>
+									<span th:if="${user.uid == cr.cruserid}">
+										<span th:if="${cr.crispass == '1' }">
+											待审核
+										</span>
+										<span th:if="${cr.crispass == '2' }">
+											审核通过
+										</span>
+										<span th:if="${cr.crispass == '3' }">
+											审核失败
+										</span>
+									</span>
+								</td>
+							</tr>
+						</div>
 					</table>
 					<hr >
 				</div>
-				<c:if test="${!empty certrecod}">
-				<div class="col-ld-12" >
+				<div class="col-ld-12" th:if="${certrecod!=null}" >
 					该项证件所得信用积分为：<font color="red">
-					<c:if test="${ !empty certrecod }">
-						<c:forEach items="${certrecod}" var="cr">
-						<c:if test="${user.uid == cr.cruserid}">
-							<c:if test="${ !empty cr.crintegral }">
-								${cr.crintegral }
-							</c:if>
-							<c:if test="${empty cr.crintegral }">
-								0
-							</c:if>
-						</c:if>
-						</c:forEach>
-					</c:if>
-					<c:if test="${empty certrecod }">0</c:if>
+					<span th:text="${jf }"></span>
 					分</font><br /><br />
 					
 					信用积分：<input type="text" id="jf"  name="crintegral" required="required" > <font color="red">**提示：单项认证积分最高为20分，最低为0分</font>
@@ -225,9 +184,7 @@
 					<button type="button" class="btn btn-ms fa" onclick="on_submit(1);">审核通过</button>
 					<button type="button"  class="btn  btn-ms fa " onclick="on_submit(0);">审核不通过</button>
 					</div>
-					
 				</div>
-				</c:if>
 				<!-- /content-panel -->
 			</div>
 			<!-- 内容结束 -->

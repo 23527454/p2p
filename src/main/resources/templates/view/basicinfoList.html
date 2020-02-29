@@ -56,66 +56,32 @@
 							<td>序号</td>
 							<td>用户名</td>
 							<td>真实姓名</td>
-<%-- 							<c:forEach items="${ap}" var="ap"> --%>
-
-<%-- 								<c:if test="${ap.aitype=='1' and ap.aistate=='1' }"> --%>
-<%-- 									<td>${ap.ainame}</td> --%>
-<%-- 								</c:if> --%>
-
-<%-- 							</c:forEach> --%>
 							<td>跟踪审核</td>
 							<td>操作</td>
 						</tr>
-						<c:forEach items="${users}" var="u" varStatus="i"><!-- 循环行 -->
-							<tr align="center">
-								<td>${i.index+1}</td>
-								<td>${u.unickname}</td>
-								<td>${u.uname}</td>
-<%-- 								<c:forEach items="${ap}" var="ap" varStatus="x"> --%>
-<%-- 									<c:if test="${ap.aitype=='1' and ap.aistate=='1' }"><!-- 循环列 --> --%>
-<!-- 										<td> -->
-<%-- 										<c:forEach items="${cr }" var="cr" varStatus="code"> --%>
-										 
-<%-- 											<c:choose> --%>
-<%-- 												<c:when test="${cr.cruserid == u.uid and cr.craiid==ap.aiid }"> --%>
-<%-- 													<c:if test="${cr.crispass=='1'}"> --%>
-<!-- 														待审核 -->
-<%-- 													</c:if> --%>
-<%-- 													<c:if test="${cr.crispass=='2'}"> --%>
-<!-- 														审核成功 -->
-<%-- 													</c:if> --%>
-<%-- 													<c:if test="${cr.crispass=='3'}"> --%>
-<!-- 														审核失败 -->
-<%-- 													</c:if> --%>
-<%-- 												</c:when> --%>
-<%-- 												<c:otherwise> --%>
-													
-<%-- 												</c:otherwise> --%>
-<%-- 											</c:choose> --%>
-  											
-<%-- 										</c:forEach> --%>
-<!-- 										</td> -->
-<%-- 									</c:if> --%>
-<%-- 								</c:forEach> --%>
-								<td><c:forEach items="${ua}" var="ua">
-										<c:if test="${ua.userid==u.uid }">
-										${ua.uauditor}
-									</c:if>
-									</c:forEach></td>
-								<td><a href="${pageContext.request.contextPath}/approve/infoAuditByuser.do?cruserid=${u.uid}&craiid=1">查看</a></td>
-							</tr>
-						</c:forEach>
+						<tr align="center" th:each="u,uStat:${users}">
+							<td th:text="${uStat.count}"></td>
+							<td th:text="${u.unickname}"></td>
+							<td th:text="${u.uname}"></td>
+							<td>
+								<span th:each="ua:${uas}" th:if="${ua.userid==u.uid }" th:text="${ua.uauditor}"></span>
+							</td>
+							<td><a th:href="@{/bk/approve/infoAuditByuser(cruserid=${u.uid},craiid=1)}">查看</a></td>
+						</tr>
 						<tr align="center">
 							<td colspan="5">
-									<a href="${pageContext.request.contextPath}/approve/basicInfoApprove.do?currpage=1" class="btn btn-success btn-ms ">首页</a>
-									<a href="${pageContext.request.contextPath}/approve/basicInfoApprove.do?currpage=${currpages-1}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
-									<a href="${pageContext.request.contextPath}/approve/basicInfoApprove.do?currpage=${currpages+1}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
-									<a href="${pageContext.request.contextPath}/approve/basicInfoApprove.do?currpage=${totalpage}" class="btn btn-success btn-ms "> 尾页</a>
+									<a th:href="@{/bk/approve/basicInfoApprove(current=1)}" class="btn btn-success btn-ms ">首页</a>
+									<a th:href="@{/bk/approve/basicInfoApprove(current=${page.current-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
+									<a th:href="@{/bk/approve/basicInfoApprove(current=${page.current+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
+									<a th:href="@{/bk/approve/basicInfoApprove(current=${pages})}" class="btn btn-success btn-ms "> 尾页</a>
 									<font size="3">共<font
-										color="red">${totalrow}</font>条数据，当前<font color="#0000ff">${currpages}</font><font
-										color="red">/${totalpage}</font>页
+										color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font
+										color="red">/[[${page.pages}]]</font>页
 									</font>
 								</td>
+						</tr>
+						<tr th:if="${page.pages<1}">
+							<h3 style="text-align: center">未找到任何数据！</h3>
 						</tr>
 					</table>
 
@@ -124,7 +90,6 @@
 			</div>
 			<!-- 内容结束 -->
 		</section>
-		<! --/wrapper -->
 	</section>
 	<!-- /MAIN CONTENT -->
 </body>
