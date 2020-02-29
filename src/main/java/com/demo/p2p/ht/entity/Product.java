@@ -134,6 +134,19 @@ private static final long serialVersionUID=1L;
     @TableField(exist = false)
     private Details details;
 
+    /**
+     * 借款表主键
+     */
+    private Integer bmid;
+
+    public Integer getBmid() {
+        return bmid;
+    }
+
+    public void setBmid(Integer bmid) {
+        this.bmid = bmid;
+    }
+
     public Biao getBiao() {
         return biao;
     }
@@ -350,6 +363,7 @@ private static final long serialVersionUID=1L;
         ", pdesc=" + pdesc +
         ", psafe=" + psafe +
         ", did=" + did +
+        ", bmid=" + bmid +
         "}";
     }
 }

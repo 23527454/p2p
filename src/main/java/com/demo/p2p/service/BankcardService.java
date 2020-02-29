@@ -24,4 +24,5 @@ public interface BankcardService extends IService<Bankcard> {
     public int savebankcard(Bankcard bankcard);
 
     public List<Bankcard> getBanks(int uid,String khh,String cardid);
+
 }

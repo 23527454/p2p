@@ -47,4 +47,7 @@ public class BankcardServiceImpl extends ServiceImpl<BankcardMapper, Bankcard> i
     public List<Bankcard> getBanks(int uid, String khh, String cardid) {
         return bankcardMapper.getBanks(uid, khh, cardid);
     }
+
+
+
 }

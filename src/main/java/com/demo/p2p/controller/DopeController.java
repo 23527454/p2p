@@ -6,10 +6,9 @@ import com.demo.p2p.service.ApproveitemService;
 import com.demo.p2p.service.BankcardService;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.DopeService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,7 +65,7 @@ public class DopeController {
      */
     @RequestMapping(value = "/grzx_xtxx")
     public String grzx_xtxx(Model model,@RequestParam(value="currpage",required=false)String conent){
-        int pagecount = 1;//每页显示行数
+        int pagecount = 5;//每页显示行数
         int currpage = 1;//当前行数
         int totalPage = 0;//总页数
         int totalRow = 0;//总行数
@@ -185,7 +184,7 @@ public class DopeController {
 
     //银行卡添加
     @RequestMapping(value = "/saveBank")
-    public void saveBank(HttpSession session, String name, String kahao, HttpServletResponse response) throws IOException {
+    public void saveBank(String  cardid,HttpSession session, String name, String kahao, HttpServletResponse response,HttpServletRequest request) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
@@ -201,9 +200,6 @@ public class DopeController {
         bankcard.setCardid(kahao);
         bankcard.setTjtime(date);
         bankcard.setStatu("成功");
-        System.out.println(bankcard.getSfz());
-        System.out.println(bankcard.getCardid() + "bankcard.getCardid() ");
-        System.out.println(bankcard1.getCardid() + "bankcard1.getCardid() ");
         if (!bankcard.getCardid().equals(bankcard1.getCardid())) {
             if(bankcard.getSfz()!=null && !bankcard.getSfz().equals("")){
                 int savebankcard = bankcardService.savebankcard(bankcard);
@@ -215,9 +211,9 @@ public class DopeController {
           }else {
                 out.print("<script>alert('身份证为空,请先绑定身份证！');window.location.href='/grzx/pay1';</script>");
             }
-        } else{
+        } else {
             out.print("<script>alert('已经添加过该银行卡！');window.location.href='/grzx/pay1';</script>");
-            }
+        }
         out.flush();
         out.close();
     }
