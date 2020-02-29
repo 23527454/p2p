@@ -18,7 +18,7 @@
     </sql>
 
     <select id="findDope" parameterType="map" resultType="com.demo.p2p.entity.Dope">
-    select * from dope  limit #{currpage},#{pagecount}
+    select * from dope where uid=#{uid} limit #{currpage},#{pagecount}
     </select>
 
     <select id="total" resultType="com.demo.p2p.entity.Dope">

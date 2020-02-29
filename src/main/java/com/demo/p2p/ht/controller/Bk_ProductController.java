@@ -4,10 +4,7 @@ package com.demo.p2p.ht.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.demo.p2p.ht.entity.Biao;
-import com.demo.p2p.ht.entity.Investinfo;
-import com.demo.p2p.ht.entity.Product;
-import com.demo.p2p.ht.entity.Users;
+import com.demo.p2p.ht.entity.*;
 import com.demo.p2p.ht.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +42,8 @@ public class Bk_ProductController {
     private Bk_DetailsService detailsService;
     @Resource
     private Bk_InvestinfoService investinfoService;
+    @Resource
+    private Bk_BorrowmoneyService borrowmoneyService;
 
     @RequestMapping(value = "/save")
     public void save(String xmqx,String jkqx,String fbsj,Product product, @RequestParam(value = "ufile", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -72,10 +71,10 @@ public class Bk_ProductController {
                 if (result){
                     out.print("<script>alert('添加成功！');window.location.href='/bk/product/list';</script>");
                 }else{
-                    out.print("<script>alert('添加失败！');window.location.href='/bk/notice/input';</script>");
+                    out.print("<script>alert('添加失败！');window.location.href='/bk/product/input';</script>");
                 }
             } catch (IOException e) {
-                out.print("<script>alert('添加失败！');window.location.href='/bk/notice/input';</script>");
+                out.print("<script>alert('添加失败！');window.location.href='/bk/product/input';</script>");
             }
         }else{
             out.print("<script>alert('添加失败，请检查图片是否存在异常！');window.location.href='/bk/product/input';</script>");
@@ -87,6 +86,8 @@ public class Bk_ProductController {
     @RequestMapping(value = "/input")
     public String input(Model model){
         List<Biao> biaos=biaoService.list();
+        List<Borrowmoney> bms=borrowmoneyService.list();
+        model.addAttribute("bms",bms);
         model.addAttribute("blist",biaos);
         return "view/bk_input_pro";
     }
