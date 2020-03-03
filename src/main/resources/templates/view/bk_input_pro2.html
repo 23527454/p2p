@@ -131,7 +131,6 @@
                         var pproduce=$("#pproduce").val();
                         var psafe=$("#psafe").val();
                         var pdesc=$("#pdesc").val();
-                        var bmid=$("#bmid").val();
 
 						if (pincome==null || pincome==""){
 						    alert("预期年化收益不可为空！");
@@ -167,8 +166,6 @@
                             alert("封面不可大于1m！");
                         }else if(pproduce==null || pproduce==""){
                             alert("标主ID不可为空！");
-                        }else if(bmid==null || bmid==""){
-                            alert("借款主键不可为空！");
                         }else if(pproduce!=null && pproduce!=""){
 							$.post("/bk/users/checkId","ids="+pproduce,function (data) {
 								if (data){
@@ -189,7 +186,7 @@
 				<!-- 页面内容 -->
 				<form id="inputForm" modelAttribute="domain"
 					class="form-horizontal tasi-form"
-					action="/bk/product/save"
+					action="/bk/brower/addProduct"
 					method="post" enctype="multipart/form-data">
 					<div class="form-group has-success">
 						<label class="col-sm-2 control-label col-lg-2" >预期年化收益<font
@@ -201,11 +198,11 @@
 					</div>
 					<div class="form-group has-success">
 						<label class="col-sm-2 control-label col-lg-2" >项目期限<font
-							color="red"> *</font></label>
+								color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input type="date" id="ptime" name="xmqx"
-								cssClass="form-control input-sm" maxlength="11"
-								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+							<input type="date" id="ptime" name="xmqx" th:value="${#dates.format(pr.ptime,'yyyy-MM-dd')}" readonly
+								   cssClass="form-control input-sm" maxlength="11"
+								   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -231,7 +228,7 @@
 						<label class="col-sm-2 control-label col-lg-2" >借款期限<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input type="date" id="pcount" name="jkqx"
+							<input type="date" id="pcount" name="jkqx" th:value="${#dates.format(pr.pcount,'yyyy-MM-dd')}" readonly
 								cssClass="form-control input-sm" maxlength="11"
 								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"  />
 						</div>
@@ -240,7 +237,7 @@
 						<label class="col-sm-2 control-label col-lg-2" >投资进度<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input id="progress" name="progress"
+							<input id="progress" name="progress" th:value="${pr.progress}" readonly
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
@@ -267,7 +264,7 @@
 						<label class="col-sm-2 control-label col-lg-2" >发布时间<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input type="date" id="ppublishtime" name="fbsj"
+							<input type="date" id="ppublishtime" name="fbsj" th:value="${#dates.format(pr.ppublishtime,'yyyy-MM-dd')}" readonly
 								cssClass="form-control input-sm"
 								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
 						</div>
@@ -285,7 +282,7 @@
 						<label class="col-sm-2 control-label col-lg-2" for="ptotalmoney">募集资金<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input id="ptotalmoney" name="ptotalmoney"
+							<input id="ptotalmoney" name="ptotalmoney" th:value="${pr.ptotalmoney}" readonly
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
@@ -294,7 +291,7 @@
 						<label class="col-sm-2 control-label col-lg-2" >投资范围<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input id="prange" name="prange"
+							<input id="prange" name="prange" th:value="${pr.prange}" readonly
 								cssClass="form-control input-sm" maxlength="11" />
 
 						</div>
@@ -314,9 +311,6 @@
 						<div class="col-lg-5">
 							<select class="form-control" id="pstate" name="pstate">
 								<option value="1">筹资中</option>
-								<option value="2">筹资完</option>
-								<option value="3">失效</option>
-								<option value="4">项目完成</option>
 							</select>
 						</div>
 					</div>
@@ -333,8 +327,10 @@
 						<label class="col-sm-2 control-label col-lg-2" for="pproduce">标主ID<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input id="pproduce" name="pproduce"
+							<input id="pproduce" name="pproduce" th:value="${pr.pproduce}" readonly
 								cssClass="form-control input-sm" maxlength="11" />
+							<input type="hidden" id="bmid" name="bmid" th:value="${pr.bmid}"
+								   cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
 					<div class="form-group has-success">
@@ -347,18 +343,10 @@
 					</div>
 					<div class="form-group has-success">
 						<label class="col-sm-2 control-label col-lg-2" for="pdesc">项目描述<font
-							color="red"> *</font></label>
+								color="red"> *</font></label>
 						<div class="col-lg-5">
 							<input id="pdesc" name="pdesc"
-								cssClass="form-control input-sm" maxlength="11" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2  control-label"> 借款主键：</label>
-						<div class="col-sm-5">
-							<select class="form-control" id="bmid" name="bmid">
-								<option th:each="bm:${bms}" th:value="${bm.id}" th:text="${bm.id}"></option>
-							</select>
+								   cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
 <!--

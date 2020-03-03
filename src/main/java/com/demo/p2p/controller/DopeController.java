@@ -64,7 +64,7 @@ public class DopeController {
      * @return
      */
     @RequestMapping(value = "/grzx_xtxx")
-    public String grzx_xtxx(Model model,@RequestParam(value="currpage",required=false)String conent){
+    public String grzx_xtxx(Model model,@RequestParam(value="currpage",required=false)String conent,HttpSession session){
         int pagecount = 5;//每页显示行数
         int currpage = 1;//当前行数
         int totalPage = 0;//总页数
@@ -87,6 +87,8 @@ public class DopeController {
         Map<String, Object> map=new HashMap<>();
         map.put("pagecount", pagecount);
         map.put("currpage", candp);
+        Users users=(Users)session.getAttribute("loginUser");
+        map.put("uid", users.getUid());
         List<Dope> list = dopeService.findDope(map);
         model.addAttribute("list",list);
         model.addAttribute("pagecount",pagecount);
