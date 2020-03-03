@@ -51,4 +51,10 @@
     <insert id="add" parameterType="com.demo.p2p.entity.Investinfo">
         insert into investinfo (userid,brrowid,inmoney,instatus,instyle,brrowstatus,interest,profitmodel,profitmoney,indate,replaydate,markstatus) values (#{userid},#{brrowid},#{inmoney},#{instatus},#{instyle},#{brrowstatus},#{interest},#{profitmodel},#{profitmoney},current_timestamp(),#{replaydate},#{markstatus})
     </insert>
+
+    <update id="upByMap" parameterType="map">
+        UPDATE investinfo
+        SET brrowstatus = '去修改'
+        WHERE brrowid = #{bid}
+    </update>
 </mapper>
