@@ -243,6 +243,12 @@ public class InvestinfoController {
                 Map<String,Object> map2 = new HashMap<String, Object>();
                 map2.put("bid",ii.getBrrowid());
                 investinfoService.upByMap(map2);
+                List<Investinfo> investinfos = investinfoService.selByMap(map2);
+                for (Investinfo investinfo : investinfos) {
+                    Certification byId = certificationService.getById(investinfo.getUserid());
+                    byId.setCdue(byId.getCdue()+investinfo.getProfitmoney());
+                    certificationService.updateById(byId);
+                }
                 ii.setBrrowstatus("去修改");
             }else {
                 ii.setBrrowstatus("筹集中");
@@ -269,7 +275,6 @@ public class InvestinfoController {
             String nkym = String.format("%.2f",ye);//扣除投资后剩余的可用金额
             Certification certification = (Certification)session.getAttribute("cf");
             certification.setId(user.getUid());
-            certification.setCdue(sy+certification.getCdue());
             certification.setCbalance(nkym);
             certificationService.updateById(certification);
             session.removeAttribute("kymoney");

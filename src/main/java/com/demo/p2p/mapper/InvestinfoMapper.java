@@ -49,4 +49,6 @@ public interface InvestinfoMapper extends BaseMapper<Investinfo> {
     public int add(Investinfo investinfo);
 
     public int upByMap(Map<String, Object> map);
+
+    public List<Investinfo> selByMap(Map<String, Object> map);
 }

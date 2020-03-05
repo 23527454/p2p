@@ -66,6 +66,11 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     }
 
     @Override
+    public List<Investinfo> selByMap(Map<String, Object> map) {
+        return investinfoMapper.selByMap(map);
+    }
+
+    @Override
     public List<Investinfo> getFive(int userid) {
         return investinfoMapper.getFive(userid);
     }

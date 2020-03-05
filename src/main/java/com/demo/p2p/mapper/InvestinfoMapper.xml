@@ -57,4 +57,13 @@
         SET brrowstatus = '去修改'
         WHERE brrowid = #{bid}
     </update>
+
+    <select id="selByMap" resultMap="BaseResultMap" parameterType="map">
+        SELECT * FROM investinfo
+        WHERE 1 = 1
+        <if test="bid != null">
+            and brrowid = #{bid}
+        </if>
+    </select>
+
 </mapper>

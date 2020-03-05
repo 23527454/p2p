@@ -59,4 +59,6 @@ public interface InvestinfoService extends IService<Investinfo> {
     public int addInfo(Investinfo investinfo);
 
     public int upByMap(Map<String, Object> map);
+
+    public List<Investinfo> selByMap(Map<String, Object> map);
 }
