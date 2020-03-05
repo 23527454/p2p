@@ -4,14 +4,8 @@ package com.demo.p2p.ht.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.demo.p2p.ht.entity.Biao;
-import com.demo.p2p.ht.entity.Borrowcord;
-import com.demo.p2p.ht.entity.Borrowmoney;
-import com.demo.p2p.ht.entity.Product;
-import com.demo.p2p.ht.service.Bk_BiaoService;
-import com.demo.p2p.ht.service.Bk_BorrowcordService;
-import com.demo.p2p.ht.service.Bk_BorrowmoneyService;
-import com.demo.p2p.ht.service.Bk_ProductService;
+import com.demo.p2p.ht.entity.*;
+import com.demo.p2p.ht.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +43,14 @@ public class Bk_BorrowmoneyController {
     private Bk_BorrowcordService borrowcordService;
     @Resource
     private Bk_ProductService productService;
+    @Resource
+    private Bk_CertificationService certificationService;
+    @Resource
+    private Bk_InvestinfoService investinfoService;
+    @Resource
+    private Bk_UsersService usersService;
+    @Resource
+    private Bk_TradeService tradeService;
 
     /**
      * 还款
@@ -57,10 +59,52 @@ public class Bk_BorrowmoneyController {
      * @return
      */
     @RequestMapping(value = "/tohuankuanupds")
-    public String tohuankuanupds(Integer ids,Integer id){
+    public String tohuankuanupds(Integer ids,Integer id,Double bl,Double lx){
         Borrowcord borrowcord=borrowcordService.getById(ids);
         borrowcord.setBstatue(1);
         borrowcordService.updateById(borrowcord);
+        Long ptotalmoney=productService.findPtotalmoney(borrowcord.getBid());
+        List<Investinfo> investinfos=investinfoService.findInMoneySum(borrowcord.getBid());
+        //获取发起借款的账户余额
+        Certification certification1=certificationService.findCertificationByBmId(borrowcord.getBid());
+        //获取投资用户的账户余额
+        List<Certification> certifications=certificationService.findCertificationByBmId2(borrowcord.getBid());
+        for(int i=0;i<investinfos.size();i++){
+            //获取当前这一次投资记录的投资占比（以根据用户id进行了组合，相当于一个用户一次该项目的总投资信息）
+            Double value=investinfos.get(i).getInmoney().doubleValue()/Double.parseDouble(ptotalmoney.toString());
+            //计算本次投资的收益/回款
+            Double je=bl*value;
+            //计算待收、可用余额、总余额
+            Double tz_cdue=Double.parseDouble(certifications.get(i).getCdue())-je;
+            Double tz_cbalance=Double.parseDouble(certifications.get(i).getCbalance())+je;
+            Double tz_ctotalmoney=Double.parseDouble(certifications.get(i).getCtotalmoney())+je;
+            //存储待收、可用余额、总余额，存储时进行转换，否则数据过长会加符号：E
+            certifications.get(i).setCdue(String.format("%.2f",tz_cdue));
+            certifications.get(i).setCbalance(String.format("%.2f",tz_cbalance));
+            certifications.get(i).setCtotalmoney(String.format("%.2f",tz_ctotalmoney));
+            //修改当前用户余额
+            certificationService.updateById(certifications.get(i));
+
+            //根据用户名查询users
+            QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("unickname",certifications.get(i).getCusername());
+            Users users=usersService.getOne(queryWrapper);
+            //创建资金记录，并且添加到数据库
+            Trade trade=new Trade();
+            trade.setuID(users.getUid());
+            trade.setUname(users.getUnickname());
+            trade.setZname(users.getUname());
+            trade.setJymoney(String.format("%.2f",je));
+            trade.setWhat("回款");
+            trade.setJytime(new Date());
+            trade.setOther("后台还款的收益");
+            tradeService.save(trade);
+        }
+        //获取发起借款的用户的待还金额，减去本次还款的利息，获得还款后的待还金额
+        Double fqjk_cpaid=Double.parseDouble(certification1.getCpaid())-bl;
+        certification1.setCpaid(String.format("%.2f",fqjk_cpaid));
+        certificationService.updateById(certification1);
+
         return "redirect:/bk/brower/tohuankuanupd?id="+id;
     }
 
@@ -272,7 +316,7 @@ public class Bk_BorrowmoneyController {
         borrowcord.setBid(borrowmoney.getId());// 设置借款表ID
 
         Calendar calendar = Calendar.getInstance();// 时间转换
-        if (borrowmoney.getBserial() != "1") {
+        if (!borrowmoney.getBserial().equals("1")) {
             for (int i = 0; i < ys; i++) {
                 calendar.setTime(date);
                 calendar.add(Calendar.SECOND,  60 * 60 * 24 * 30);
