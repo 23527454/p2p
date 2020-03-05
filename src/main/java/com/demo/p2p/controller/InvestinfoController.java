@@ -238,7 +238,8 @@ public class InvestinfoController {
             ii.setBrrowid(pro.getId());//
             ii.setInmoney(money); // '投资金额',
             ii.setInstatus("0"); // '投资状态 0 收益中的投资 1已完成的投资',
-            ii.setInstyle("筹集中"); // '投资类型',
+            Biao byId1 = biaoService.getById(pro.getPtype());
+            ii.setInstyle(byId1.getBname()); // '投资类型',
             if (money + pro.getPmoney() >= pro.getPtotalmoney()){
                 Map<String,Object> map2 = new HashMap<String, Object>();
                 map2.put("bid",ii.getBrrowid());
