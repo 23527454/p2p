@@ -47,4 +47,6 @@ public interface InvestinfoMapper extends BaseMapper<Investinfo> {
     public List<Investinfo> getFive(@Param("userid")int userid);
 
     public int add(Investinfo investinfo);
+
+    public int upByMap(Map<String, Object> map);
 }

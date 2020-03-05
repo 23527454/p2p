@@ -37,6 +37,7 @@
 
 	function investA() {
 		var money = document.getElementById("amount").value;
+        var sy = document.getElementById("sy").value;
 
 		if (money > [[${session.kymoney}]]) {//用户余额不足
 			alert("对不起,您的用户余额不足;无法完成投资!");
@@ -46,20 +47,21 @@
 			alert("您输入的投资金额大于剩余可投金额!");
 			return;
 		}
-		window.location.href = "../investinfo/investAdd_do?money=" + money;
+		window.location.href = "../investinfo/investAdd_do?money=" + money + "&sy=" + sy;
 	}
 
 	function reckon() {//动态算出预期收益
-		var money = document.getElementById("amount").value;
+        var money = document.getElementById("amount").value;
 //	alert("${days}");
 // 	alert(([[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100);
-	var getm = parseInt(money) + ( [[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100;
+	var getm = ( [[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100;
 		var lm = parseFloat(getm).toFixed(2);
 		//		alert(lm);
 		if (isNaN(lm)) {
 			lm = 0;
 		}
 		document.getElementById("sp").innerHTML = lm + "元";
+        document.getElementById("sy").value = lm;
 	}
 
 	function end() {
@@ -134,6 +136,7 @@
 						</p>
 						<br />
 						<p class="rate">
+							<input type="hidden" id="sy" value="0">
 							预期收益：<span class="f24 c-333" id="sp"></span>
 						</p>
 					</div>
