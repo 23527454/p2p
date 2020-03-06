@@ -35,6 +35,21 @@ public class GrzxController {
 
     @Resource
     private PacketredService packetredService;
+
+    /**
+     * 个人中心——还款列表
+     * @return
+     */
+    @RequestMapping(value = "/grzx_huankuan")
+    public String huankuan(HttpSession session){
+        Users user = (Users) session.getAttribute("loginUser");
+        if (user == null) {
+            return "redirect:/sys/login";
+        } else {
+            return "redirect:/brower/toHuanKuanListByUserId";
+        }
+    }
+
     /**
      * 个人中心——账户总览/首页
      *

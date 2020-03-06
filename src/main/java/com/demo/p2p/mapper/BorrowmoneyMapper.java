@@ -1,9 +1,10 @@
 package com.demo.p2p.mapper;
 
-import com.demo.p2p.entity.Borrowmoney;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.demo.p2p.entity.Investinfo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.demo.p2p.entity.Borrowmoney;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,10 @@ public interface BorrowmoneyMapper extends BaseMapper<Borrowmoney> {
     public int addMoney(Borrowmoney borrowmoney);
 
     public List<Borrowmoney> selInfo(Map<String, Object> map);
+
+    @Select("SELECT b.* FROM borrowmoney b ,product p WHERE b.id=p.bmid AND b.bstate = '1' AND p.pmoney=p.ptotalmoney AND p.pproduce=#{uid} GROUP BY b.id")
+    public List<Borrowmoney> selHuanKuanList(Integer uid, Page<Borrowmoney> page);
+
+    @Select("SELECT SUM(b.bmoney) FROM borrowmoney b ,product p WHERE b.id=p.bmid AND p.pmoney=p.ptotalmoney AND p.pproduce=#{uid}")
+    public Double sumBorrow(Integer uid);
 }

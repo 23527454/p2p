@@ -1,25 +1,23 @@
 package com.demo.p2p.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.entity.Borrowmoney;
 import com.demo.p2p.entity.Users;
 import com.demo.p2p.service.BorrowmoneyService;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +35,38 @@ public class BorrowmoneyController {
     @Resource
     private BorrowmoneyService borrowmoneyService;
 
+    @RequestMapping(value = "/tohuankuan")
+    public String tohuankuan(){
+        return "";
+    }
+
+    /**
+     * 进入还款列表
+     * @param current
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/toHuanKuanListByUserId")
+    public String toHuanKuanListByUserId(Integer current, Model model,HttpSession session){
+        Users user = (Users) session.getAttribute("loginUser");
+        if (user == null) {
+            return "redirect:/sys/login";
+        }
+        if (current==null){
+            current=1;
+        }
+
+        Page<Borrowmoney> page=new Page<>(current,5);
+        page.setRecords(borrowmoneyService.selHuanKuanList(user.getUid(),page));
+        List<Borrowmoney> list=page.getRecords();
+        Double ljjk=borrowmoneyService.sumBorrow(user.getUid());
+
+        model.addAttribute("ljjk",ljjk);
+        model.addAttribute("list",list);
+        model.addAttribute("page",page);
+        return "huankuanlist";
+    }
 
     @RequestMapping("toaddborr.do")
     @ResponseBody
