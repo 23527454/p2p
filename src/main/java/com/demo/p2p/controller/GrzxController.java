@@ -237,6 +237,14 @@ public class GrzxController {
         if (user == null) {
             return "redirect:/sys/login";
         } else {
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("uid",user.getUid());
+            List<Investinfo> list = investinfoService.selInfo(map);
+            Double inmoney = investinfoService.getInmoney(map);
+            Double profitmoney = investinfoService.getProfitmoney(map);
+            session.setAttribute("hklist",list);
+            session.setAttribute("inmoney",inmoney);
+            session.setAttribute("profitmoney",profitmoney);
             return "个人中心-回款计划";
         }
     }
