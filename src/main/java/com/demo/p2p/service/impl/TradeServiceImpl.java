@@ -1,5 +1,8 @@
 package com.demo.p2p.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.entity.Trade;
 import com.demo.p2p.mapper.TradeMapper;
 import com.demo.p2p.service.TradeService;
@@ -25,5 +28,10 @@ public class TradeServiceImpl extends ServiceImpl<TradeMapper, Trade> implements
     @Override
     public List<Trade> selectMoney(Integer uid) {
         return tradeMapper.selectMoney(uid);
+    }
+
+    @Override
+    public IPage<Trade> TradeList(Page<Trade> page, QueryWrapper<Trade> wrapper) {
+        return tradeMapper.selectPage(page,wrapper);
     }
 }

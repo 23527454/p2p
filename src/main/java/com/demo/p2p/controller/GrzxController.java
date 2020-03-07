@@ -1,11 +1,11 @@
 package com.demo.p2p.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.entity.*;
-import com.demo.p2p.service.BankcardService;
-import com.demo.p2p.service.CertificationService;
-import com.demo.p2p.service.InvestinfoService;
-import com.demo.p2p.service.PacketredService;
+import com.demo.p2p.mapper.TradeMapper;
+import com.demo.p2p.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,11 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/grzx")
 public class GrzxController {
+    @Resource
+    private TradeService tradeService;
+
+    @Resource
+    private TradeMapper tradeMapper;
 
     @Resource
     private CertificationService certificationService;
@@ -117,12 +125,46 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zjjl")
-    public String grzx_zjjl(HttpSession session) {
+    public String grzx_zjjl(Integer current,Model model,HttpSession session,HttpServletRequest request) throws ParseException {
         Users user = (Users) session.getAttribute("loginUser");
+        Trade trade = tradeMapper.selectById(user.getUid());
+        System.out.println("grzx_zjjl=============================");
         if (user == null) {
             return "redirect:/sys/login";
         } else {
-            return "moneyrecord";
+            if(current==null) {
+                current=1;
+            }
+                String what = request.getParameter("what");
+                String sDate = request.getParameter("sDate");
+                String eDate = request.getParameter("eDate");
+                QueryWrapper<Trade> queryWrapper = new QueryWrapper<>();
+                if (what != null && what != "" && !what.equals("全部")) {
+                    queryWrapper.like("what", what);
+                }
+                if (sDate != null && sDate != "") {
+                    queryWrapper.ge("jytime", sDate);
+                }
+                if (eDate != null && eDate != "") {
+                    queryWrapper.le("jytime", eDate);
+                }
+                Page<Trade> page = new Page<>(current, 5);
+                IPage<Trade> iPage = tradeService.TradeList(page, queryWrapper);
+                List<Trade> users = iPage.getRecords();
+                int stas = 1;
+                if (users != null && users.size() > 0) {
+                    stas = 0;
+                }
+                if (current > iPage.getPages() ) {
+                    page = new Page<>(1, 5);
+                    iPage = tradeService.page(page, queryWrapper);
+                    users = iPage.getRecords();
+                }
+                request.setAttribute("userlist", users);
+                model.addAttribute("what", what);
+                model.addAttribute("page", page);
+                model.addAttribute("stas", stas);
+                return "moneyrecord";
         }
     }
 
