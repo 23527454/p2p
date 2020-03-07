@@ -7,12 +7,10 @@ import com.demo.p2p.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +43,8 @@ public class InvestinfoController {
     private CertificationService certificationService;
     @Resource
     private BorrowcordService borrowcordService;
+    @Resource
+    private BorrowmoneyService borrowmoneyService;
 
     /**
      * 获取信息进入投资记录页面
@@ -170,11 +170,20 @@ public class InvestinfoController {
 
         List<Biao> biao = biaoService.selList();
         session.setAttribute("biao", biao);
+        Product pro = productService.selById(Integer.parseInt(bmid));
+        System.out.println("proBmid-------------"+pro.getBmid());
+        session.setAttribute("Borrowmoney", pro);
+
         Map<String,Object> map1 = new HashMap<String, Object>();
+        map1.put("bmid",pro.getBmid());
         List<Borrowcord> borrowcords = borrowcordService.selInfo(map1);
         session.setAttribute("bwm",borrowcords);
-        Product pro = productService.selById(Integer.parseInt(bmid));
-        session.setAttribute("Borrowmoney", pro);
+        map1.put("bs",0);
+        Double money1 = borrowcordService.selSum(map1);//查出未还款的总额
+        session.setAttribute("weihuan",money1);
+        map1.put("bs",1);
+        Double money2 = borrowcordService.selSum(map1);//查出已还款的总额
+        session.setAttribute("yihuan",money2);
 
         List<Details> list = detailsService.selList(pro.getDid());
         System.out.println("标详情列表大小" + list.size());
@@ -198,10 +207,15 @@ public class InvestinfoController {
         if (pro.getPstate().equals("1")) {
             Users us = (Users) req.getSession().getAttribute("loginUser");
             if (us != null) {
-                Certification certification = certificationService.selById(us.getUid());
-                String kymoney = "" + certification.getCbalance();
-                System.out.println("进入到输入金额页面  用户余额" + kymoney);
-                session.setAttribute("kymoney", kymoney);
+                Map<String,Object> stringObjectMap = new HashMap<String,Object>();
+                stringObjectMap.put("uid",us.getUid());
+                Certification certification = certificationService.selByMap(stringObjectMap);
+                if (certification != null){
+                    session.setAttribute("cf",certification);
+                    String kymoney = "" + certification.getCbalance();
+                    System.out.println("进入到输入金额页面  用户余额" + kymoney);
+                    session.setAttribute("kymoney", kymoney);
+                }
             }
             return "redirect:/sys/inforadd";
         } else {
@@ -211,12 +225,13 @@ public class InvestinfoController {
     }
 
     @RequestMapping("investAdd_do")
-    public String investAdd(double money, HttpServletRequest request) {// 投标
+    public String investAdd(double money,double sy, HttpServletRequest request) {// 投标
 
         HttpSession session = request.getSession();
 
 
         Product pro = (Product) session.getAttribute("Product");
+        Borrowmoney borrowmoney = borrowmoneyService.getById(pro.getBmid());
 
         Investinfo ii = new Investinfo();
         Users user = (Users) session.getAttribute("loginUser");
@@ -227,12 +242,26 @@ public class InvestinfoController {
             ii.setUserid(user.getUid()); // '投资用户主键',
             ii.setBrrowid(pro.getId());//
             ii.setInmoney(money); // '投资金额',
-            ii.setInstatus("不用"); // '投资状态 0 收益中的投资 1已完成的投资',
-            ii.setInstyle("不用"); // '投资类型',
-            ii.setBrrowstatus("不用");
+            ii.setInstatus("0"); // '投资状态 0 收益中的投资 1已完成的投资',
+            Biao byId1 = biaoService.getById(pro.getPtype());
+            ii.setInstyle(byId1.getBname()); // '投资类型',
+            if (money + pro.getPmoney() >= pro.getPtotalmoney()){
+                Map<String,Object> map2 = new HashMap<String, Object>();
+                map2.put("bid",ii.getBrrowid());
+                investinfoService.upByMap(map2);
+                List<Investinfo> investinfos = investinfoService.selByMap(map2);
+                for (Investinfo investinfo : investinfos) {
+                    Certification byId = certificationService.getById(investinfo.getUserid());
+                    byId.setCdue(byId.getCdue()+investinfo.getProfitmoney());
+                    certificationService.updateById(byId);
+                }
+                ii.setBrrowstatus("去修改");
+            }else {
+                ii.setBrrowstatus("筹集中");
+            }
             ii.setInterest(pro.getPincome()); // '投资利率',
             ii.setProfitmodel(pro.getPway()); // '盈利方式 如等额本金',
-            ii.setProfitmoney(0.00); // '盈利金额',
+            ii.setProfitmoney(sy); // '盈利金额',
             ii.setIndate(date); // '投资时间，可为空'
             long days = (pro.getPcount().getTime() - pro.getPtime().getTime())
                     / (24 * 60 * 60 * 1000);// 相差几天
@@ -246,11 +275,11 @@ public class InvestinfoController {
             session.removeAttribute("Product");
             session.removeAttribute("Details");
             investinfoService.addInfo(ii);//添加投资记录
-
             String kym1 = (String) session.getAttribute("kymoney");//可用总金额
             double kym = Double.valueOf(kym1);
-            String nkym = "" + (kym - money);//扣除投资后剩余的可用金额
-            Certification certification = new Certification();
+            double ye = (kym - money);
+            String nkym = String.format("%.2f",ye);//扣除投资后剩余的可用金额
+            Certification certification = (Certification)session.getAttribute("cf");
             certification.setId(user.getUid());
             certification.setCbalance(nkym);
             certificationService.updateById(certification);
@@ -259,6 +288,7 @@ public class InvestinfoController {
             td.setuID(user.getUid());
             td.setUname(user.getUnickname());
             td.setZname(user.getUname());
+            td.setWhat("借款");
             td.setJymoney(money);
             td.setOther("要投资就要舍得花钱");
             tradeService.save(td);
@@ -272,6 +302,17 @@ public class InvestinfoController {
             if(udm.equals(odm)){//刚好凑集完
                 pro.setPstate("2");//修改为凑资完
                 productService.updateById(pro);
+
+                Certification byId = certificationService.getById(borrowmoney.getBusername());
+                double aDouble = Double.parseDouble(byId.getCtotalmoney()) + Double.parseDouble(borrowmoney.getBmoney());
+                double bDouble = Double.parseDouble(byId.getCbalance()) + Double.parseDouble(borrowmoney.getBmoney());
+                String num1 = String.format("%.2f",aDouble);
+                String num2 = String.format("%.2f",bDouble);
+                byId.setCtotalmoney(num1);
+                byId.setCbalance(num2);
+                System.out.println("byId.getCtotalmoney()："+byId.getCtotalmoney() );
+                System.out.println("byId.getCbalance()："+byId.getCbalance() );
+                certificationService.updateById(byId);
             }
             session.setAttribute("end", "end");
             session.setAttribute("reea","no");

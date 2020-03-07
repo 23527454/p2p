@@ -4,18 +4,21 @@ package com.demo.p2p.ht.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.demo.p2p.ht.entity.Biao;
-import com.demo.p2p.ht.entity.Borrowcord;
-import com.demo.p2p.ht.entity.Borrowmoney;
-import com.demo.p2p.ht.service.Bk_BiaoService;
-import com.demo.p2p.ht.service.Bk_BorrowcordService;
-import com.demo.p2p.ht.service.Bk_BorrowmoneyService;
+import com.demo.p2p.ht.entity.*;
+import com.demo.p2p.ht.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +41,16 @@ public class Bk_BorrowmoneyController {
     private Bk_BiaoService biaoService;
     @Resource
     private Bk_BorrowcordService borrowcordService;
+    @Resource
+    private Bk_ProductService productService;
+    @Resource
+    private Bk_CertificationService certificationService;
+    @Resource
+    private Bk_InvestinfoService investinfoService;
+    @Resource
+    private Bk_UsersService usersService;
+    @Resource
+    private Bk_TradeService tradeService;
 
     /**
      * 还款
@@ -46,10 +59,52 @@ public class Bk_BorrowmoneyController {
      * @return
      */
     @RequestMapping(value = "/tohuankuanupds")
-    public String tohuankuanupds(Integer ids,Integer id){
+    public String tohuankuanupds(Integer ids,Integer id,Double bl,Double lx){
         Borrowcord borrowcord=borrowcordService.getById(ids);
         borrowcord.setBstatue(1);
         borrowcordService.updateById(borrowcord);
+        Long ptotalmoney=productService.findPtotalmoney(borrowcord.getBid());
+        List<Investinfo> investinfos=investinfoService.findInMoneySum(borrowcord.getBid());
+        //获取发起借款的账户余额
+        Certification certification1=certificationService.findCertificationByBmId(borrowcord.getBid());
+        //获取投资用户的账户余额
+        List<Certification> certifications=certificationService.findCertificationByBmId2(borrowcord.getBid());
+        for(int i=0;i<investinfos.size();i++){
+            //获取当前这一次投资记录的投资占比（以根据用户id进行了组合，相当于一个用户一次该项目的总投资信息）
+            Double value=investinfos.get(i).getInmoney().doubleValue()/Double.parseDouble(ptotalmoney.toString());
+            //计算本次投资的收益/回款
+            Double je=bl*value;
+            //计算待收、可用余额、总余额
+            Double tz_cdue=Double.parseDouble(certifications.get(i).getCdue())-je;
+            Double tz_cbalance=Double.parseDouble(certifications.get(i).getCbalance())+je;
+            Double tz_ctotalmoney=Double.parseDouble(certifications.get(i).getCtotalmoney())+je;
+            //存储待收、可用余额、总余额，存储时进行转换，否则数据过长会加符号：E
+            certifications.get(i).setCdue(String.format("%.2f",tz_cdue));
+            certifications.get(i).setCbalance(String.format("%.2f",tz_cbalance));
+            certifications.get(i).setCtotalmoney(String.format("%.2f",tz_ctotalmoney));
+            //修改当前用户余额
+            certificationService.updateById(certifications.get(i));
+
+            //根据用户名查询users
+            QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("unickname",certifications.get(i).getCusername());
+            Users users=usersService.getOne(queryWrapper);
+            //创建资金记录，并且添加到数据库
+            Trade trade=new Trade();
+            trade.setuID(users.getUid());
+            trade.setUname(users.getUnickname());
+            trade.setZname(users.getUname());
+            trade.setJymoney(String.format("%.2f",je));
+            trade.setWhat("回款");
+            trade.setJytime(new Date());
+            trade.setOther("借款的收益");
+            tradeService.save(trade);
+        }
+        //获取发起借款的用户的待还金额，减去本次还款的利息，获得还款后的待还金额
+        Double fqjk_cpaid=Double.parseDouble(certification1.getCpaid())-bl;
+        certification1.setCpaid(String.format("%.2f",fqjk_cpaid));
+        certificationService.updateById(certification1);
+
         return "redirect:/bk/brower/tohuankuanupd?id="+id;
     }
 
@@ -174,6 +229,72 @@ public class Bk_BorrowmoneyController {
         return "redirect:/bk/brower/check";
     }
 
+    @RequestMapping(value = "/addProduct")
+    public void addProduct(String xmqx,String jkqx,String fbsj,Product product, @RequestParam(value = "ufile", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
+        if (file.getSize() != 0) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            File directory = new File("src/main/resources/static/cover");
+            String path = directory.getCanonicalPath();// 获得上传的路径
+            String fileName = file.getOriginalFilename();// 获得上传的文件名
+            File targetFile = new File(path, fileName);// 创建上传到服务器的文件对象
+            try {
+                //存储新图片
+                file.transferTo(targetFile);
+                //设置实体值
+                String imgUrl = request.getContextPath() + "/cover/" + fileName;
+                product.setPicture(imgUrl);
+                product.setPtime(sdf.parse(xmqx));
+                product.setPcount(sdf.parse(jkqx));
+                product.setPpublishtime(sdf.parse(fbsj));
+                boolean result=productService.save(product);
+                if (result){
+                    Borrowmoney borrowmoney=borrowmoneyService.getById(product.getBmid());
+                    borrowmoney.setBtype(product.getPtype().toString());
+                    borrowmoneyService.updateById(borrowmoney);
+                    out.print("<script>alert('审核成功！');window.location.href='/bk/brower/check';</script>");
+                }else{
+                    out.print("<script>alert('审核失败！');window.location.href='/bk/brower/toAddProduct';</script>");
+                }
+            } catch (IOException e) {
+                out.print("<script>alert('审核失败！');window.location.href='/bk/brower/toAddProduct';</script>");
+            }
+        }else{
+            out.print("<script>alert('审核失败，请检查图片是否存在异常！');window.location.href='/bk/brower/toAddProduct';</script>");
+        }
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping(value = "/toAddProduct")
+    public String toAddProduct(Integer bmid,Model model) throws Exception{
+        Borrowmoney borrowmoney=borrowmoneyService.getById(bmid);
+        Product product=new Product();
+        product.setPmoney(0L);
+        product.setProgress("0.00");
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+        Date time = simpleDateFormat.parse(borrowmoney.getBlimit());
+        c.setTime(time);   //设置时间
+        c.add(Calendar.MONTH, Integer.parseInt(borrowmoney.getBtimelimit())); //日期分钟加1,Calendar.DATE(天),Calendar.HOUR(小时)
+        Date date = c.getTime();
+        product.setPtime(date);
+        product.setPcount(date);
+        product.setPpublishtime(new Date());
+        product.setPtotalmoney(Long.parseLong(borrowmoney.getBmoney()));
+        product.setPrange("50元~ 不限");
+        product.setPstate("1");
+        product.setPproduce(Integer.parseInt(borrowmoney.getBusername()));
+        product.setBmid(bmid);
+        List<Biao> biaos=biaoService.list();
+        model.addAttribute("blist",biaos);
+        model.addAttribute("pr",product);
+        return "view/bk_input_pro2";
+    }
+
     /**
      *借款审核通过，并添加还款表数据
      * @param borrowmoney
@@ -195,7 +316,7 @@ public class Bk_BorrowmoneyController {
         borrowcord.setBid(borrowmoney.getId());// 设置借款表ID
 
         Calendar calendar = Calendar.getInstance();// 时间转换
-        if (borrowmoney.getBserial() != "1") {
+        if (!borrowmoney.getBserial().equals("1")) {
             for (int i = 0; i < ys; i++) {
                 calendar.setTime(date);
                 calendar.add(Calendar.SECOND,  60 * 60 * 24 * 30);
@@ -212,7 +333,7 @@ public class Bk_BorrowmoneyController {
             borrowcord.setBcs(1);
             borrowcordService.save(borrowcord);
         }
-        return "redirect:/bk/brower/check";
+        return "redirect:/bk/brower/toAddProduct?bmid="+borrowmoney.getId();
     }
 
     /**

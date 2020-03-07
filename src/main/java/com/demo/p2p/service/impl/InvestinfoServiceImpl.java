@@ -25,6 +25,11 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     private InvestinfoMapper investinfoMapper;
 
     @Override
+    public List<Investinfo> findInMoneySum(Integer bmid) {
+        return investinfoMapper.findInMoneySum(bmid);
+    }
+
+    @Override
     public Integer sumInmoney() {
         return this.baseMapper.sumInmoney();
     }
@@ -58,6 +63,26 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     @Override
     public int addInfo(Investinfo investinfo) {
         return investinfoMapper.add(investinfo);
+    }
+
+    @Override
+    public int upByMap(Map<String, Object> map) {
+        return investinfoMapper.upByMap(map);
+    }
+
+    @Override
+    public List<Investinfo> selByMap(Map<String, Object> map) {
+        return investinfoMapper.selByMap(map);
+    }
+
+    @Override
+    public Double getInmoney(Map<String, Object> map) {
+        return investinfoMapper.getInmoney(map);
+    }
+
+    @Override
+    public Double getProfitmoney(Map<String, Object> map) {
+        return investinfoMapper.getProfitmoney(map);
     }
 
     @Override

@@ -43,6 +43,21 @@ public class GrzxController {
 
     @Resource
     private PacketredService packetredService;
+
+    /**
+     * 个人中心——还款列表
+     * @return
+     */
+    @RequestMapping(value = "/grzx_huankuan")
+    public String huankuan(HttpSession session){
+        Users user = (Users) session.getAttribute("loginUser");
+        if (user == null) {
+            return "redirect:/sys/login";
+        } else {
+            return "redirect:/brower/toHuanKuanListByUserId";
+        }
+    }
+
     /**
      * 个人中心——账户总览/首页
      *
@@ -279,6 +294,14 @@ public class GrzxController {
         if (user == null) {
             return "redirect:/sys/login";
         } else {
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("uid",user.getUid());
+            List<Investinfo> list = investinfoService.selInfo(map);
+            Double inmoney = investinfoService.getInmoney(map);
+            Double profitmoney = investinfoService.getProfitmoney(map);
+            session.setAttribute("hklist",list);
+            session.setAttribute("inmoney",inmoney);
+            session.setAttribute("profitmoney",profitmoney);
             return "个人中心-回款计划";
         }
     }

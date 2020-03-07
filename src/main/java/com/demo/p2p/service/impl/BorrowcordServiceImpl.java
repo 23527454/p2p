@@ -28,4 +28,9 @@ public class BorrowcordServiceImpl extends ServiceImpl<BorrowcordMapper, Borrowc
     public List<Borrowcord> selInfo(Map<String, Object> map) {
         return borrowcordMapper.selInfo(map);
     }
+
+    @Override
+    public Double selSum(Map<String, Object> map) {
+        return borrowcordMapper.selSum(map);
+    }
 }

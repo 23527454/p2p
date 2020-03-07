@@ -2,6 +2,7 @@ package com.demo.p2p.ht.mapper;
 
 import com.demo.p2p.ht.entity.Withdrawal;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -23,4 +24,6 @@ public interface Bk_WithdrawalMapper extends BaseMapper<Withdrawal> {
     int updwiths(Map<String, Object> ma);
     int updmoney(Map<String, Object> ma);
     int intmoney(Map<String, Object> ma);
+    @Select("SELECT wid FROM withdrawal WHERE statu = 3;")
+    public  List<Withdrawal> lsnum();//提现待审核个数
 }

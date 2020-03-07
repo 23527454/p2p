@@ -1,6 +1,7 @@
 package com.demo.p2p.ht.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
@@ -98,6 +99,17 @@ private static final long serialVersionUID=1L;
      * 支付密码
      */
     private String upwdZd;
+
+    @TableField(exist = false)
+    private Double bfb;
+
+    public Double getBfb() {
+        return bfb;
+    }
+
+    public void setBfb(Double bfb) {
+        this.bfb = bfb;
+    }
 
 
     public Integer getUid() {

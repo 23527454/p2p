@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-02-25
  */
 public interface Bk_ProductService extends IService<Product> {
-
+    public Long findPtotalmoney(Integer bmid);
 }

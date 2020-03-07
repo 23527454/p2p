@@ -1,6 +1,7 @@
 package com.demo.p2p.ht.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
@@ -84,7 +85,6 @@ private static final long serialVersionUID=1L;
      * 投标状态 0默认投标中 1 投标通过（中标） 2投标未通过（失标）
      */
     private Integer markstatus;
-
 
     public Integer getInid() {
         return inid;

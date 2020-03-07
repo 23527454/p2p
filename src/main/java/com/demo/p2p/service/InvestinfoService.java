@@ -57,4 +57,14 @@ public interface InvestinfoService extends IService<Investinfo> {
     public List<Investinfo> selInfo(Map<String, Object> map);
 
     public int addInfo(Investinfo investinfo);
+
+    public int upByMap(Map<String, Object> map);
+
+    public List<Investinfo> selByMap(Map<String, Object> map);
+
+    public Double getInmoney(Map<String, Object> map);
+
+    public Double getProfitmoney(Map<String, Object> map);
+
+    public List<Investinfo> findInMoneySum(Integer bmid);
 }

@@ -131,6 +131,7 @@
                         var pproduce=$("#pproduce").val();
                         var psafe=$("#psafe").val();
                         var pdesc=$("#pdesc").val();
+                        var bmid=$("#bmid").val();
 
 						if (pincome==null || pincome==""){
 						    alert("预期年化收益不可为空！");
@@ -166,6 +167,8 @@
                             alert("封面不可大于1m！");
                         }else if(pproduce==null || pproduce==""){
                             alert("标主ID不可为空！");
+                        }else if(bmid==null || bmid==""){
+                            alert("借款主键不可为空！");
                         }else if(pproduce!=null && pproduce!=""){
 							$.post("/bk/users/checkId","ids="+pproduce,function (data) {
 								if (data){
@@ -348,6 +351,14 @@
 						<div class="col-lg-5">
 							<input id="pdesc" name="pdesc"
 								cssClass="form-control input-sm" maxlength="11" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2  control-label"> 借款主键：</label>
+						<div class="col-sm-5">
+							<select class="form-control" id="bmid" name="bmid">
+								<option th:each="bm:${bms}" th:value="${bm.id}" th:text="${bm.id}"></option>
+							</select>
 						</div>
 					</div>
 <!--

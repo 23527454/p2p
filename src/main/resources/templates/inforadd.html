@@ -37,6 +37,7 @@
 
 	function investA() {
 		var money = document.getElementById("amount").value;
+        var sy = document.getElementById("sy").value;
 
 		if (money > [[${session.kymoney}]]) {//用户余额不足
 			alert("对不起,您的用户余额不足;无法完成投资!");
@@ -46,20 +47,21 @@
 			alert("您输入的投资金额大于剩余可投金额!");
 			return;
 		}
-		window.location.href = "../investinfo/investAdd_do?money=" + money;
+		window.location.href = "../investinfo/investAdd_do?money=" + money + "&sy=" + sy;
 	}
 
 	function reckon() {//动态算出预期收益
-		var money = document.getElementById("amount").value;
+        var money = document.getElementById("amount").value;
 //	alert("${days}");
 // 	alert(([[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100);
-	var getm = parseInt(money) + ( [[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100;
+	var getm = ( [[${session.Borrowmoney.pincome}]] * ([[${session.days}]] / 365) * money) / 100;
 		var lm = parseFloat(getm).toFixed(2);
 		//		alert(lm);
 		if (isNaN(lm)) {
 			lm = 0;
 		}
 		document.getElementById("sp").innerHTML = lm + "元";
+        document.getElementById("sy").value = lm;
 	}
 
 	function end() {
@@ -100,7 +102,6 @@
 						<li><span class="c-888">需还本息：</span><span th:text="${(session.Borrowmoney.prateben + session.Borrowmoney.ptotalmoney)}"></span>元</li>
 						<li><span class="c-888">借款用途：</span><span th:text="${session.Borrowmoney.puse }"></span></li>
 						<li class="colspan"> <span class="c-888 fl">投标进度：</span>
-							<div class="progress-bar fl"> <span style="width:100%"></span> </div>
 							<span class="c-green" th:text="${(session.Borrowmoney.pmoney/session.Borrowmoney.ptotalmoney)*(100)}+'%'"></span> </li>
 						<li> <span class="c-888">投资范围：</span> <span id="account_range" th:text="${session.Borrowmoney.prange }"></span> </li>
 					</ul>
@@ -119,10 +120,15 @@
 					<div class="inner">
 						<p>
 							<span th:if="${session.loginUser == null }">
-								可用余额：<span id="canUseSum">登录后可显示余额</span>
+								可用余额：<span id="canUseSum">登录并开通第三方账户后可显示余额</span>
 							</span>
 							<span th:if="${session.loginUser != null }">
-								您的可用余额为:<span class="f24 c-333" th:text="${session.kymoney }"></span>
+								<span th:if="${session.loginUser.ucertnumber == null }">
+									请先开通第三方账户&nbsp;&nbsp;&nbsp;<a href="/grzx/grzx_ktdsf">>>点我开通</a>
+								</span>
+								<span th:if="${session.loginUser.ucertnumber != null }">
+									您的可用余额为:<span class="f24 c-333" th:text="${session.kymoney }"></span>
+								</span>
 							</span>
 						</p>
 					</div>
@@ -135,6 +141,7 @@
 						</p>
 						<br />
 						<p class="rate">
+							<input type="hidden" id="sy" value="0">
 							预期收益：<span class="f24 c-333" id="sp"></span>
 						</p>
 					</div>
@@ -142,8 +149,7 @@
 					<div class="inner"  th:if="${session.loginUser != null }">
 
 						<input class="input _userName" maxlength="24" tabindex="1"
-							type="text" placeholder="请输入投资金额" id="amount" onkeyup="reckon();"
-							onblur="focusblur(this)" />
+							type="text" placeholder="请输入投资金额" id="amount" onkeyup="reckon();"/>
 						<!--<input type="text" name="unickname" id="userName" class="input _userName" maxlength="24" tabindex="1" />-->
 						<!--<button type="button" id="pushAll">全投</button>-->
 					</div>
@@ -327,11 +333,11 @@
 								</tr>
 							</div>
 							</tbody>
-							<tfoot>
+							<tfoot th:if="${session.totalpage > 1}">
 							<tr class="page-outer">
 								<td colspan="4" align="center">
 									<div class="pagination clearfix">
-									<span class="page" id="repayment_content_pager" th:if="${session.totalpage > 1}">
+									<span class="page" id="repayment_content_pager">
 										<span th:if="${session.currpages-1  > 0}">
 											<a th:href="@{/investinfo/toInvestInfo(bmid=${session.bmid },currpage=${session.currpages-1 })}"> 上一页 </a>
 										</span>
@@ -350,26 +356,37 @@
 					</div>
 				</div>
 				<div class="ui-tab-item" style="display: none;">
-					<div class="repayment-list"> 已还本息：<span class="c-orange">0.00元</span>&nbsp;&nbsp;
-						待还本息：<span class="c-orange">40,400.00元</span>&nbsp;&nbsp;(待还本息因算法不同可能会存误差，实际金额以到账金额为准！)
+					<div class="repayment-list">
+					<span th:if="${session.yihuan != null && session.weihuan != null}">
+						已还本息：<span class="c-orange" th:text="${session.yihuan }">元</span>&nbsp;&nbsp;
+						待还本息：<span class="c-orange" th:text="${session.weihuan }">元</span>&nbsp;&nbsp;(待还本息因算法不同可能会存误差，实际金额以到账金额为准！)
+					</span>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tbody>
-							<tr>
-								<th>合约还款日期</th>
-								<th>期数</th>
-								<th>应还本金</th>
-								<th>应还利息</th>
-								<th>应还本息</th>
-								<th>还款状态</th>
-							</tr>
-							<tr>
-								<td>2015-10-13</td>
-								<td>1</td>
-								<td>40,000.00元</td>
-								<td>400.00元</td>
-								<td>40,400.00元</td>
-								<td>还款中</td>
-							</tr>
+							<span th:if="${session.yihuan != null && session.weihuan != null}">
+								<tr>
+									<th>合约还款日期</th>
+									<th>期数</th>
+									<th>应还本金</th>
+									<th>应还利息</th>
+									<th>应还本息</th>
+									<th>还款状态</th>
+								</tr>
+								<span th:each="bwm1:${session.bwm }">
+									<tr>
+										<td th:text="${#dates.format(bwm1.bdate, 'yyyy-MM-dd')}"></td>
+										<td th:text="${bwm1.bcs}"></td>
+										<td th:text="${bwm1.money}">元</td>
+										<td th:text="${(bwm1.money * bwm1.rate / 100)}">元</td>
+										<td th:text="${bwm1.money + (bwm1.money * bwm1.rate / 100)}">元</td>
+										<td th:if="${bwm1.bstatue == 0}">未还款</td>
+										<td th:if="${bwm1.bstatue == 1}">已还款</td>
+									</tr>
+								</span>
+							</span>
+							<span th:if="${session.yihuan == null && session.weihuan == null}">
+								<h2>--此用户暂无借还款记录--</h2>
+							</span>
 							</tbody>
 						</table>
 					</div>

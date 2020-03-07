@@ -57,11 +57,13 @@ public class WithdrawalController {
 //        System.out.println("bankname" + bankname);
 //        System.out.println("bankhao" + bankhao);
 
-        Date time = new Date();
+        Date time = new Date();//获取当前时间
         Map<String, Object> map = new HashMap<>();
         /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间*/
         Users user = (Users) session.getAttribute("loginUser");
+        double sxf = Double.parseDouble(actualMoney) * 0.001; //手续费计算
+        double dzmoney = Double.parseDouble(actualMoney) - sxf;  //到账金额
     /*    int id = 0;
         String actualMoney = null;
         String bid = null;
@@ -79,8 +81,7 @@ public class WithdrawalController {
         if (request.getParameter("id") != null) {
             id = Integer.parseInt(request.getParameter("id"));//certification实体类得id
         }*/
-        double sxf = Double.parseDouble(actualMoney) * 0.001;
-        double dzmoney = Double.parseDouble(actualMoney) - sxf;
+
         //        actualMoneys = Double.parseDouble(actualMoney);
         //      double blances =  Double.parseDouble(blance);//总额
         //      double sum =  blances - actualMoneys;//总额扣除提现金额

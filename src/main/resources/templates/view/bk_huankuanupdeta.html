@@ -136,7 +136,7 @@
 					<div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">期限</label>
                         <div class="col-sm-10">
-                            [[${borr.blimit}]]
+                            [[${borr.btimelimit}]]
                         </div>
                     </div>
 					
@@ -209,135 +209,144 @@
 </body>
 
 <script type="text/javascript">
-		function checks(){
-			
-			$.post('/bk/brower/tohuankuanupdison?id='+[[${borr.id}]],{},function(data){
-				var list= data;
-				var repayWay='3';//还款方式
-				var money=10000;//借款金额
-				var month=12;//期限
-				var annualRate=10;//年化收益率
-				if(repayWay=='3'){
-					// 贷款本金×月利率×（1+月利率）还款月数/[（1+月利率）还款月数-1]
-					var annualRates=annualRate/100;
-					var monthrate= annualRates/12;
-					var num = monthrate; //月利率
-					var a=1+num;
-					var j=Math.pow(a,month);
-					var yueHuanBenXi=money*num*j/(j-1);
-					var ZongEr=yueHuanBenXi*month;
-					var Zong=yueHuanBenXi*month;
-					var tables="";
-					
-					//for(var i=1;i<=month;i++){
-				  		$.each(list,function(i, dept) {
+    function checks(){
+        $.post('/bk/brower/tohuankuanupdison?id='+[[${borr.id}]],{},function(data){
+            var list= data;
+            var repayWay=[[${borr.bserial}]];//还款方式
+            var money=[[${borr.bmoney}]];//借款金额
+            var month=[[${borr.btimelimit}]];//期限
+            var annualRate=[[${borr.brate}]];//年化收益率
+            if(repayWay=='3'){
+                // 贷款本金×月利率×（1+月利率）还款月数/[（1+月利率）还款月数-1]
+                var annualRates=annualRate/100;
+                var monthrate= annualRates/12;
+                var num = monthrate; //月利率
+                var a=1+num;
+                var j=Math.pow(a,month);
+                var yueHuanBenXi=money*num*j/(j-1);
+                var ZongEr=yueHuanBenXi*month;
+                var Zong=yueHuanBenXi*month;
+                var tables="";
 
-						var benxiyuer=(i==1?ZongEr:ZongEr-yueHuanBenXi);	
-						var monthlixi=benxiyuer*(num);//第一个月利息=本金*月利率  第二个月利息=（本息总额-月还本息）*月利率 以后类推
-						var monthBenjin=yueHuanBenXi-monthlixi;//月还本金=月还本息-月还利息
-						var x=benxiyuer;
-						var y=yueHuanBenXi;
-						var nums=x-y;
-						ZongEr=benxiyuer;
-						var borr=list[i];
-						tables=tables+"<tr><td data-title='Code'><font><font>"+(i+1)
-						+"</font></font></td><td data-title='Company'><font><font>"+yueHuanBenXi.toFixed(2)
-						+"</font></font></td><td data-title='Company'><font><font>"+monthBenjin.toFixed(2)
-						+"</font></font></td><td data-title='Company'><font><font>"+monthlixi.toFixed(2)
-						+"</font></font></td><td data-title='Company'><font><font>"+nums.toFixed(2)
-						
-						+"</font></font></td><td data-title='Company'><font><font>"+new Date(dept.bdate).toLocaleString()
-						+"</font></font></td><td data-title='Company'><font><font>";
-						if(dept.bstatue==1){
-							tables+="已还款";
-						}else if (dept.bstatue==0) {
-							tables+="未还款";
-						}
-						tables+="</font></font></td><td data-title='Company'><font><font>";
-						if(dept.bstatue==1){
-							
-						}else if (dept.bstatue==0) {
-							tables+="<a href='/bk/brower/tohuankuanupds?ids="+dept.boid+"&id="+[[${borr.id}]]+"'>还款</a>";
-						}
-						
-						tables+="</font></font></td></tr>";
-					//}
-				  	});
-					$("#mytbdy").html(tables);	
-				}
-				
-				//一次还本付息=本金+每月利息*期数   这里的每月利息固定
-				if(repayWay=='1'){
-					var annualRates=annualRate/100;
-					var monthrate=annualRates/12;
-					var num = (monthrate.toFixed(5)); //月利率
-					var g=(num*money)*month;
-					var zong=parseFloat(money)+parseFloat(g);
-					var tables="";
-					tables+="<td data-title='Code'><font><font>"+month.toFixed(2)
-					+"</font></font></td><td data-title='Company'><font><font>"+zong.toFixed(2)
-					+"</font></font></td><td data-title='Company'><font><font>"+money.toFixed(2)
-					+"</font></font></td><td data-title='Company'><font><font>"+g.toFixed(2)
-					+"</font></font></td><td data-title='Company'><font><font>"+0.00
-					
-					+"</font></font></td><td data-title='Company'><font><font>"+new Date(dept.bdate).toLocaleString()
-					+"</font></font></td><td data-title='Company'><font><font>"+dept.bstatue
-					+"</font></font></td><td data-title='Company'><font><font><a>还款</a>"+""
-					
-					+"</font></font></td>";
-					$("#mytbdy").html(tables);
-				}
-				//先息后本 月还利息不变
-				if(repayWay=='2'){
-					var annualRates=annualRate/100;
-					var monthrate=annualRates/12;
-					var num =(monthrate.toFixed(5)); //月利率
-					var g=(num*money)*month;//总共要还的利息
-					var gs=num*money;
-					var zong=parseFloat(money)+parseFloat(g);
-					var zon=parseFloat(money)+parseFloat(g);
-					
-					var tables="<tr>"
-					//for(var i=1;i<=month;i++){
-					$.each(list,function(i, dept) {
-						var borr=list[i];
-						var benxiyuer=(i==month?0.00:zong-gs);	
-						zong=benxiyuer;
-						var yuehuanbenxi=(i==month?(parseFloat(money)+parseFloat(gs)):gs);
-						var yuehuanbenjin=i==month?money:0;
-						tables+="<td data-title='Code'><font><font>"+(i+1)+"</font></font></td><td data-title='Company'><font><font>"+
-						yuehuanbenxi.toFixed(2)+"</font></font></td><td class='numeric' data-title='Price'><font><font>"+
-						yuehuanbenjin.toFixed(2)+"</font></font></td><td class='numeric' data-title='Change'><font><font>"+
-						gs.toFixed(2)+" </font></font></td><td class='numeric' data-title='Change'><font><font>"+
-						benxiyuer.toFixed(2)
-						
-						+"</font></font></td><td data-title='Company'><font><font>"+new Date(dept.bdate).toLocaleString()
-						+"</font></font></td><td data-title='Company'><font><font>";
-						if(dept.bstatue==1){
-							tables+="已还款";
-						}else if (dept.bstatue==0) {
-							tables+="未还款";
-						}
-						tables+="</font></font></td><td data-title='Company'><font><font>";
-						if(dept.bstatue==1){
-							
-						}else if (dept.bstatue==0) {
-							tables+="<a href=' brower/tohuankuanupds.do?ids="+dept.boid+"&id=${borr.id}'>还款</a>";
-						}
-						
-						tables+="</font></font></td>";
-						tables=tables+"</tr>";
-					//}
-					});
-					$("#mytbdy").html(tables);
-	            
-				}
-				
-				
-			},"json");
-			
-			
-		}
+                //for(var i=1;i<=month;i++){
+                $.each(list,function(i, dept) {
+
+                    var benxiyuer=(i==1?ZongEr:ZongEr-yueHuanBenXi);
+                    var monthlixi=benxiyuer*(num);//第一个月利息=本金*月利率  第二个月利息=（本息总额-月还本息）*月利率 以后类推
+                    var monthBenjin=yueHuanBenXi-monthlixi;//月还本金=月还本息-月还利息
+                    var x=benxiyuer;
+                    var y=yueHuanBenXi;
+                    var nums=x-y;
+                    ZongEr=benxiyuer;
+                    var borr=list[i];
+                    tables=tables+"<tr><td data-title='Code'><font><font>"+(i+1)
+                        +"</font></font></td><td data-title='Company'><font><font>"+yueHuanBenXi.toFixed(2)
+                        +"</font></font></td><td data-title='Company'><font><font>"+monthBenjin.toFixed(2)
+                        +"</font></font></td><td data-title='Company'><font><font>"+monthlixi.toFixed(2)
+                        +"</font></font></td><td data-title='Company'><font><font>"+nums.toFixed(2)
+
+                        +"</font></font></td><td data-title='Company'><font><font>"+new Date(dept.bdate).toLocaleString()
+                        +"</font></font></td><td data-title='Company'><font><font>";
+                    if(dept.bstatue==1){
+                        tables+="已还款";
+                    }else if (dept.bstatue==0) {
+                        tables+="未还款";
+                    }
+                    tables+="</font></font></td><td data-title='Company'><font><font>";
+                    if(dept.bstatue==1){
+
+                    }else if (dept.bstatue==0) {
+                        tables+="<a href='/bk/brower/tohuankuanupds?ids="+dept.boid+"&id="+[[${borr.id}]]+"&bl="+yueHuanBenXi.toFixed(2)+"&lx="+monthlixi.toFixed(2)+"'>还款</a>";
+                    }
+
+                    tables+="</font></font></td></tr>";
+                    //}
+                });
+                $("#mytbdy").html(tables);
+            }
+
+            //一次还本付息=本金+每月利息*期数   这里的每月利息固定
+            if(repayWay=='1'){
+                var annualRates=annualRate/100;
+                var monthrate=annualRates/12;
+                var num = (monthrate.toFixed(5)); //月利率
+                var g=(num*money)*month;
+                var zong=parseFloat(money)+parseFloat(g);
+                var tables="";
+                $.each(list,function(i, dept) {
+                tables+="<td data-title='Code'><font><font>"+1
+                    +"</font></font></td><td data-title='Company'><font><font>"+zong.toFixed(2)
+                    +"</font></font></td><td data-title='Company'><font><font>"+money.toFixed(2)
+                    +"</font></font></td><td data-title='Company'><font><font>"+g.toFixed(2)
+                    +"</font></font></td><td data-title='Company'><font><font>"+0.00
+                    +"</font></font></td><td data-title='Company'><font><font>"+new Date(dept.bdate).toLocaleString()
+                    +"</font></font></td><td data-title='Company'><font><font>";
+                    if(dept.bstatue==1){
+                        tables+="已还款";
+                    }else if (dept.bstatue==0) {
+                        tables+="未还款";
+                    }
+                    tables+="</font></font></td><td data-title='Company'><font><font>";
+                    if(dept.bstatue==1){
+
+                    }else if (dept.bstatue==0) {
+                        tables+="<a href='/bk/brower/tohuankuanupds?ids="+dept.boid+"&id="+[[${borr.id}]]+"&bl="+zong.toFixed(2)+"&lx="+g.toFixed(2)+"'>还款</a>";
+                    }
+                    tables+="</font></font></td>";
+                    tables=tables+"</tr>";
+                });
+                alert(tables);
+                $("#mytbdy").html(tables);
+            }
+            //先息后本 月还利息不变
+            if(repayWay=='2'){
+                var annualRates=annualRate/100;
+                var monthrate=annualRates/12;
+                var num =(monthrate.toFixed(5)); //月利率
+                var g=(num*money)*month;//总共要还的利息
+                var gs=num*money;
+                var zong=parseFloat(money)+parseFloat(g);
+                var zon=parseFloat(money)+parseFloat(g);
+
+                var tables="<tr>"
+                //for(var i=1;i<=month;i++){
+                $.each(list,function(i, dept) {
+                    var benxiyuer=(i+1==month?0.00:zong-gs);
+                    zong=benxiyuer;
+                    var yuehuanbenxi=(i+1==month?(parseFloat(money)+parseFloat(gs)):gs);
+                    var yuehuanbenjin=i+1==month?money:0;
+                    tables+="<td data-title='Code'><font><font>"+(i+1)+"</font></font></td><td data-title='Company'><font><font>"+
+                        yuehuanbenxi.toFixed(2)+"</font></font></td><td class='numeric' data-title='Price'><font><font>"+
+                        yuehuanbenjin+"</font></font></td><td class='numeric' data-title='Change'><font><font>"+
+                        gs.toFixed(2)+" </font></font></td><td class='numeric' data-title='Change'><font><font>"+
+                        benxiyuer.toFixed(2)
+                        +"</font></font></td><td data-title='Company'><font><font>"+new Date(dept.bdate).toLocaleString()
+                        +"</font></font></td><td data-title='Company'><font><font>";
+                    if(dept.bstatue==1){
+                        tables+="已还款";
+                    }else if (dept.bstatue==0) {
+                        tables+="未还款";
+                    }
+                    tables+="</font></font></td><td data-title='Company'><font><font>";
+                    if(dept.bstatue==1){
+
+                    }else if (dept.bstatue==0) {
+                        tables+="<a href='/bk/brower/tohuankuanupds?ids="+dept.boid+"&id="+[[${borr.id}]]+"&bl="+yuehuanbenxi.toFixed(2)+"&lx="+gs.toFixed(2)+"'>还款</a>";
+                    }
+
+                    tables+="</font></font></td>";
+                    tables=tables+"</tr>";
+                    //}
+                });
+                $("#mytbdy").html(tables);
+
+            }
+
+
+        },"json");
+
+
+    }
 	</script>
 
 
