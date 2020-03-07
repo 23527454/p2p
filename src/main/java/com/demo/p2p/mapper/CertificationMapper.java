@@ -45,4 +45,6 @@ public interface CertificationMapper extends BaseMapper<Certification> {
 
     @Update("update certification set ctotalmoney = #{ctotalmoney} where id = #{id}")
     public int certificationupup(Certification certification);
+
+    public Certification selByMap(Map<String,Object> map);
 }

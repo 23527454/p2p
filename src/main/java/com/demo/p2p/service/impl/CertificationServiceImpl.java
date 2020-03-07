@@ -71,4 +71,9 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
         return this.baseMapper.certificationupup(certification);
     }
 
+    @Override
+    public Certification selByMap(Map<String, Object> map) {
+        return certificationMapper.selByMap(map);
+    }
+
 }

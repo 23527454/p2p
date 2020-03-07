@@ -34,4 +34,6 @@ public interface CertificationService extends IService<Certification> {
     public int upmoney(Certification certification);
 
     public int certificationupup(Certification certification);
+
+    public Certification selByMap(Map<String,Object> map);
 }
