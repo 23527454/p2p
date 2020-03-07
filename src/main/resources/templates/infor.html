@@ -80,7 +80,15 @@
 			</div>
 			<div class="mod-right mod-status">
 				<div class="inner">
-					<div class="text"> 待还本息：<span class="f24 c-333"  th:text="${(session.Borrowmoney.prateben + session.Borrowmoney.ptotalmoney - session.Borrowmoney.pmoney)}"></span>元<br>
+						<div class="text"> 待还本息：
+							<span th:if="${session.weihuan != null}">
+								<span class="f24 c-333"  th:text="${session.weihuan }"></span>
+							</span>
+							<span th:if="${session.weihuan == null}">
+								<span class="f24 c-333" >0</span>
+							</span>
+							元<br>
+
 						剩余期限：<span class="f24 c-333" th:text="${#dates.format(session.Borrowmoney.pcount, 'yyyy-MM-dd')}"></span> <br>
 						下期还款日： <span class="f20 c-333" th:text="${#dates.format(session.Borrowmoney.ptime, 'yyyy-MM-dd')}"></span> </div>
 					<i class="icon icon-status icon-status1"></i> </div>

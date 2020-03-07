@@ -1,7 +1,9 @@
 package com.demo.p2p.ht.service;
 
-import com.demo.p2p.ht.entity.Investinfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.demo.p2p.ht.entity.Investinfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-02-25
  */
 public interface Bk_InvestinfoService extends IService<Investinfo> {
-
+    public List<Investinfo> findInMoneySum(Integer bmid);
 }

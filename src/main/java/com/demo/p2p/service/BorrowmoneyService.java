@@ -1,11 +1,10 @@
 package com.demo.p2p.service;
 
-import com.demo.p2p.entity.Borrowmoney;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.demo.p2p.entity.Investinfo;
+import com.demo.p2p.entity.Borrowmoney;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -17,4 +16,8 @@ import java.util.Map;
  */
 public interface BorrowmoneyService extends IService<Borrowmoney> {
     public int addMoney(Borrowmoney borrowmoney);
+
+    public List<Borrowmoney> selHuanKuanList(Integer uid, Page<Borrowmoney> page);
+
+    public Double sumBorrow(Integer uid);
 }
