@@ -23,7 +23,7 @@ import java.util.Map;
 @Service
 public class Bk_WithdrawalServiceImpl extends ServiceImpl<Bk_WithdrawalMapper, Withdrawal> implements Bk_WithdrawalService {
     @Resource
-    Bk_WithdrawalMapper bk_withdrawalMapper;
+    private   Bk_WithdrawalMapper bk_withdrawalMapper;
 
     @Override
     public List<Withdrawal> sellist(Map<String, Object> map) {
@@ -89,5 +89,10 @@ public class Bk_WithdrawalServiceImpl extends ServiceImpl<Bk_WithdrawalMapper, W
         map.put("jytime", new Date());
         map.put("other", "无");
         return bk_withdrawalMapper.intmoney(map);
+    }
+
+    @Override
+    public List<Withdrawal> lsnum() {
+        return bk_withdrawalMapper.lsnum();
     }
 }

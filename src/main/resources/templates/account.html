@@ -300,7 +300,7 @@
               <span class="zhsz-span1">第三方支付</span>
               <span class="zhsz-span2">未开通</span>
               <span class="zhsz-span3">
-	          <a href="#" th:onclick="checkSfz([[${session.loginUser.ucertnumber}]])">开通</a>
+	          <a href="#" th:onclick="checkSfz([[${session.loginUser.ucardid}]])">开通</a>
 	          </span>
             </div>
             <div th:if="${session.loginUser.ucertnumber!=null &&session.loginUser.ucertnumber!=''}">

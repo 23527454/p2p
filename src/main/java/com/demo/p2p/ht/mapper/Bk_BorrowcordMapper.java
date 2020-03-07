@@ -2,6 +2,9 @@ package com.demo.p2p.ht.mapper;
 
 import com.demo.p2p.ht.entity.Borrowcord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface Bk_BorrowcordMapper extends BaseMapper<Borrowcord> {
 
+    @Select("SELECT boid FROM borrowcord WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= DATE(bdate)")
+    public List<Borrowcord> lssum();//还款未处理的个数
 }

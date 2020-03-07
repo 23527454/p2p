@@ -44,4 +44,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return this.baseMapper.productList2();
     }
 
+    @Override
+    public Long findPtotalmoney(Integer bmid) {
+        return productMapper.findPtotalmoney(bmid);
+    }
 }

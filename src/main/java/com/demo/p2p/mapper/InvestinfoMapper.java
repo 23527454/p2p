@@ -55,4 +55,7 @@ public interface InvestinfoMapper extends BaseMapper<Investinfo> {
     public Double getInmoney(Map<String, Object> map);
 
     public Double getProfitmoney(Map<String, Object> map);
+
+    @Select("SELECT i.inid,i.userid,i.brrowid,SUM(i.inmoney) AS 'inmoney' FROM investinfo i WHERE i.brrowid=(SELECT p.id FROM product p WHERE p.bmid=#{bmid}) GROUP BY i.userid")
+    public List<Investinfo> findInMoneySum(Integer bmid);
 }

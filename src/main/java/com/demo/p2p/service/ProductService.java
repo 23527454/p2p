@@ -21,4 +21,6 @@ public interface ProductService extends IService<Product> {
 
     public List<Product> productList();
     public List<Product> productList2();
+
+    public Long findPtotalmoney(Integer bmid);
 }

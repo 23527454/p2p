@@ -25,6 +25,11 @@ public class InvestinfoServiceImpl extends ServiceImpl<InvestinfoMapper, Investi
     private InvestinfoMapper investinfoMapper;
 
     @Override
+    public List<Investinfo> findInMoneySum(Integer bmid) {
+        return investinfoMapper.findInMoneySum(bmid);
+    }
+
+    @Override
     public Integer sumInmoney() {
         return this.baseMapper.sumInmoney();
     }

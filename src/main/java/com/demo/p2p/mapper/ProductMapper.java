@@ -24,4 +24,7 @@ public interface ProductMapper extends BaseMapper<Product> {
 
     @Select("SELECT * FROM product ORDER BY progress DESC  LIMIT 5")
     public List<Product> productList2();
+
+    @Select("SELECT p.ptotalmoney FROM product p WHERE p.bmid=#{bmid}")
+    public Long findPtotalmoney(Integer bmid);
 }

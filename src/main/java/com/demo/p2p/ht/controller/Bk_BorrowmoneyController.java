@@ -97,7 +97,7 @@ public class Bk_BorrowmoneyController {
             trade.setJymoney(String.format("%.2f",je));
             trade.setWhat("回款");
             trade.setJytime(new Date());
-            trade.setOther("后台还款的收益");
+            trade.setOther("借款的收益");
             tradeService.save(trade);
         }
         //获取发起借款的用户的待还金额，减去本次还款的利息，获得还款后的待还金额
