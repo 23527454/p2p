@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ private static final long serialVersionUID=1L;
     /**
      * 时间
      */
-    private LocalDateTime jytime;
+    private Date jytime;
 
     /**
      * 备注
@@ -109,11 +110,11 @@ private static final long serialVersionUID=1L;
         this.what = what;
     }
 
-    public LocalDateTime getJytime() {
+    public Date getJytime() {
         return jytime;
     }
 
-    public void setJytime(LocalDateTime jytime) {
+    public void setJytime(Date jytime) {
         this.jytime = jytime;
     }
 

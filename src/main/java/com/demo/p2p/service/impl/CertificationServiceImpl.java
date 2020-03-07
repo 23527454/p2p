@@ -1,15 +1,14 @@
 package com.demo.p2p.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.p2p.entity.Certification;
 import com.demo.p2p.mapper.CertificationMapper;
 import com.demo.p2p.service.CertificationService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -69,6 +68,16 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
     @Override
     public int certificationupup(Certification certification) {
         return this.baseMapper.certificationupup(certification);
+    }
+
+    @Override
+    public Certification findCertificationByBmId(Integer bmid) {
+        return certificationMapper.findCertificationByBmId(bmid);
+    }
+
+    @Override
+    public List<Certification> findCertificationByBmId2(Integer bmid) {
+        return certificationMapper.findCertificationByBmId2(bmid);
     }
 
 }

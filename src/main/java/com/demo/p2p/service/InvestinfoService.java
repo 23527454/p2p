@@ -65,4 +65,6 @@ public interface InvestinfoService extends IService<Investinfo> {
     public Double getInmoney(Map<String, Object> map);
 
     public Double getProfitmoney(Map<String, Object> map);
+
+    public List<Investinfo> findInMoneySum(Integer bmid);
 }
