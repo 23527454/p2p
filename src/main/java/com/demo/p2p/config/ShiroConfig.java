@@ -41,6 +41,7 @@ public class ShiroConfig {
         //前台跳转
         filtrChainDefinitionMap.put("/sys/**", "anon");
         filtrChainDefinitionMap.put("/backend/toLogin", "anon");
+        filtrChainDefinitionMap.put("/backend/rePwd", "anon");
         filtrChainDefinitionMap.put("/backend/login", "anon");
         //前台
         filtrChainDefinitionMap.put("/assets/**", "anon");
