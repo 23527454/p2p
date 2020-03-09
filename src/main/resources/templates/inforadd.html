@@ -120,10 +120,15 @@
 					<div class="inner">
 						<p>
 							<span th:if="${session.loginUser == null }">
-								可用余额：<span id="canUseSum">登录后可显示余额</span>
+								可用余额：<span id="canUseSum">登录并开通第三方账户后可显示余额</span>
 							</span>
 							<span th:if="${session.loginUser != null }">
-								您的可用余额为:<span class="f24 c-333" th:text="${session.kymoney }"></span>
+								<span th:if="${session.loginUser.ucertnumber == null }">
+									请先开通第三方账户&nbsp;&nbsp;&nbsp;<a href="/grzx/grzx_ktdsf">>>点我开通</a>
+								</span>
+								<span th:if="${session.loginUser.ucertnumber != null }">
+									您的可用余额为:<span class="f24 c-333" th:text="${session.kymoney }"></span>
+								</span>
 							</span>
 						</p>
 					</div>
@@ -144,8 +149,7 @@
 					<div class="inner"  th:if="${session.loginUser != null }">
 
 						<input class="input _userName" maxlength="24" tabindex="1"
-							type="text" placeholder="请输入投资金额" id="amount" onkeyup="reckon();"
-							onblur="focusblur(this)" />
+							type="text" placeholder="请输入投资金额" id="amount" onkeyup="reckon();"/>
 						<!--<input type="text" name="unickname" id="userName" class="input _userName" maxlength="24" tabindex="1" />-->
 						<!--<button type="button" id="pushAll">全投</button>-->
 					</div>

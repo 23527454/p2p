@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -68,6 +69,11 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
     @Override
     public int certificationupup(Certification certification) {
         return this.baseMapper.certificationupup(certification);
+    }
+
+    @Override
+    public Certification selByMap(Map<String, Object> map) {
+        return certificationMapper.selByMap(map);
     }
 
     @Override

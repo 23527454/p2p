@@ -22,5 +22,11 @@
     <update id="upmoney">
 		update certification set cbalance = #{cbalance},ctotalmoney = #{ctotalmoney} where id = #{id}
 	</update>
-
+    <select id="selByMap" resultType="com.demo.p2p.entity.Certification" parameterType="map">
+      SELECT * FROM certification
+      WHERE 1 = 1
+      <if test="uid != null">
+        and cserial = #{uid}
+      </if>
+    </select>
 </mapper>

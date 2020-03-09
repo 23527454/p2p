@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -44,6 +45,8 @@ public interface CertificationMapper extends BaseMapper<Certification> {
 
     @Update("update certification set ctotalmoney = #{ctotalmoney} where id = #{id}")
     public int certificationupup(Certification certification);
+
+    public Certification selByMap(Map<String,Object> map);
 
     /**
      * 获取发起借款的用户账户金额

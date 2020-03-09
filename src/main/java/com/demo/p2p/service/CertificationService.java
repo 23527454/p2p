@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.p2p.entity.Certification;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,6 +33,8 @@ public interface CertificationService extends IService<Certification> {
     public int upmoney(Certification certification);
 
     public int certificationupup(Certification certification);
+
+    public Certification selByMap(Map<String,Object> map);
 
     public Certification findCertificationByBmId(Integer bmid);
     public List<Certification> findCertificationByBmId2(Integer bmid);

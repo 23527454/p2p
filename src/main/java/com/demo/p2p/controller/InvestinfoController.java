@@ -43,6 +43,8 @@ public class InvestinfoController {
     private CertificationService certificationService;
     @Resource
     private BorrowcordService borrowcordService;
+    @Resource
+    private BorrowmoneyService borrowmoneyService;
 
     /**
      * 获取信息进入投资记录页面
@@ -205,11 +207,15 @@ public class InvestinfoController {
         if (pro.getPstate().equals("1")) {
             Users us = (Users) req.getSession().getAttribute("loginUser");
             if (us != null) {
-                Certification certification = certificationService.selById(us.getUid());
-                session.setAttribute("cf",certification);
-                String kymoney = "" + certification.getCbalance();
-                System.out.println("进入到输入金额页面  用户余额" + kymoney);
-                session.setAttribute("kymoney", kymoney);
+                Map<String,Object> stringObjectMap = new HashMap<String,Object>();
+                stringObjectMap.put("uid",us.getUid());
+                Certification certification = certificationService.selByMap(stringObjectMap);
+                if (certification != null){
+                    session.setAttribute("cf",certification);
+                    String kymoney = "" + certification.getCbalance();
+                    System.out.println("进入到输入金额页面  用户余额" + kymoney);
+                    session.setAttribute("kymoney", kymoney);
+                }
             }
             return "redirect:/sys/inforadd";
         } else {
@@ -225,6 +231,7 @@ public class InvestinfoController {
 
 
         Product pro = (Product) session.getAttribute("Product");
+        Borrowmoney borrowmoney = borrowmoneyService.getById(pro.getBmid());
 
         Investinfo ii = new Investinfo();
         Users user = (Users) session.getAttribute("loginUser");
@@ -295,6 +302,17 @@ public class InvestinfoController {
             if(udm.equals(odm)){//刚好凑集完
                 pro.setPstate("2");//修改为凑资完
                 productService.updateById(pro);
+
+                Certification byId = certificationService.getById(borrowmoney.getBusername());
+                double aDouble = Double.parseDouble(byId.getCtotalmoney()) + Double.parseDouble(borrowmoney.getBmoney());
+                double bDouble = Double.parseDouble(byId.getCbalance()) + Double.parseDouble(borrowmoney.getBmoney());
+                String num1 = String.format("%.2f",aDouble);
+                String num2 = String.format("%.2f",bDouble);
+                byId.setCtotalmoney(num1);
+                byId.setCbalance(num2);
+                System.out.println("byId.getCtotalmoney()："+byId.getCtotalmoney() );
+                System.out.println("byId.getCbalance()："+byId.getCbalance() );
+                certificationService.updateById(byId);
             }
             session.setAttribute("end", "end");
             session.setAttribute("reea","no");

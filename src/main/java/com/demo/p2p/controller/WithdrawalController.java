@@ -1,15 +1,12 @@
 package com.demo.p2p.controller;
 
 
-import com.demo.p2p.entity.Bankcard;
-import com.demo.p2p.entity.Poundage;
-import com.demo.p2p.entity.Users;
-import com.demo.p2p.entity.Withdrawal;
+import com.demo.p2p.entity.*;
+import com.demo.p2p.mapper.TradeMapper;
 import com.demo.p2p.service.BankcardService;
 import com.demo.p2p.service.CertificationService;
 import com.demo.p2p.service.PoundageService;
 import com.demo.p2p.service.WithdrawalService;
-import org.apache.catalina.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +44,9 @@ public class WithdrawalController {
 
     @Resource
     private PoundageService poundageService;
+
+    @Resource
+    private TradeMapper tradeMapper;
 
     @RequestMapping("/withdrawpay")
     @ResponseBody
@@ -132,6 +131,9 @@ public class WithdrawalController {
         wl.setSxf(String.valueOf(sxf));
         wl.setDzmoney(String.valueOf(dzmoney));
 
+
+
+
         Poundage pe = new Poundage();
         pe.setuID(user.getUid());
         pe.setUname(user.getUnickname());
@@ -139,6 +141,18 @@ public class WithdrawalController {
         pe.setSxmoney(actualMoney);
         pe.setWhat("提现");
         pe.setSxtime(time);
+
+        double d=Double.parseDouble(actualMoney);
+        Trade trade = new Trade();
+        trade.setuID(user.getUid());
+        trade.setJytime(new Date());
+        trade.setUname(user.getUnickname());
+        trade.setZname(user.getUname());
+        trade.setWhat("提现");
+        trade.setJymoney(d);
+        trade.setOther("无");
+        tradeMapper.insert(trade);
+
         int num = 0;
         boolean pbol = false;
         boolean wbol = false;
