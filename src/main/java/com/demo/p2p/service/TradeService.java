@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.entity.Trade;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface TradeService extends IService<Trade> {
     public List<Trade> selectMoney(Integer uid);
 
     public IPage<Trade> TradeList(Page<Trade> page, QueryWrapper<Trade> wrapper);
+
+    public List<Trade> teacherinfor(Integer id);
 }

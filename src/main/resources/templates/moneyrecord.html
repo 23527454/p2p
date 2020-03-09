@@ -38,18 +38,20 @@
                   <option th:value="充值">充值</option>
                   <option th:value="取款">取款</option>
                   <option th:value="存款">存款</option>
+                  <option th:value="还款">还款</option>
+                  <option th:value="回款">回款</option>
               </select>
               日期：
               <input th:type="date" th:name="sDate" th:value="${param.sDate}"/>
               至
               <input th:type="date" th:name="eDate" th:value="${param.eDate}"/>
             <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc"><span class="ui-button-text ui-c">筛选</span></button>
-            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc"><span class="ui-button-text ui-c">导出</span></button>
+            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc"><span><a th:href="@{/grzx/trade}" class="ui-button-text ui-c" title="未使用">导出(Excel)</a> </span></button>
           </div>
           <span id="form:dataTable">
           <div class="personal-moneylist" th:if="${stas!=1}">
             <div class="pmain-contitle"> <span class="pmain-title1 fb">交易时间</span> <span class="pmain-title2 fb">交易类型</span> <span class="pmain-title3 fb">交易金额</span><span class="pmain-title4 fb">备注</span> </div>
-            <ul th:each="i:${userlist}" th:if="${i.uID==session.loginUser.uid}">
+            <ul th:each="i:${userlist}">
               <li><span class="pmain-title1 pmain-height" th:text="${#dates.format(i.jytime, 'yyyy-MM-dd')}"></span><span class="pmain-title2 pmain-height" th:text="${i.what}"></span><span class="pmain-title3 pmain-height" th:text="${i.jymoney}">元</span><span class="pmain-title4 pmain-height" th:text="${i.other}"></span></li>
               <!-- <div style=" width:760px;height:200px;padding-top:100px; text-align:center;color:#d4d4d4; font-size:16px;"> <img src="/images/nondata.png" width="60" height="60"><br>
                 <br>
