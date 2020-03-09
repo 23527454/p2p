@@ -26,20 +26,29 @@
     <![endif] -->
     <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
   	<script type="text/javascript">
-  		$(document).ready(function(){
-  			$("#bt").click(function(){
-  				var user = document.getElementById("uid").value;
-  				var password = document.getElementById("pwd").value;
-  				$.post("/backend/login",{"uid":user,"pwd":password},function(date){
-  					if(date=="0"){
-  						alert("登陆失败！");
-  					}else{
-  						alert("登陆成功！");
-						location.href="/backend/index";
-  					}
-  				});
-  			});
-  		});
+        function login(){
+            var user = document.getElementById("uid").value;
+            var password = document.getElementById("pwd").value;
+            $.post("/backend/login",{"uid":user,"pwd":password},function(date){
+                if(date==0){
+                    alert("登陆失败！");
+                }else{
+                    alert("登陆成功！");
+                    location.href="/backend/index";
+                }
+            });
+        };
+
+        function rePwd(){
+			var username=$("#username").val();
+			if(username!=""){
+                $.post("/backend/rePwd",{"username":username},function (data) {
+                    alert(data);
+                });
+			}else{
+			    alert("请输入用户名！");
+			}
+		}
   	</script>
   </head>
 
@@ -63,7 +72,7 @@
 		                    <a data-toggle="modal" href="login.html#myModal">忘记密码 ?  </a>
 		                </span>
 		            </label>
-		            <button id="bt" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> 登录</button>
+		            <button id="bt" class="btn btn-theme btn-block" onclick="login()" type="submit"><i class="fa fa-lock"></i> 登录</button>
 		            <hr>
 		            
 		            <div class="login-social-link centered">
@@ -90,12 +99,12 @@
 		                      </div>
 		                      <div class="modal-body">
 		                          <p>请输入ID,并与系统管理员联系</p>
-		                          <input type="text" name="email" placeholder="用户ID" autocomplete="off" class="form-control placeholder-no-fix">
+		                          <input type="text" name="username" id="username" placeholder="用户名" autocomplete="off" class="form-control placeholder-no-fix">
 		
 		                      </div>
 		                      <div class="modal-footer">
 		                          <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-		                          <button class="btn btn-theme" type="button">提交</button>
+		                          <button class="btn btn-theme" onclick="rePwd()" type="button">提交</button>
 		                      </div>
 		                  </div>
 		              </div>
