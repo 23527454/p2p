@@ -105,19 +105,23 @@ public class BackendController {
 
     @RequestMapping(value = "/login")
     @ResponseBody
-    public Integer login(String uid, String pwd) {
+    public Object login(String uid, String pwd) {
+        Map<String,Object> map=new HashMap<>();
         UsernamePasswordToken token = new UsernamePasswordToken(uid, pwd);
         try {
             SecurityUtils.getSubject().login(token);//调用Shiro认证
             Employee employee = (Employee) SecurityUtils.getSubject().getPrincipal();
             if(employee!=null){
-                return 1;
+                map.put("status",true);
+            }else{
+                map.put("status",false);
+                map.put("message","登录失败!");
             }
-            return 0;
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            map.put("status",false);
+            map.put("message",e.getMessage());
         }
+        return map;
     }
 
     @RequestMapping(value = "/toLogin")

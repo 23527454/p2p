@@ -23,7 +23,7 @@ private static final long serialVersionUID=1L;
     private Integer id;
 
     /**
-     * //序号//(还款方式:1,一次性还清,2,先本后息3,等额本息)
+     * //序号//(还款方式:1,到期还本付息,2,按月付息，到期还本3,等额本息)
      */
     private String bserial;
 

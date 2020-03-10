@@ -58,11 +58,11 @@
             <dt>年利率</dt>
             <dd>
               <ul id="rate">
-                <li class="n1"><a th:class="${session.startR=='-1' || session.startR == null?'active':''}" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
-                <li class="n2"><a th:class="${session.startR=='0'?'active':''}" id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
-                <li class="n3"><a th:class="${session.startR=='12'?'active':''}" id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
-                <li class="n4"><a th:class="${session.startR=='14'?'active':''}" id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>
-                <li class="n5"><a th:class="${session.startR=='16'?'active':''}" id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>
+                <li class="n1"><a th:class="${session.startR==-1 || session.startR == null?'active':''}" id="borrow_interestrate_0" style="cursor:pointer;" onclick="Select('rate','-1');">不限</a></li>
+                <li class="n2"><a th:class="${session.startR==0?'active':''}" id="borrow_interestrate_1" style="cursor:pointer" onclick="Select('rate','1');">12%以下</a> </li>
+                <li class="n3"><a th:class="${session.startR==12?'active':''}" id="borrow_interestrate_2" style="cursor:pointer" onclick="Select('rate','2');">12%-14%</a> </li>
+                <li class="n4"><a th:class="${session.startR==14?'active':''}" id="borrow_interestrate_3" style="cursor:pointer" onclick="Select('rate','3');">14%-16%</a> </li>
+                <li class="n5"><a th:class="${session.startR==16?'active':''}" id="borrow_interestrate_4" style="cursor:pointer" onclick="Select('rate','4');">16%及以上</a> </li>
               </ul>
             </dd>
           </dl>
@@ -70,12 +70,12 @@
             <dt>期限</dt>
             <dd>
               <ul id="timel">
-                <li class="n1"><a th:class="${session.startT=='-1' || session.startT == null?'active':''}" id="spread_month_0" style="cursor:pointer" onclick="Select('timelimit','-1');">不限</a> </li>
-                <li class="n2"><a th:class="${session.startT=='0'?'active':''}" id="spread_month_1" style="cursor:pointer" onclick="Select('timelimit','1');">1月以下</a> </li>
-                <li class="n3"><a th:class="${session.startT=='30'?'active':''}" id="spread_month_2" style="cursor:pointer" onclick="Select('timelimit','2');">1-3月</a> </li>
-                <li class="n4"><a th:class="${session.startT=='90'?'active':''}" id="spread_month_3" style="cursor:pointer" onclick="Select('timelimit','3');">3-6月</a> </li>
-                <li class="n5"><a th:class="${session.startT=='180'?'active':''}" id="spread_month_4" style="cursor:pointer" onclick="Select('timelimit','4');">6-12月</a> </li>
-                <li class="n6"><a th:class="${session.startT=='360'?'active':''}" id="spread_month_5" style="cursor:pointer" onclick="Select('timelimit','5');">12月及以上</a> </li>
+                <li class="n1"><a th:class="${session.startT==-1 || session.startT == null?'active':''}" id="spread_month_0" style="cursor:pointer" onclick="Select('timelimit','-1');">不限</a> </li>
+                <li class="n2"><a th:class="${session.startT==0?'active':''}" id="spread_month_1" style="cursor:pointer" onclick="Select('timelimit','1');">1月以下</a> </li>
+                <li class="n3"><a th:class="${session.startT==30?'active':''}" id="spread_month_2" style="cursor:pointer" onclick="Select('timelimit','2');">1-3月</a> </li>
+                <li class="n4"><a th:class="${session.startT==90?'active':''}" id="spread_month_3" style="cursor:pointer" onclick="Select('timelimit','3');">3-6月</a> </li>
+                <li class="n5"><a th:class="${session.startT==180?'active':''}" id="spread_month_4" style="cursor:pointer" onclick="Select('timelimit','4');">6-12月</a> </li>
+                <li class="n6"><a th:class="${session.startT==360?'active':''}" id="spread_month_5" style="cursor:pointer" onclick="Select('timelimit','5');">12月及以上</a> </li>
               </ul>
             </dd>
           </dl>

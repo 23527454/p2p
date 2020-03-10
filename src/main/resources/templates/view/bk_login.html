@@ -30,8 +30,8 @@
             var user = document.getElementById("uid").value;
             var password = document.getElementById("pwd").value;
             $.post("/backend/login",{"uid":user,"pwd":password},function(date){
-                if(date==0){
-                    alert("登陆失败！");
+                if(date.status==false){
+                    alert(date.message);
                 }else{
                     alert("登陆成功！");
                     location.href="/backend/index";
