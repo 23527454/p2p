@@ -70,7 +70,7 @@
 				</h4>
 				<!-- 页面内容 -->
 
-				<form class="form-horizontal style-form" method="post"
+				<form id="myForm" class="form-horizontal style-form" method="post"
 					action="/bk/employee/upd">
 
 					<div class="form-group">
@@ -97,7 +97,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">员工身份证号码：</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" id="ebirths" name="eidcard" th:value="${ee.eidcard }">
+							<input type="text" class="form-control" id="eidcard" name="eidcard" th:value="${ee.eidcard }">
 						</div>
 						<label class="col-sm-2 col-sm-2 control-label">员工手机号：</label>
 						<div class="col-sm-3">
@@ -134,14 +134,14 @@
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label">登录密码：</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control" name="epassword" th:value="${ee.epassword }">
+							<input type="text" class="form-control" id="epassword" name="epassword" value="">
 						</div>
-						<label class="col-sm-2 col-sm-2 control-label">显示</label> <span>
+						<label class="col-sm-2 col-sm-2 control-label"></label> <span>
 							<button type="reset" class="col-sm-2 col-sm-2 control-label">重置</button>
 						</span>
 					</div>
 
-					<button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+					<button type="button" onclick="yanzheng()" class="btn btn-primary btn-lg btn-block">提交</button>
 				</form>
 
 				<!-- 页面内容 -->
@@ -401,10 +401,10 @@ function yanzheng() {
         alert("请输入登入密码");
         return false;
     }else if(epassword.length>16 || epassword.length<6){
-        alert("密码过长，请重填密码（6-16）位");
+        alert("密码长度不正确，请重填密码（6-16）位");
         return false;
     }else{
-        return true;
+        $("#myForm").submit();
     }
     return false;
 }

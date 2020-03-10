@@ -7,6 +7,7 @@ import com.demo.p2p.service.*;
 import com.demo.p2p.util.SendMessage;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -347,8 +348,9 @@ public class UsersController {
                 stringRedisTemplate.expire(SHIRO_IS_LOCK + username, 1, TimeUnit.MINUTES);  //expire  变量存活期限
             }
 
+            Md5Hash md5Hash=new Md5Hash(password);
             QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
-            queryWrapper.eq("unickname",username).eq("upassword",password);
+            queryWrapper.eq("unickname",username).eq("upassword",md5Hash.toString());
             Users users=usersService.login(queryWrapper);
             if (users == null) {
                 throw new UnknownAccountException("登录失败，请检查用户名或密码是否正确！");
