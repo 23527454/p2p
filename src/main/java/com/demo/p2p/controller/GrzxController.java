@@ -6,16 +6,22 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.entity.*;
 import com.demo.p2p.mapper.TradeMapper;
 import com.demo.p2p.service.*;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -140,7 +146,7 @@ public class GrzxController {
      * @return
      */
     @RequestMapping(value = "/grzx_zjjl")
-    public String grzx_zjjl(Integer current,Model model,HttpSession session,HttpServletRequest request) throws ParseException {
+    public String grzx_zjjl(Integer current,Model model,HttpSession session,HttpServletRequest request,HttpServletResponse response) throws ParseException {
         Users user = (Users) session.getAttribute("loginUser");
         Trade trade = tradeMapper.selectById(user.getUid());
         System.out.println("grzx_zjjl=============================");
@@ -154,6 +160,7 @@ public class GrzxController {
                 String sDate = request.getParameter("sDate");
                 String eDate = request.getParameter("eDate");
                 QueryWrapper<Trade> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("uID",user.getUid());
                 if (what != null && what != "" && !what.equals("全部")) {
                     queryWrapper.like("what", what);
                 }
@@ -164,7 +171,7 @@ public class GrzxController {
                     queryWrapper.le("jytime", eDate);
                 }
                 Page<Trade> page = new Page<>(current, 5);
-                IPage<Trade> iPage = tradeService.TradeList(page, queryWrapper);
+                IPage<Trade> iPage = tradeService.page(page, queryWrapper);
                 List<Trade> users = iPage.getRecords();
                 int stas = 1;
                 if (users != null && users.size() > 0) {
@@ -182,6 +189,46 @@ public class GrzxController {
                 return "moneyrecord";
         }
     }
+
+    @RequestMapping(value = "/trade")
+    public void downloadAllClassmate(HttpServletResponse response,HttpSession session) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("资金记录表");
+            Users user = (Users) session.getAttribute("loginUser");
+
+            List<Trade> classmateList = tradeService.teacherinfor(user.getUid());
+            String fileName = "zj" + ".xls";//设置要导出的文件的名字
+            //新增数据行，并且设置单元格数据
+
+            int rowNum = 1;
+
+            String[] headers = {"交易时间", "交易类型", "交易金额", "备注"};
+            //headers表示excel表中第一行的表头
+
+            HSSFRow row = sheet.createRow(0);
+            //在excel表中添加表头
+
+            for (int i = 0; i < headers.length; i++) {
+                HSSFCell cell = row.createCell(i);
+                HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+                cell.setCellValue(text);
+            }
+
+            //在表中存放查询到的数据放入对应的列
+            for (Trade teacher : classmateList) {
+                HSSFRow row1 = sheet.createRow(rowNum);
+                row1.createCell(0).setCellValue(teacher.getJytime());
+                row1.createCell(1).setCellValue(teacher.getWhat());
+                row1.createCell(2).setCellValue(teacher.getJymoney());
+                row1.createCell(3).setCellValue(teacher.getOther());
+                rowNum++;
+            }
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+            response.flushBuffer();
+            workbook.write(response.getOutputStream());
+    }
+
 
     /**
      * 个人中心——充值

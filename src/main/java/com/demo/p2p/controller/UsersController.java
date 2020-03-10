@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -181,9 +182,9 @@ public class UsersController {
         Date date = new Date();
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
-
         users.setUnickname(unickname);
-        users.setUpassword(upassword);
+//        users.setUpassword(upassword);
+        users.setUpassword(DigestUtils.md5DigestAsHex(upassword.getBytes()));
         users.setUphonenumber(uphonenumber);
         users.setUname(xm);
         users.setUcardid(sfz);
