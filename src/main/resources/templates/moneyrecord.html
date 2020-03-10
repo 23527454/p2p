@@ -26,46 +26,63 @@
    <div class="personal-main">
       <div class="personal-money">
         <h3><i>资金记录</i></h3>
-        <form id="form" name="form" method="post" action="">
-          <div class="money-choose"> <span class="money-date1">操作类型</span>
-            <div id="typeboxstyle" class="select-date"> <span class="select-title" style="display:inline-block;height:25px;line-height:20px;">全部</span>
-              <ul>
-                <li>全部</li>
-                <li value="ti_balance">转入到余额</li>
-                <li value="to_balance">从余额转出</li>
-                <li value="to_frozen">从冻结金额中转出</li>
-                <li value="freeze">冻结</li>
-                <li value="unfreeze">解冻</li>
-              </ul>
-            </div>
-            <span class="money-date2">查询时间</span>
-            <div id="select-date" class="select-date"> <span class="select-title" style="display:inline-block;height:25px;line-height:20px;">全部</span>
-              <ul>
-                <li value="0d">今天</li>
-                <li value="1w">最近一周</li>
-                <li value="1m">一个月</li>
-                <li value="6m">六个月</li>
-                <li>全部</li>
-              </ul>
-            </div>
-            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-sx"><span class="ui-button-text ui-c">筛选</span></button>
-            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc"><span class="ui-button-text ui-c">导出</span></button>
+        <form id="form" name="form" method="post" th:action="@{/grzx/grzx_zjjl}">
+            <input type="hidden" name="current" id="current" value="1" />
+          <div class="money-choose"> <span class="money-date1" >操作类型</span>
+            <!--<div id="typeboxstyle" class="select-date" ><span class="select-title" style="display:inline-block;height:25px;line-height:20px;">全部</span>-->
+              <!---->
+            <!--</div>-->
+              <select th:value="${param.what}" name="what">
+                  <option>全部</option>
+                  <option th:value="提现">提现</option>
+                  <option th:value="充值">充值</option>
+                  <option th:value="取款">取款</option>
+                  <option th:value="存款">存款</option>
+                  <option th:value="还款">还款</option>
+                  <option th:value="回款">回款</option>
+              </select>
+              日期：
+              <input th:type="date" th:name="sDate" th:value="${param.sDate}"/>
+              至
+              <input th:type="date" th:name="eDate" th:value="${param.eDate}"/>
+            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc"><span class="ui-button-text ui-c">筛选</span></button>
+            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only btn-dc"><span><a th:href="@{/grzx/trade}" class="ui-button-text ui-c" title="未使用">导出</a> </span></button>
           </div>
           <span id="form:dataTable">
-          <div class="personal-moneylist">
-            <div class="pmain-contitle"> <span class="pmain-title1 fb">交易时间</span> <span class="pmain-title2 fb">交易类型</span> <span class="pmain-title3 fb">交易金额</span> <span class="pmain-title4 fb">余额</span> <span class="pmain-title5 fb">备注</span> </div>
-            <ul>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
-              <li><span class="pmain-title1 pmain-height">2015-10-20</span><span class="pmain-title2 pmain-height">债权转让</span><span class="pmain-title3 pmain-height">10.00</span><span class="pmain-title4 pmain-height">10.00</span><span class="pmain-title5 pmain-height">备注</span></li>
+          <div class="personal-moneylist" th:if="${stas!=1}">
+            <div class="pmain-contitle"> <span class="pmain-title1 fb">交易时间</span> <span class="pmain-title2 fb">交易类型</span> <span class="pmain-title3 fb">交易金额</span><span class="pmain-title4 fb">备注</span> </div>
+            <ul th:each="i:${userlist}">
+              <li><span class="pmain-title1 pmain-height" th:text="${#dates.format(i.jytime, 'yyyy-MM-dd')}"></span><span class="pmain-title2 pmain-height" th:text="${i.what}"></span><span class="pmain-title3 pmain-height" th:text="${i.jymoney}">元</span><span class="pmain-title4 pmain-height" th:text="${i.other}"></span></li>
               <!-- <div style=" width:760px;height:200px;padding-top:100px; text-align:center;color:#d4d4d4; font-size:16px;"> <img src="/images/nondata.png" width="60" height="60"><br>
                 <br>
                 暂无资金记录</div>-->
             </ul>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!--<span>第<span th:text="${current}"></span>页&nbsp;共<span th:text="${pages}"></span>页</span>-->
+            <!--<a th:href="@{/grzx/grzx_zjjl}+'?yesuoyin='+1">首页</a>-->
+            <!--<a th:href="@{/grzx/grzx_zjjl}+'?yesuoyin='+${current-1}" th:if="${current}>1">上一页</a>-->
+            <!--<a th:href="@{/grzx/grzx_zjjl}+'?yesuoyin='+${current+1}" th:if="${pages}>${current}">下一页</a>-->
+            <!--<a th:href="@{/grzx/grzx_zjjl}+'?yesuoyin='+${pages}">末页</a>-->
+              <tbody th:if="${stas!=1}">
+							<tr>
+								<td colspan="7" align="center">
+									<div class="btn-group" align="center">
+                                     <span>共[[${page.total}]]条数据，当前[[${page.current}]]页/共[[${page.pages}]]页</span>
+										<a th:onclick="pageClick(1)" class="btn btn-default">首页</a>
+										<span th:each="p:${#numbers.sequence(1,page.pages)}">
+                                    	<a th:onclick="pageClick([[${p}]])" class="btn btn-default" th:text="${p}"></a>
+									</span>
+										<a th:onclick="pageClick([[${page.pages}]])" class="btn btn-default">末页</a>
+									</div>
+								</td>
+							</tr>
+							<script>
+                            	function pageClick(data) {
+                                    $("#current").val(data);
+                                    $("#form").submit();
+                                }
+							</script>
+						</tbody>
           </div>
           </span>
         </form>

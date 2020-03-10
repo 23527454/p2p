@@ -59,6 +59,9 @@ public class DopeController {
 
     @Resource
     private BankcardService bankcardService;
+
+    @Resource
+    private TradeMapper tradeMapper;
     /**
      * 个人中心——系统消息
      * @return
@@ -158,6 +161,18 @@ public class DopeController {
         dope.setDtitle("充值成功");
         dope.setDetails("尊敬的"+user.getUnickname()+",您通过"+po.getPaytype()+"充值的"+po.getSxmoney()+"元已到账!");
         dope.setDtime(date);
+
+
+        double d=Double.parseDouble(xmoney);
+        Trade trade = new Trade();
+        trade.setuID(certi.getId());
+        trade.setJytime(new Date());
+        trade.setUname(user.getUnickname());
+        trade.setZname(user.getUname());
+        trade.setWhat("充值");
+        trade.setJymoney(d);
+        trade.setOther("无");
+        tradeMapper.insert(trade);
 
         //增加充值明细表数据
         poundageMapper.insert(po);
