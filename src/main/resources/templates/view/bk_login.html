@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -13,111 +12,299 @@
     <!-- Bootstrap core CSS -->
     <link href="/assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
-    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+
     <!-- Custom styles for this template -->
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/style-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-   <!--  [if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!--  [if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif] -->
     <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-  	<script type="text/javascript">
-  		$(document).ready(function(){
-  			$("#bt").click(function(){
-  				var user = document.getElementById("uid").value;
-  				var password = document.getElementById("pwd").value;
-  				$.post("/backend/login",{"uid":user,"pwd":password},function(date){
-  					if(date=="0"){
-  						alert("登陆失败！");
-  					}else{
-  						alert("登陆成功！");
-						location.href="/backend/index";
-  					}
-  				});
-  			});
-  		});
-  	</script>
-  </head>
 
-  <body>
+    <style type="text/css">
+        #madal-regi {
+            margin: auto;
+            border-collapse: separate;
+            border-spacing: 10px;
+        }
 
-      <!-- **********************************************************************************************************************************************************
-      MAIN CONTENT
-      *********************************************************************************************************************************************************** -->
+    </style>
+</head>
 
-	  <div id="login-page">
-	  	<div class="container">
-	  	
-		      <form class="form-login" id="fr" methods="post" action="#" onsubmit="return false">
-		        <h2 class="form-login-heading">物流管理系统</h2>
-		        <div class="login-wrap">
-		            <input type="text" id="uid" class="form-control" placeholder="User ID" autofocus>
-		            <br>
-		            <input type="password" id="pwd" class="form-control" placeholder="Password">
-		            <label class="checkbox">
+<body>
+
+<!-- **********************************************************************************************************************************************************
+MAIN CONTENT
+*********************************************************************************************************************************************************** -->
+
+<div id="login-page">
+    <div class="container">
+
+        <form class="form-login" id="fr" methods="post" action="#" onsubmit="return false">
+            <h2 class="form-login-heading">物流管理系统</h2>
+            <div class="login-wrap">
+                <input type="text" id="uid" class="form-control" placeholder="User ID" autofocus>
+                <br>
+                <input type="password" id="pwd" class="form-control" placeholder="Password">
+                <label class="checkbox">
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.html#myModal">忘记密码 ?  </a>
 		                </span>
-		            </label>
-		            <button id="bt" class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> 登录</button>
-		            <hr>
-		            
-		            <div class="login-social-link centered">
-		            <p>或者您也可以通过您的社交网络登录</p>
-		               <!--  <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>
-		                <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button> -->
-		            </div>
-		            <div class="registration">
-		               	 还没有帐户?<br/>
-		                <a class="" href="#">
-		                  	创建一个帐户
-		                </a>
-		            </div>
-		
-		        </div>
-		
-		          <!-- Modal -->
-		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-		              <div class="modal-dialog">
-		                  <div class="modal-content">
-		                      <div class="modal-header">
-		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">忘记密码?</h4>
-		                      </div>
-		                      <div class="modal-body">
-		                          <p>请输入ID,并与系统管理员联系</p>
-		                          <input type="text" name="email" placeholder="用户ID" autocomplete="off" class="form-control placeholder-no-fix">
-		
-		                      </div>
-		                      <div class="modal-footer">
-		                          <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-		                          <button class="btn btn-theme" type="button">提交</button>
-		                      </div>
-		                  </div>
-		              </div>
-		          </div>
-		          <!-- modal -->
-		
-		      </form>	  	
-	  	
-	  	</div>
-	  </div>
+                </label>
+                <button id="bt" class="btn btn-theme btn-block" href="index.html" type="submit"><i
+                        class="fa fa-lock"></i> 登录
+                </button>
+                <hr>
 
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="/assets/js/jquery.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
+                <div class="login-social-link centered">
+                    <p>或者您也可以通过您的社交网络登录</p>
+                    <!--  <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>
+                     <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button> -->
+                </div>
+                <div class="registration">
+                    还没有帐户?<br/>
 
-    <!--BACKSTRETCH-->
-    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
-    <script type="text/javascript" src="/assets/js/jquery.backstretch.min.js"></script>
-    <script>
-        $.backstretch("/img/6.jpg", {speed: 500});
-    </script>
+                    <a data-toggle="modal" href="login.html#madreg">
+                        创建一个帐户
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Modal -->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal"
+                 class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">忘记密码?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>请输入ID,并与系统管理员联系</p>
+                            <input type="text" name="email" placeholder="用户ID" autocomplete="off"
+                                   class="form-control placeholder-no-fix">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                            <button class="btn btn-theme" type="button">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
 
 
-  </body>
+            <!-- Modal  id="myModal" class="modal fade" -->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="madreg"
+                 class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">用户注册</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table id="madal-regi">
+                                <tr>
+                                    <td> 姓名：</td>
+                                    <td><input type="text" name="ename" id="ename"><span id="en"
+                                                                                         style="color: red;display: none">请输入姓名</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 性别：</td>
+                                    <td><input type="radio" name="esex" value="男" checked="checked">男
+                                        <input type="radio" name="esex" value="女">女
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 生日：</td>
+                                    <td><input type="date" name="ebirth" id="ebirth"><span id="eb"
+                                                                                           style="color: red;display: none">请输入生日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 身份证号码：</td>
+                                    <td><input type="text" name="eidcard" id="eidcard"><span id="ei"
+                                                                                             style="color: red;display: none">请输入身份证号码</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 电话号码：</td>
+                                    <td><input type="text" name="ephone" id="ephone"><span id="ep"
+                                                                                           style="color: red;display: none">请输入电话号码</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 邮箱：</td>
+                                    <td><input type="email" name="eemail" id="eemail"><span id="em"
+                                                                                            style="color: red;display: none">请输入邮箱</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 部门编号：</td>
+                                    <td><input type="text" name="edeptno" id="edeptno"><span id="ed"
+                                                                                             style="color: red;display: none">请输入部门编号</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 职位编号：</td>
+                                    <td><input type="text" name="epostno" id="epostno"><span id="eo"
+                                                                                             style="color: red;display: none">请输入职位编号</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 密码：</td>
+                                    <td><input type="password" name="epassword" id="epassword"><span id="pa"
+                                                                                                     style="color: red;display: none">请输入密码</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                            <button class="btn btn-theme" type="button" onclick="addemp()">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
+        </form>
+
+    </div>
+</div>
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function addemp() {
+        var ename = $("input[name='ename']").val();//姓名
+        var esex = $("input[name='esex']:checked").val();//性别
+        var ebirth = $("input[name='ebirth']").val();//生日
+        var eidcard = $("input[name='eidcard']").val();//身份证号码
+        var ephone = $("input[name='ephone']").val();//电话号码
+        var email = $("input[name='eemail']").val();//邮箱
+        var edeptno = $("input[name='edeptno']").val();//部门编号
+        var epostno = $("input[name='epostno']").val();//职位编号
+        var epassword = $("input[name='epassword']").val();//密码
+        var e = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/;//身份证正则表达式
+        var zz = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;//邮箱正则表达式
+        var ph = /^1(3|4|5|7|8)\d{9}$/;//手机号码正则表达式
+
+        if (ename == null || ename == "") {
+            $("#en").show();
+        } else {
+            $("#en").hide();
+        }
+        if (ebirth == null || ebirth == ("")) {
+            $("#eb").show();
+        } else {
+            $("#eb").hide();
+        }
+        if (eidcard == null || eidcard == ("")) {
+            document.getElementById("ei").innerHTML = "请输入身份证";
+            $("#ei").show();
+        } else if (e.test(eidcard) == false) {
+            document.getElementById("ei").innerHTML = "身份证格式不对";
+            $("#ei").show();
+        } else {
+            $("#ei").hide();
+        }
+        if (ephone == null || ephone == ("")) {
+            document.getElementById("ep").innerHTML = "请输入电话号码";
+            $("#ep").show();
+        } else if (ph.test(ephone) == false) {
+            document.getElementById("ep").innerHTML = "电话号码格式不对";
+            $("#ep").show();
+        } else {
+            $("#ep").hide();
+        }
+        if (email == null || email == ("")) {
+            document.getElementById("em").innerHTML = "请输入邮箱";
+            $("#em").show();
+        } else if (zz.test(email) == false) {
+            document.getElementById("em").innerHTML = "邮箱格式不对";
+
+            $("#em").show();
+        } else {
+            $("#em").hide();
+        }
+        if (edeptno == null || edeptno == ("")) {
+            $("#ed").show();
+        } else {
+            $("#ed").hide();
+        }
+        if (epostno == null || epostno == ("")) {
+            $("#eo").show();
+        } else {
+            $("#eo").hide();
+        }
+        if (epassword == null || epassword == ("")) {
+            $("#pa").show();
+        } else {
+            $("#pa").hide();
+        }
+
+        if ((ename != null && ename != "") && (ebirth != null && ebirth != "") && (eidcard != null && eidcard != "" && (e.test(eidcard) == true)) && (ephone != null && ephone != "" && (ph.test(ephone) == true))
+            && (email != null && email != "" && (zz.test(email) == true)) && (edeptno != null && edeptno != "") && (epostno != null && epostno != "") && (epassword != null && epostno != "")) {
+            alert("进入ajax")
+            $.ajax({
+                type: "GET",
+                url: "/bk/employee/addemp",
+                data: {
+                    ename: ename,
+                    ebirth: ebirth,
+                    eidcard: eidcard,
+                    esex: esex,
+                    ephone: ephone,
+                    email: email,
+                    edeptno: edeptno,
+                    epostno: epostno,
+                    epassword: epassword
+                },//发送到服务器的数据
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "添加成功") {
+                        alert("添加成功")
+                        $("#madreg").click()
+                    } else {
+                        alert("添加失败！！！")
+                    }
+                }
+            });
+        }
+
+    }
+
+    $(document).ready(function () {
+        $("#bt").click(function () {
+            var user = document.getElementById("uid").value;
+            var password = document.getElementById("pwd").value;
+            $.post("/backend/login", {"uid": user, "pwd": password}, function (date) {
+                if (date == "0") {
+                    alert("登陆失败！");
+                } else {
+                    alert("登陆成功！");
+                    location.href = "/backend/index";
+                }
+            });
+        });
+    });
+</script>
+<!--BACKSTRETCH-->
+<!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+<script type="text/javascript" src="/assets/js/jquery.backstretch.min.js"></script>
+<script>
+    $.backstretch("/img/6.jpg", {speed: 500});
+</script>
+
+
+</body>
 </html>

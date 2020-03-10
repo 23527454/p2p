@@ -60,6 +60,7 @@ public class ShiroConfig {
         filtrChainDefinitionMap.put("/view/My97DatePicker/**", "anon");
         filtrChainDefinitionMap.put("/view/Ueditor/**", "anon");
         filtrChainDefinitionMap.put("/view/validate/**", "anon");
+        filtrChainDefinitionMap.put("/bk/employee/**","anon");
         //配置退出（记住我状态下，可清除记住我的cookie）
         filtrChainDefinitionMap.put("/backend/loginout", "logout");
 
