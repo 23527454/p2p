@@ -7,6 +7,7 @@ import com.demo.p2p.util.RandomCharacterAndNumber;
 import com.demo.p2p.util.SendMessage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -107,7 +108,8 @@ public class BackendController {
     @ResponseBody
     public Object login(String uid, String pwd) {
         Map<String,Object> map=new HashMap<>();
-        UsernamePasswordToken token = new UsernamePasswordToken(uid, pwd);
+        Md5Hash md5Hash=new Md5Hash(pwd);
+        UsernamePasswordToken token = new UsernamePasswordToken(uid, md5Hash.toString());
         try {
             SecurityUtils.getSubject().login(token);//调用Shiro认证
             Employee employee = (Employee) SecurityUtils.getSubject().getPrincipal();

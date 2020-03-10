@@ -84,6 +84,8 @@ public class Bk_EmployeeController {
             e.printStackTrace();
 
         }
+        Md5Hash md5Hash=new Md5Hash(employee.getEpassword());
+        employee.setEpassword(md5Hash.toString());
         boolean result = employeeService.updateById(employee);
         if (result) {
             out.print("<script>alert('修改成功！');window.location.href='/bk/employee/list';</script>");
