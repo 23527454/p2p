@@ -49,6 +49,105 @@
                 alert("请输入用户名！");
             }
         }
+
+        function addemp() {
+            var ename = $("input[name='ename']").val();//姓名
+            var esex = $("input[name='esex']:checked").val();//性别
+            var ebirth = $("input[name='ebirth']").val();//生日
+            var eidcard = $("input[name='eidcard']").val();//身份证号码
+            var ephone = $("input[name='ephone']").val();//电话号码
+            var email = $("input[name='eemail']").val();//邮箱
+            var edeptno = $("input[name='edeptno']").val();//部门编号
+            var epostno = $("input[name='epostno']").val();//职位编号
+            var epassword = $("input[name='epassword']").val();//密码
+            var e = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/;//身份证正则表达式
+            var zz = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;//邮箱正则表达式
+            var ph = /^1(3|4|5|7|8)\d{9}$/;//手机号码正则表达式
+
+            if (ename == null || ename == "") {
+                $("#en").show();
+            } else {
+                $("#en").hide();
+            }
+            if (ebirth == null || ebirth == ("")) {
+                $("#eb").show();
+            } else {
+                $("#eb").hide();
+            }
+            if (eidcard == null || eidcard == ("")) {
+                document.getElementById("ei").innerHTML = "请输入身份证";
+                $("#ei").show();
+            } else if (e.test(eidcard) == false) {
+                document.getElementById("ei").innerHTML = "身份证格式不对";
+                $("#ei").show();
+            } else {
+                $("#ei").hide();
+            }
+            if (ephone == null || ephone == ("")) {
+                document.getElementById("ep").innerHTML = "请输入电话号码";
+                $("#ep").show();
+            } else if (ph.test(ephone) == false) {
+                document.getElementById("ep").innerHTML = "电话号码格式不对";
+                $("#ep").show();
+            } else {
+                $("#ep").hide();
+            }
+            if (email == null || email == ("")) {
+                document.getElementById("em").innerHTML = "请输入邮箱";
+                $("#em").show();
+            } else if (zz.test(email) == false) {
+                document.getElementById("em").innerHTML = "邮箱格式不对";
+
+                $("#em").show();
+            } else {
+                $("#em").hide();
+            }
+            if (edeptno == null || edeptno == ("")) {
+                $("#ed").show();
+            } else {
+                $("#ed").hide();
+            }
+            if (epostno == null || epostno == ("")) {
+                $("#eo").show();
+            } else {
+                $("#eo").hide();
+            }
+            if (epassword == null || epassword == ("")) {
+                $("#pa").show();
+            } else {
+                $("#pa").hide();
+            }
+
+            if ((ename != null && ename != "") && (ebirth != null && ebirth != "") && (eidcard != null && eidcard != "" && (e.test(eidcard) == true)) && (ephone != null && ephone != "" && (ph.test(ephone) == true))
+                && (email != null && email != "" && (zz.test(email) == true)) && (edeptno != null && edeptno != "") && (epostno != null && epostno != "") && (epassword != null && epostno != "")) {
+                alert("进入ajax")
+                $.ajax({
+                    type: "GET",
+                    url: "/bk/employee/addemp",
+                    data: {
+                        ename: ename,
+                        ebirth: ebirth,
+                        eidcard: eidcard,
+                        esex: esex,
+                        ephone: ephone,
+                        email: email,
+                        edeptno: edeptno,
+                        epostno: epostno,
+                        epassword: epassword
+                    },//发送到服务器的数据
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result == "添加成功") {
+                            alert("添加成功")
+                            $("#madreg").click()
+                        } else {
+                            alert("添加失败！！！")
+                        }
+                    }
+                });
+            }
+
+        }
     </script>
 
     <style type="text/css">
