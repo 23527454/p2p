@@ -88,8 +88,8 @@
                         <label class="col-sm-2 col-sm-2 control-label">还款方式</label>
                         <div class="col-sm-10">
                         	<select class="form-control" name="bserial" id="repayWay" onchange="this.selectedIndex=this.defOpt;">
-                                <option value="1" th:selected="${borr.bserial=='1'}">一次性还清</option>
-							    <option value="2" th:selected="${borr.bserial=='2'}">先本后息</option>
+                                <option value="1" th:selected="${borr.bserial=='1'}">到期还本付息</option>
+							    <option value="2" th:selected="${borr.bserial=='2'}">按月付息，到期还本</option>
 							    <option value="3"  th:selected="${borr.bserial=='3'}">等额本息</option>
 							</select>
                         </div>
@@ -136,79 +136,11 @@
 					<div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">年利率(%)</label>
                         <div class="col-sm-10">
-                           <input type="number" class="form-control" id="annualRate" name="brate" th:value="${borr.brate}">
+                           <input type="number" class="form-control" id="annualRate" name="brate" th:value="${borr.brate}" onchange="checks()">
                            
                         </div>
                     </div>
 
-                    <script>
-                        function changeMonth() {
-                            var month=$("#month").val();
-                            var now = new Date();
-                            var newDate = DateAdd("m ", parseInt(month), now);
-                            $("#blimit").val(timeStamp2String(newDate));
-                        }
-                        function timeStamp2String(time){
-                            var datetime = new Date();
-                            datetime.setTime(time);
-                            var year = datetime.getFullYear();
-                            var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-                            var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-                            var hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
-                            var minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-                            var second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-                            return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
-                        }
-                        function DateAdd(interval, number, date) {
-                            switch (interval) {
-                                case "y ": {
-                                    date.setFullYear(date.getFullYear() + number);
-                                    return date;
-                                    break;
-                                }
-                                case "q ": {
-                                    date.setMonth(date.getMonth() + number * 3);
-                                    return date;
-                                    break;
-                                }
-                                case "m ": {
-                                    date.setMonth(date.getMonth() + number);
-                                    return date;
-                                    break;
-                                }
-                                case "w ": {
-                                    date.setDate(date.getDate() + number * 7);
-                                    return date;
-                                    break;
-                                }
-                                case "d ": {
-                                    date.setDate(date.getDate() + number);
-                                    return date;
-                                    break;
-                                }
-                                case "h ": {
-                                    date.setHours(date.getHours() + number);
-                                    return date;
-                                    break;
-                                }
-                                case "m ": {
-                                    date.setMinutes(date.getMinutes() + number);
-                                    return date;
-                                    break;
-                                }
-                                case "s ": {
-                                    date.setSeconds(date.getSeconds() + number);
-                                    return date;
-                                    break;
-                                }
-                                default: {
-                                    date.setDate(d.getDate() + number);
-                                    return date;
-                                    break;
-                                }
-                            }
-                        }
-                    </script>
 					<div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">借款期限</label>
                         <div class="col-sm-10">

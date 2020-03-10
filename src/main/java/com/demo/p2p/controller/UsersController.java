@@ -2,29 +2,35 @@ package com.demo.p2p.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.demo.p2p.entity.*;
 import com.demo.p2p.service.*;
+import com.demo.p2p.util.SendMessage;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -47,6 +53,10 @@ public class UsersController {
     private CertifrecordService certifrecordService;
     @Resource
     private CertificationService certificationService;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    private SendMessage sendMessage=new SendMessage();
 
     //发邮件
     @Autowired
@@ -172,9 +182,9 @@ public class UsersController {
         Date date = new Date();
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
-
         users.setUnickname(unickname);
-        users.setUpassword(upassword);
+//        users.setUpassword(upassword);
+        users.setUpassword(DigestUtils.md5DigestAsHex(upassword.getBytes()));
         users.setUphonenumber(uphonenumber);
         users.setUname(xm);
         users.setUcardid(sfz);
@@ -217,79 +227,10 @@ public class UsersController {
     @RequestMapping(value = "/sendMessages")
     @ResponseBody
     public Object sendMessages(String phone){
-        //发送短信验证码
-        HashMap<String, Object> result = null;
-        HashMap<String,Object> map=new HashMap<>();
-
-        //初始化SDK
-        CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
-
-        //******************************注释*********************************************
-        //*初始化服务器地址和端口                                                       *
-        //*沙盒环境（用于应用开发调试）：restAPI.init("sandboxapp.cloopen.com", "8883");*
-        //*生产环境（用户应用上线使用）：restAPI.init("app.cloopen.com", "8883");       *
-        //*******************************************************************************
-        restAPI.init("app.cloopen.com", "8883");
-
-        //******************************注释*********************************************
-        //*初始化主帐号和主帐号令牌,对应官网开发者主账号下的ACCOUNT SID和AUTH TOKEN     *
-        //*ACOUNT SID和AUTH TOKEN在登陆官网后，在“应用-管理控制台”中查看开发者主账号获取*
-        //*参数顺序：第一个参数是ACOUNT SID，第二个参数是AUTH TOKEN。                   *
-        //*******************************************************************************
-        restAPI.setAccount("8aaf07086c6b60c5016c6c1af0c40075", "29d09f2154f34c979d05c4b8ddaa203b");
-
-
-        //******************************注释*********************************************
-        //*初始化应用ID                                                                 *
-        //*测试开发可使用“测试Demo”的APP ID，正式上线需要使用自己创建的应用的App ID     *
-        //*应用ID的获取：登陆官网，在“应用-应用列表”，点击应用名称，看应用详情获取APP ID*
-        //*******************************************************************************
-        restAPI.setAppId("8aaf07086c6b60c5016c6c1af120007b");
-
-
-        //******************************注释****************************************************************
-        //*调用发送模板短信的接口发送短信                                                                  *
-        //*参数顺序说明：                                                                                  *
-        //*第一个参数:是要发送的手机号码，可以用逗号分隔，一次最多支持100个手机号                          *
-        //*第二个参数:是模板ID，在平台上创建的短信模板的ID值；测试的时候可以使用系统的默认模板，id为1。    *
-        //*系统默认模板的内容为“【云通讯】您使用的是云通讯短信模板，您的验证码是{1}，请于{2}分钟内正确输入”*
-        //*第三个参数是要替换的内容数组。																														       *
-        //**************************************************************************************************
-
-        //**************************************举例说明***********************************************************************
-        //*假设您用测试Demo的APP ID，则需使用默认模板ID 1，发送手机号是13800000000，传入参数为6532和5，则调用方式为           *
-        //*result = restAPI.sendTemplateSMS("13800000000","1" ,new String[]{"6532","5"});																		  *
-        //*则13800000000手机号收到的短信内容是：【云通讯】您使用的是云通讯短信模板，您的验证码是6532，请于5分钟内正确输入     *
-        //*********************************************************************************************************************
-        String tel=phone;
         Random rd=new Random();
         int sjs=(int)rd.nextInt(9999);
         String yzm=String.valueOf(sjs);
-        String time="5";
-
-        result = restAPI.sendTemplateSMS(tel,"1" ,new String[]{yzm,time});
-
-        System.out.println("SDKTestGetSubAccounts result=" + result);
-        if("000000".equals(result.get("statusCode"))){
-            Cookie cookie1 = new Cookie("yzm",yzm);
-            cookie1.setMaxAge(60*Integer.parseInt(time));
-            //正常返回输出data包体信息（map）
-            HashMap<String,Object> data = (HashMap<String, Object>) result.get("data");
-            Set<String> keySet = data.keySet();
-            for(String key:keySet){
-                Object object = data.get(key);
-                System.out.println(key +" = "+object);
-                map.put("result",true);
-                map.put("yzm",yzm);
-            }
-        }else{
-            //异常返回输出错误码和错误信息
-            System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
-            map.put("result",false);
-            map.put("messages",result.get("statusMsg"));map.put("result",true);
-            map.put("yzm",yzm);
-        }
-        return map;
+        return sendMessage.sendPhoneMessage(phone,yzm);
     }
 
     /**
@@ -370,6 +311,13 @@ public class UsersController {
         return map;
     }
 
+
+    //用户登录次数计数  redisKey 前缀
+    private String SHIRO_LOGIN_COUNT = "shiro_login_count_";
+
+    //用户登录是否被锁定    一小时 redisKey 前缀
+    private String SHIRO_IS_LOCK = "shiro_is_lock_";
+
     /**
      * 登录
      * @param username
@@ -382,11 +330,28 @@ public class UsersController {
     public Object login(String username, String password, HttpSession session){
         Map<String,Object> map=new HashMap<String,Object>();
         try {
+            //访问一次，计数一次
+            ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
+            opsForValue.increment(SHIRO_LOGIN_COUNT + username, 1);  //每次增加1
+            System.out.println(username + "：账号登陆的次数是：" + opsForValue.get(SHIRO_LOGIN_COUNT + username));
+            //如果这个账号登陆异常，则在登陆页面提醒。
+            if (Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT + username)) >= 3) {
+                if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK + username))) {
+                    //计数大于3次，设置用户被锁定一分钟
+                    throw new DisabledAccountException("由于输入错误次数大于3次，帐号1分钟内已经禁止登录！");
+                }
+            }
+            //实现锁定
+            if (Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT + username)) >= 3) {
+                opsForValue.set(SHIRO_IS_LOCK + username, "LOCK");  //锁住这个账号，值是LOCK。
+                stringRedisTemplate.expire(SHIRO_IS_LOCK + username, 1, TimeUnit.MINUTES);  //expire  变量存活期限
+            }
+
             QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("unickname",username).eq("upassword",password);
             Users users=usersService.login(queryWrapper);
             if (users == null) {
-                throw new UnknownAccountException("登录失败！");
+                throw new UnknownAccountException("登录失败，请检查用户名或密码是否正确！");
             }
             session.setAttribute("loginUser",users);
             Log log=new Log(users.getUnickname(),"进入系统","进入系统",new Date());
@@ -395,8 +360,13 @@ public class UsersController {
             usersService.resetUfldate(users);
             map.put("message", "登录成功！");
             map.put("status", true);
+
+            //清空登录计数
+            opsForValue.set(SHIRO_LOGIN_COUNT + username, "0");
+            //清空锁
+            opsForValue.set(SHIRO_IS_LOCK + username, "");
         } catch (UnknownAccountException uae) {
-            map.put("message", "登录失败请检查用户名或密码是否正确！");
+            map.put("message", uae.getMessage());
             map.put("status", false);
         } catch (DisabledAccountException de) {
             map.put("message", de.getMessage());

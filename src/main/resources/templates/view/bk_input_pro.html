@@ -143,6 +143,8 @@
                             alert("还款方式不可为空！");
                         }else if(pcount==null || pcount==""){
                             alert("借款期限不可为空！");
+                        }else if(pcount<ptime){
+                            alert("借款期限不可早于项目期限！");
                         }else if(progress==null || progress==""){
                             alert("投资进度不可为空！");
                         }else if(psaveway==null || psaveway==""){

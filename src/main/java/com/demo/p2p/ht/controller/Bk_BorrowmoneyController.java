@@ -274,7 +274,13 @@ public class Bk_BorrowmoneyController {
         Product product=new Product();
         product.setPmoney(0L);
         product.setProgress("0.00");
-
+        if(borrowmoney.getBserial().equals("1")){
+            product.setPway("到期还本付息");
+        }else if(borrowmoney.getBserial().equals("2")){
+            product.setPway("按月付息，到期还本");
+        }else if(borrowmoney.getBserial().equals("3")){
+            product.setPway("等额本息");
+        }
         Calendar c = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
         Date time = simpleDateFormat.parse(borrowmoney.getBlimit());

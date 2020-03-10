@@ -1,17 +1,27 @@
 package com.demo.p2p.ht.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.ht.entity.*;
 import com.demo.p2p.ht.service.*;
+import com.demo.p2p.util.RandomCharacterAndNumber;
+import com.demo.p2p.util.SendMessage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/backend")
@@ -30,6 +40,47 @@ public class BackendController {
 
     @Resource
     private Bk_WithdrawalService bk_withdrawalService;
+
+    private SendMessage sendMessage=new SendMessage();
+
+    //发邮件
+    @Autowired
+    JavaMailSenderImpl mailSender;
+
+    @RequestMapping(value = "/rePwd")
+    @ResponseBody
+    public String rePwd(String username){
+        QueryWrapper<Employee> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("ename",username);
+        Employee employee=employeeService.getOne(queryWrapper);
+        Map<String,Object> map=new HashMap<>();
+        if (employee!=null){
+            RandomCharacterAndNumber randomCharacterAndNumber=new RandomCharacterAndNumber();
+            String newPwd=randomCharacterAndNumber.getRandomCharacterAndNumber(3);
+            employee.setEpassword(newPwd);
+            employeeService.updateById(employee);
+            sendMessage.sendPhoneMessage(employee.getEphone(),newPwd);
+            try{
+                //创建一个复杂的消息邮件
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
+                //设置邮件的内容
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                helper.setSubject("您的亿人宝账号密码已重置");
+                helper.setText("尊敬的"+employee.getEname()+"，您好！<br><br>您的亿人宝账号密码已重置为："+newPwd+"<br><br>该邮件为系统自动发出，请勿回复!<br>"+new Date(), true);
+                //收件人
+                helper.setTo(employee.getEmail());
+                //发件人
+                helper.setFrom("23527454@qq.com");
+                //发送邮件
+                mailSender.send(mimeMessage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return "密码已重置，新的密码已通过短信和邮件的方式发送到您的号码！";
+        }else {
+            return "不存在此用户！";
+        }
+    }
 
     @RequestMapping(value = "/index")
     public String index(HttpServletRequest request) {
@@ -55,15 +106,22 @@ public class BackendController {
     @RequestMapping(value = "/login")
     @ResponseBody
     public Object login(String uid, String pwd) {
+        Map<String,Object> map=new HashMap<>();
         UsernamePasswordToken token = new UsernamePasswordToken(uid, pwd);
         try {
             SecurityUtils.getSubject().login(token);//调用Shiro认证
             Employee employee = (Employee) SecurityUtils.getSubject().getPrincipal();
-            return "1";
+            if(employee!=null){
+                map.put("status",true);
+            }else{
+                map.put("status",false);
+                map.put("message","登录失败!");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
-            return "0";
+            map.put("status",false);
+            map.put("message",e.getMessage());
         }
+        return map;
     }
 
     @RequestMapping(value = "/toLogin")

@@ -142,7 +142,9 @@
                             alert("还款方式不可为空！");
                         }else if(pcount==null || pcount==""){
                             alert("借款期限不可为空！");
-                        }else if(progress==null || progress==""){
+                        }else if(pcount<ptime){
+                            alert("借款期限不可早于项目期限！");
+						}else if(progress==null || progress==""){
                             alert("投资进度不可为空！");
                         }else if(psaveway==null || psaveway==""){
                             alert("保障方式不可为空！");
@@ -217,10 +219,10 @@
 						<label class="col-sm-2 control-label col-lg-2" >还款方式<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<select class="form-control" id="pway" name="pway">
-								<option value="到期还本付息">到期还本付息</option>
-								<option value="按月付息,到期还本">按月付息,到期还本</option>
-								<option value="等额本息">等额本息</option>
+							<select class="form-control" id="pway" name="pway" readonly>
+								<option th:selected="${pr.pway=='到期还本付息'}" value="到期还本付息">到期还本付息</option>
+								<option th:selected="${pr.pway=='按月付息,到期还本'}" value="按月付息,到期还本">按月付息,到期还本</option>
+								<option th:selected="${pr.pway=='等额本息'}" value="等额本息">等额本息</option>
 							</select>
 						</div>
 					</div>
@@ -228,7 +230,7 @@
 						<label class="col-sm-2 control-label col-lg-2" >借款期限<font
 							color="red"> *</font></label>
 						<div class="col-lg-5">
-							<input type="date" id="pcount" name="jkqx" th:value="${#dates.format(pr.pcount,'yyyy-MM-dd')}" readonly
+							<input type="date" id="pcount" name="jkqx"
 								cssClass="form-control input-sm" maxlength="11"
 								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"  />
 						</div>
@@ -349,37 +351,6 @@
 								   cssClass="form-control input-sm" maxlength="11" />
 						</div>
 					</div>
-<!--
-
-					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="details.dname">详情标题<font
-							color="red"> *</font></label>
-						<div class="col-lg-5">
-							<input id="details.dname" name="details.dname"
-								cssClass="form-control input-sm" maxlength="11" />
-							 
-						</div>
-					</div>
-					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2" for="details.dcontent">详情内容<font
-							color="red"> *</font></label>
-						<div class="col-lg-5">
-							<input id="details.dcontent" name="details.dcontent"
-								cssClass="form-control input-sm" maxlength="11" />
-						</div>
-					</div>
-					<div class="form-group has-success">
-						<label class="col-sm-2 control-label col-lg-2">详情类型<font
-							color="red"> *</font></label>
-						<div class="col-lg-5">
-						<select class="form-control" name="details.dtype"><option>请选择</option>
-									<option value="0">借款人信息模块</option>
-									<option value="1">风控步骤模块</option>
-									<option value="2">图片信息模块</option>
-							</select>
-						</div>
-					</div>
--->
 					<br />
 					<br />
 					<button type="button" onclick="tj()" class="btn btn-primary btn-lg btn-block">点击提交</button>
