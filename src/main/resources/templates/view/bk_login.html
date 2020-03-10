@@ -33,7 +33,6 @@
                 if(date.status==false){
                     alert(date.message);
                 }else{
-                    alert("111111111111111！");
                     alert("登陆成功！");
                     location.href="/backend/index";
                 }
@@ -41,17 +40,25 @@
         };
 
         function rePwd(){
-			var username=$("#username").val();
-			if(username!=""){
+            var username=$("#username").val();
+            if(username!=""){
                 $.post("/backend/rePwd",{"username":username},function (data) {
                     alert(data);
                 });
-			}else{
-			    alert("请输入用户名！");
-			}
-		}
-  	</script>
-  </head>
+            }else{
+                alert("请输入用户名！");
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        #madal-regi {
+            margin: auto;
+            border-collapse: separate;
+            border-spacing: 10px;
+        }
+    </style>
+</head>
 
   <body>
 
@@ -72,50 +79,131 @@
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.html#myModal">忘记密码 ?  </a>
 		                </span>
-		            </label>
-		            <button id="bt" class="btn btn-theme btn-block" onclick="login()" type="submit"><i class="fa fa-lock"></i> 登录</button>
-		            <hr>
-		            
-		            <div class="login-social-link centered">
-		            <p>或者您也可以通过您的社交网络登录</p>
-		               <!--  <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>
-		                <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button> -->
-		            </div>
-		            <div class="registration">
-		               	 还没有帐户?<br/>
-		                <a class="" href="#">
-		                  	创建一个帐户
-		                </a>
-		            </div>
-		
-		        </div>
-		
-		          <!-- Modal -->
-		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-		              <div class="modal-dialog">
-		                  <div class="modal-content">
-		                      <div class="modal-header">
-		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">忘记密码?</h4>
-		                      </div>
-		                      <div class="modal-body">
-		                          <p>请输入ID,并与系统管理员联系</p>
-		                          <input type="text" name="username" id="username" placeholder="用户名" autocomplete="off" class="form-control placeholder-no-fix">
-		
-		                      </div>
-		                      <div class="modal-footer">
-		                          <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-		                          <button class="btn btn-theme" onclick="rePwd()" type="button">提交</button>
-		                      </div>
-		                  </div>
-		              </div>
-		          </div>
-		          <!-- modal -->
-		
-		      </form>	  	
-	  	
-	  	</div>
-	  </div>
+                </label>
+                <button id="bt" class="btn btn-theme btn-block" href="index.html" type="submit"><i
+                        class="fa fa-lock"></i> 登录
+                </button>
+                <hr>
+
+                <div class="login-social-link centered">
+                    <p>或者您也可以通过您的社交网络登录</p>
+                    <!--  <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>
+                     <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button> -->
+                </div>
+                <div class="registration">
+                    还没有帐户?<br/>
+
+                    <a data-toggle="modal" href="login.html#madreg">
+                        创建一个帐户
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Modal -->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal"
+                 class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">忘记密码?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>请输入ID,并与系统管理员联系</p>
+                            <input type="text" name="email" placeholder="用户ID" autocomplete="off"
+                                   class="form-control placeholder-no-fix">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                            <button class="btn btn-theme" type="button">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
+
+
+            <!-- Modal  id="myModal" class="modal fade" -->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="madreg"
+                 class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">用户注册</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table id="madal-regi">
+                                <tr>
+                                    <td> 姓名：</td>
+                                    <td><input type="text" name="ename" id="ename"><span id="en"
+                                                                                         style="color: red;display: none">请输入姓名</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 性别：</td>
+                                    <td><input type="radio" name="esex" value="男" checked="checked">男
+                                        <input type="radio" name="esex" value="女">女
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 生日：</td>
+                                    <td><input type="date" name="ebirth" id="ebirth"><span id="eb"
+                                                                                           style="color: red;display: none">请输入生日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 身份证号码：</td>
+                                    <td><input type="text" name="eidcard" id="eidcard"><span id="ei"
+                                                                                             style="color: red;display: none">请输入身份证号码</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 电话号码：</td>
+                                    <td><input type="text" name="ephone" id="ephone"><span id="ep"
+                                                                                           style="color: red;display: none">请输入电话号码</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 邮箱：</td>
+                                    <td><input type="email" name="eemail" id="eemail"><span id="em"
+                                                                                            style="color: red;display: none">请输入邮箱</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 部门编号：</td>
+                                    <td><input type="text" name="edeptno" id="edeptno"><span id="ed"
+                                                                                             style="color: red;display: none">请输入部门编号</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 职位编号：</td>
+                                    <td><input type="text" name="epostno" id="epostno"><span id="eo"
+                                                                                             style="color: red;display: none">请输入职位编号</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 密码：</td>
+                                    <td><input type="password" name="epassword" id="epassword"><span id="pa"
+                                                                                                     style="color: red;display: none">请输入密码</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                            <button class="btn btn-theme" type="button" onclick="addemp()">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
+        </form>
+
+    </div>
+</div>
 
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="/assets/js/jquery.js"></script>
