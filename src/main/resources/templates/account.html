@@ -272,7 +272,24 @@
           <span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-checkOldMobile')">更改</a></span></li>
           <input type="hidden" value="false" id="authenticationMobile">
           <li>
-            <div th:if="${session.loginUser.ucardid==null || session.loginUser.ucardid==''}">
+            <div th:if="${status==0||status==3}">
+              <i class="grzxbg p-danger"></i>
+              <input type="hidden" th:value="${list.aiid}"/>
+              <span class="zhsz-span1">[[${list.ainame}]]</span>
+              <span class="zhsz-span2">未认证</span><span class="zhsz-span3">
+              <a href="#" onclick="showSpan('alert-identity')">认证</a></span>
+            </div>
+            <div th:if="${status==1}">
+              <i class="grzxbg p-right"></i>
+              <span class="zhsz-span1">身份认证</span>
+              <span class="zhsz-span2">待审核</span><span class="zhsz-span3"></span>
+            </div>
+            <div th:if="${status==2}">
+              <i class="grzxbg p-right"></i>
+              <span class="zhsz-span1">身份认证</span>
+              <span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
+            </div>
+            <!--<div th:if="${session.loginUser.ucardid==null || session.loginUser.ucardid==''}">
               <i class="grzxbg p-danger"></i>
               <input type="hidden" th:value="${list.aiid}"/>
               <span class="zhsz-span1">[[${list.ainame}]]</span>
@@ -283,7 +300,7 @@
               <i class="grzxbg p-right"></i>
               <span class="zhsz-span1">身份认证</span>
               <span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
-             </div>
+             </div>-->
           </li>
           <script>
             function checkSfz(data) {

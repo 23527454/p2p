@@ -160,9 +160,11 @@ public class UsersController {
         String name=users.getUname();
         String sfz=users.getUcardid();
         approveitem=approveitemService.getById(approveitem.getAiid());
-        Certifrecord certifrecord=new Certifrecord(users.getUid(),users.getUnickname(),approveitem.getAiid(),approveitem.getAiname(),approveitem.getAitype(),approveitem.getAistate(),new Date());
+        Certifrecord certifrecord=new Certifrecord(users.getUid(),name,approveitem.getAiid(),approveitem.getAiname(),approveitem.getAitype(),"1",new Date());
+        certifrecord.setCrviewpoint(name+","+sfz);
+        System.out.println("+++++++++++++++++++++++++++++++++++++"+certifrecord.getCrviewpoint());
         boolean result1=certifrecordService.save(certifrecord);
-        users=usersService.getById(users.getUid());
+       /* users=usersService.getById(users.getUid());
         users.setUname(name);
         users.setUcardid(sfz);
         boolean result2=usersService.updateById(users);
@@ -171,6 +173,11 @@ public class UsersController {
             out.print("<script>alert('认证成功！');window.location.href='/grzx/grzx_zhsz';</script>");
         }else{
             out.print("<script>alert('认证失败！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }*/
+        if (result1){
+            out.print("<script>alert('认证提交成功，等待管理员审核！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }else{
+            out.print("<script>alert('认证提交失败，请联系管理员！');window.location.href='/grzx/grzx_zhsz';</script>");
         }
         out.flush();
         out.close();

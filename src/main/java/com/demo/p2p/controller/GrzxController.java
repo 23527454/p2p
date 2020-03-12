@@ -7,24 +7,17 @@ import com.demo.p2p.entity.*;
 import com.demo.p2p.mapper.TradeMapper;
 import com.demo.p2p.service.*;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +42,9 @@ public class GrzxController {
 
     @Resource
     private PacketredService packetredService;
+
+    @Resource
+    private CertifrecordService certifrecordService;
 
     /**
      * 个人中心——还款列表
@@ -120,6 +116,17 @@ public class GrzxController {
             Map<String, Object> map = new HashMap<>();
             map.put("aiid", "1");
             map.put("ainame", "身份认证");
+
+            int status=0;
+            QueryWrapper<Certifrecord> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("cruserid", user.getUid());
+            queryWrapper.eq("craiid", 1);
+            Certifrecord certifrecord=certifrecordService.getOne(queryWrapper);
+            if(certifrecord!=null){
+                status=Integer.parseInt(certifrecord.getCrispass());
+            }
+
+            model.addAttribute("status",status);
             model.addAttribute("list", map);
             return "account";
         }
