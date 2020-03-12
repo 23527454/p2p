@@ -4,11 +4,9 @@ package com.demo.p2p.ht.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.demo.p2p.ht.entity.*;
 import com.demo.p2p.ht.service.*;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +45,12 @@ public class Bk_ApproveitemController {
     @RequestMapping(value = "/updateInfoAudit")
     @ResponseBody
     public Integer updateInfoAudit(Certifrecord certifrecord) {
+        QueryWrapper<Certifrecord> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("cruserid", certifrecord.getCruserid());
+        queryWrapper.eq("craiid", certifrecord.getCraiid());
+        Certifrecord certifrecord2=certifrecordService.getOne(queryWrapper);
+        String[] arr=certifrecord2.getCrviewpoint().split(",");
+
         UpdateWrapper<Certifrecord> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("crviewpoint", certifrecord.getCrviewpoint());
         updateWrapper.set("crintegral", certifrecord.getCrintegral());
@@ -57,6 +61,10 @@ public class Bk_ApproveitemController {
         updateWrapper.eq("craiid", certifrecord.getCraiid());
         boolean result = certifrecordService.update(updateWrapper);
         if (result) {
+            Users users=usersService.getById(certifrecord.getCruserid());
+            users.setUname(arr[0]);
+            users.setUcardid(arr[1]);
+            usersService.updateById(users);
             return 200;
         }
         return 400;
@@ -77,7 +85,7 @@ public class Bk_ApproveitemController {
         QueryWrapper<Certifrecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("cruserid", cruserid);
         queryWrapper.eq("craiid", craiid);
-        //queryWrapper.eq("crispass","1");
+        queryWrapper.eq("crispass","1");
         List<Certifrecord> certifrecords = certifrecordService.list(queryWrapper);
         List<Userauditor> userauditors = userauditorService.list();
         Integer jf = 0;

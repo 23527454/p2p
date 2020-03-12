@@ -7,6 +7,7 @@ import com.demo.p2p.util.RandomCharacterAndNumber;
 import com.demo.p2p.util.SendMessage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -105,19 +106,24 @@ public class BackendController {
 
     @RequestMapping(value = "/login")
     @ResponseBody
-    public Integer login(String uid, String pwd) {
-        UsernamePasswordToken token = new UsernamePasswordToken(uid, pwd);
+    public Object login(String uid, String pwd) {
+        Map<String,Object> map=new HashMap<>();
+        Md5Hash md5Hash=new Md5Hash(pwd);
+        UsernamePasswordToken token = new UsernamePasswordToken(uid, md5Hash.toString());
         try {
             SecurityUtils.getSubject().login(token);//调用Shiro认证
             Employee employee = (Employee) SecurityUtils.getSubject().getPrincipal();
             if(employee!=null){
-                return 1;
+                map.put("status",true);
+            }else{
+                map.put("status",false);
+                map.put("message","登录失败!");
             }
-            return 0;
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            map.put("status",false);
+            map.put("message",e.getMessage());
         }
+        return map;
     }
 
     @RequestMapping(value = "/toLogin")

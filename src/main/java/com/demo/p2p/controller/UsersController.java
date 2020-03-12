@@ -7,7 +7,10 @@ import com.demo.p2p.service.*;
 import com.demo.p2p.util.SendMessage;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -50,6 +54,8 @@ public class UsersController {
     private CertifrecordService certifrecordService;
     @Resource
     private CertificationService certificationService;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     private SendMessage sendMessage=new SendMessage();
 
@@ -154,9 +160,11 @@ public class UsersController {
         String name=users.getUname();
         String sfz=users.getUcardid();
         approveitem=approveitemService.getById(approveitem.getAiid());
-        Certifrecord certifrecord=new Certifrecord(users.getUid(),users.getUnickname(),approveitem.getAiid(),approveitem.getAiname(),approveitem.getAitype(),approveitem.getAistate(),new Date());
+        Certifrecord certifrecord=new Certifrecord(users.getUid(),name,approveitem.getAiid(),approveitem.getAiname(),approveitem.getAitype(),"1",new Date());
+        certifrecord.setCrviewpoint(name+","+sfz);
+        System.out.println("+++++++++++++++++++++++++++++++++++++"+certifrecord.getCrviewpoint());
         boolean result1=certifrecordService.save(certifrecord);
-        users=usersService.getById(users.getUid());
+       /* users=usersService.getById(users.getUid());
         users.setUname(name);
         users.setUcardid(sfz);
         boolean result2=usersService.updateById(users);
@@ -165,6 +173,11 @@ public class UsersController {
             out.print("<script>alert('认证成功！');window.location.href='/grzx/grzx_zhsz';</script>");
         }else{
             out.print("<script>alert('认证失败！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }*/
+        if (result1){
+            out.print("<script>alert('认证提交成功，等待管理员审核！');window.location.href='/grzx/grzx_zhsz';</script>");
+        }else{
+            out.print("<script>alert('认证提交失败，请联系管理员！');window.location.href='/grzx/grzx_zhsz';</script>");
         }
         out.flush();
         out.close();
@@ -306,6 +319,13 @@ public class UsersController {
         return map;
     }
 
+
+    //用户登录次数计数  redisKey 前缀
+    private String SHIRO_LOGIN_COUNT = "shiro_login_count_";
+
+    //用户登录是否被锁定    一小时 redisKey 前缀
+    private String SHIRO_IS_LOCK = "shiro_is_lock_";
+
     /**
      * 登录
      * @param username
@@ -318,11 +338,29 @@ public class UsersController {
     public Object login(String username, String password, HttpSession session){
         Map<String,Object> map=new HashMap<String,Object>();
         try {
+            //访问一次，计数一次
+            ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
+            opsForValue.increment(SHIRO_LOGIN_COUNT + username, 1);  //每次增加1
+            System.out.println(username + "：账号登陆的次数是：" + opsForValue.get(SHIRO_LOGIN_COUNT + username));
+            //如果这个账号登陆异常，则在登陆页面提醒。
+            if (Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT + username)) >= 3) {
+                if ("LOCK".equals(opsForValue.get(SHIRO_IS_LOCK + username))) {
+                    //计数大于3次，设置用户被锁定一分钟
+                    throw new DisabledAccountException("由于输入错误次数大于3次，帐号1分钟内已经禁止登录！");
+                }
+            }
+            //实现锁定
+            if (Integer.parseInt(opsForValue.get(SHIRO_LOGIN_COUNT + username)) >= 3) {
+                opsForValue.set(SHIRO_IS_LOCK + username, "LOCK");  //锁住这个账号，值是LOCK。
+                stringRedisTemplate.expire(SHIRO_IS_LOCK + username, 1, TimeUnit.MINUTES);  //expire  变量存活期限
+            }
+
+            Md5Hash md5Hash=new Md5Hash(password);
             QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
-            queryWrapper.eq("unickname",username).eq("upassword",password);
+            queryWrapper.eq("unickname",username).eq("upassword",md5Hash.toString());
             Users users=usersService.login(queryWrapper);
             if (users == null) {
-                throw new UnknownAccountException("登录失败！");
+                throw new UnknownAccountException("登录失败，请检查用户名或密码是否正确！");
             }
             session.setAttribute("loginUser",users);
             Log log=new Log(users.getUnickname(),"进入系统","进入系统",new Date());
@@ -331,8 +369,13 @@ public class UsersController {
             usersService.resetUfldate(users);
             map.put("message", "登录成功！");
             map.put("status", true);
+
+            //清空登录计数
+            opsForValue.set(SHIRO_LOGIN_COUNT + username, "0");
+            //清空锁
+            opsForValue.set(SHIRO_IS_LOCK + username, "");
         } catch (UnknownAccountException uae) {
-            map.put("message", "登录失败请检查用户名或密码是否正确！");
+            map.put("message", uae.getMessage());
             map.put("status", false);
         } catch (DisabledAccountException de) {
             map.put("message", de.getMessage());

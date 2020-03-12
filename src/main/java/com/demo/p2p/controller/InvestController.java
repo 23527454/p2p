@@ -57,19 +57,19 @@ public class InvestController {
                 if (param.equals("-1")){        //选择不限
                     session.removeAttribute("startR");
                     session.removeAttribute("endR");
-                    session.setAttribute("startR","-1");     //选择不限，只设置起始利率为0，以pincome>=0为条件
+                    session.setAttribute("startR",-1);     //选择不限，只设置起始利率为0，以pincome>=0为条件
                 }else{                          //选择具体利率
                     if(param.equals("1")){
-                        session.setAttribute("startR","0");
-                        session.setAttribute("endR","12");
+                        session.setAttribute("startR",0);
+                        session.setAttribute("endR",12);
                     }else if(param.equals("2")){
-                        session.setAttribute("startR","12");
-                        session.setAttribute("endR","14");
+                        session.setAttribute("startR",12);
+                        session.setAttribute("endR",14);
                     }else if(param.equals("3")){
-                        session.setAttribute("startR","14");
-                        session.setAttribute("endR","16");
+                        session.setAttribute("startR",14);
+                        session.setAttribute("endR",16);
                     }else if(param.equals("4")){
-                        session.setAttribute("startR","16");
+                        session.setAttribute("startR",16);
                         session.removeAttribute("endR");
                     }
                 }
@@ -78,22 +78,22 @@ public class InvestController {
                 if (param.equals("-1")){        //选择不限
                     session.removeAttribute("startT");
                     session.removeAttribute("endT");
-                    session.setAttribute("startT","-1");     //选择不限，只设置起始天数为0
+                    session.setAttribute("startT",-1);     //选择不限，只设置起始天数为0
                 }else{                          //选择具体天数
                     if(param.equals("1")){
-                        session.setAttribute("startT","0");
-                        session.setAttribute("endT","30");
+                        session.setAttribute("startT",0);
+                        session.setAttribute("endT",30);
                     }else if(param.equals("2")){
-                        session.setAttribute("startT","30");
-                        session.setAttribute("endT","90");
+                        session.setAttribute("startT",30);
+                        session.setAttribute("endT",90);
                     }else if(param.equals("3")){
-                        session.setAttribute("startT","90");
-                        session.setAttribute("endT","180");
+                        session.setAttribute("startT",90);
+                        session.setAttribute("endT",180);
                     }else if(param.equals("4")){
-                        session.setAttribute("startT","180");
-                        session.setAttribute("endT","360");
+                        session.setAttribute("startT",180);
+                        session.setAttribute("endT",360);
                     }else if(param.equals("5")){
-                        session.setAttribute("startT","360");
+                        session.setAttribute("startT",360);
                         session.removeAttribute("endT");
                     }
                 }
@@ -115,10 +115,10 @@ public class InvestController {
 
         //将设置好的查询条件存储在map中
         if (session.getAttribute("startR")==null){
-            session.setAttribute("startR","-1");
+            session.setAttribute("startR",-1);
         }
         if (session.getAttribute("startT")==null){
-            session.setAttribute("startT","-1");
+            session.setAttribute("startT",-1);
         }
         map.put("biaoId",session.getAttribute("biaoId"));
         map.put("startR",session.getAttribute("startR"));
