@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.p2p.ht.mapper.Bk_DopeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.p2p.ht.entity.Dope">
+        <id column="did" property="did" />
+        <result column="dprimkey" property="dprimkey" />
+        <result column="dtitle" property="dtitle" />
+        <result column="details" property="details" />
+        <result column="dtime" property="dtime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        did, dprimkey, dtitle, details, dtime
+    </sql>
+
+</mapper>
