@@ -1,8 +1,12 @@
 package com.demo.p2p.ht.controller;
 
 
+import com.demo.p2p.ht.entity.Dope;
 import com.demo.p2p.ht.entity.Employee;
+import com.demo.p2p.ht.entity.Users;
 import com.demo.p2p.ht.entity.Withdrawal;
+import com.demo.p2p.ht.service.Bk_DopeService;
+import com.demo.p2p.ht.service.Bk_UsersService;
 import com.demo.p2p.ht.service.Bk_WithdrawalService;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.swing.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +40,10 @@ import java.util.Map;
 public class Bk_WithdrawalController {
     @Resource
     Bk_WithdrawalService bk_withdrawalService;
+    @Resource
+    Bk_DopeService bk_dopeService;
+    @Resource
+    Bk_UsersService bk_usersService;
 
     @RequestMapping(value = "/wlist_do")
     public String wlist_do(String currpage,Integer btn,String wname,String yyy,String yyyy,Integer wstatu,HttpSession session){
@@ -134,12 +143,12 @@ public class Bk_WithdrawalController {
     @RequestMapping("/zhuans_do")
     public String zhuan(int gg, int wid){
         Withdrawal wone =  bk_withdrawalService.getById(wid);
+        Integer uid = wone.getuID();//用户id
         if(gg==0){
             //失败
             bk_withdrawalService.updateById(wone);
             wone.setStatu("0");
             Double txmoney = wone.getTxmoney();//体检金额
-            Integer uid = wone.getuID();//用户id
             bk_withdrawalService.updmoney(txmoney, uid);
             int i=1;
             //添加失败的交易记录
@@ -150,6 +159,15 @@ public class Bk_WithdrawalController {
             int i=2;
             //添加交易成功记录
             bk_withdrawalService.intmoney(wone, i);
+
+            Users users = bk_usersService.getById(uid);
+            String yy = "尊敬的"+users.getUnickname()+",您提现的"+wone.getTxmoney()+"元已到账"+wone.getDzmoney()+"元扣除手续费"+wone.getSxf()+"元！!";
+            Dope dope = new Dope();
+            dope.setDtime(new Date());
+            dope.setDtitle("提现成功");
+            dope.setDetails(yy);
+            dope.setDprimkey(uid);
+            bk_dopeService.save(dope);
         }
         return "redirect:wlist_do";
     }
@@ -168,6 +186,14 @@ public class Bk_WithdrawalController {
             bk_withdrawalService.updmoney(txmoney, uid);
             int i=0;
             bk_withdrawalService.intmoney(wone, i);
+            Users users = bk_usersService.getById(uid);
+            String yy = "尊敬的"+users.getUnickname()+",您提现的"+txmoney+"元未通过审核！!";
+            Dope dope = new Dope();
+            dope.setDtime(new Date());
+            dope.setDtitle("提现失败");
+            dope.setDetails(yy);
+            dope.setDprimkey(uid);
+            bk_dopeService.save(dope);
         }else if(gg==2){
             bk_withdrawalService.updwiths(gg, wid, shname);
         }
