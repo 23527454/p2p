@@ -345,7 +345,10 @@
             </div>
            </li>
           <li><i class="grzxbg p-right"></i><span class="zhsz-span1">登录密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePass')">更改</a></span></li>
-          <li><i class="grzxbg p-right"></i><span class="zhsz-span1">支付密码</span><span class="zhsz-span2"></span><span class="zhsz-span3"><a href="javascript:void(0)" onclick="showSpan('alert-updatePayPass')">更改</a></span></li>
+          <li><i class="grzxbg p-right"></i><span class="zhsz-span1">支付密码</span><span class="zhsz-span2"></span><span class="zhsz-span3">
+            <a th:if="${session.loginUser.upwdZd==null || session.loginUser.upwdZd==''}" href="/grzx/grzx_ktdsf" >开通第三方</a>
+            <a th:if="${session.loginUser.upwdZd!=null && session.loginUser.upwdZd!=''}" href="javascript:void(0)" onclick="showSpan('alert-updatePayPass')">更改</a>
+          </span></li>
         </ul>
       </div>
     </div>

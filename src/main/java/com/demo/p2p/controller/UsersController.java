@@ -69,7 +69,8 @@ public class UsersController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         Users users=(Users)session.getAttribute("loginUser");
-        users.setUpwdZd(paypassword);
+        Md5Hash md5Hash=new Md5Hash(paypassword);
+        users.setUpwdZd(md5Hash.toString());
         PrintWriter out=response.getWriter();
         boolean result=usersService.updateById(users);
         if (result){
@@ -87,7 +88,8 @@ public class UsersController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         Users users=(Users)session.getAttribute("loginUser");
-        users.setUpassword(password);
+        Md5Hash md5Hash=new Md5Hash(password);
+        users.setUpassword(md5Hash.toString());
         PrintWriter out=response.getWriter();
         boolean result=usersService.updateById(users);
         if (result){
@@ -265,7 +267,8 @@ public class UsersController {
     @ResponseBody
     public Object resetPwd(Integer uid,String password){
         Map<String,Object> map=new HashMap<>();
-        boolean result=usersService.resetPwd(uid,password);
+        Md5Hash md5Hash=new Md5Hash(password);
+        boolean result=usersService.resetPwd(uid,md5Hash.toString());
         map.put("result",result);
         return map;
     }

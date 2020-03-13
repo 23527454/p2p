@@ -58,7 +58,10 @@
 				ispass = "3";
 			}
 			//获取审核人员
-			var auditor = document.getElementById("crauditor").value;
+			var auditor = $("#crauditor").val();
+			if(auditor==null ||auditor==""){
+				alert("请先分配审核人员！");
+			}else{
 			//alert("integral:"+integral+"<--->viewpoint:"+viewpoint+"<--->:"+crtype+"<--->userid:"+userid+"<--->ispass:"+ispass+"<--->auditor:"+auditor);
 			if(integral!=''){
 				$.post('/bk/approve/updateInfoAudit',{"cruserid":userid,"craiid":crtype,"crviewpoint":viewpoint,"crintegral":integral,"crispass":ispass,"crauditor":auditor},function(data){
@@ -71,6 +74,7 @@
 				},"json");
 			}else{
 				alert("请输入积分");
+			}
 			}
 
 

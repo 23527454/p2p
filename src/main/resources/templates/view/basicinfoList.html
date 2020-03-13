@@ -73,7 +73,7 @@
 									<a th:href="@{/bk/approve/basicInfoApprove(current=1)}" class="btn btn-success btn-ms ">首页</a>
 									<a th:href="@{/bk/approve/basicInfoApprove(current=${page.current-1})}" class="btn btn-success btn-ms ">&lt;&lt;上一页</a>
 									<a th:href="@{/bk/approve/basicInfoApprove(current=${page.current+1})}" class="btn btn-success btn-ms "> 下一页&gt;&gt;</a>
-									<a th:href="@{/bk/approve/basicInfoApprove(current=${pages})}" class="btn btn-success btn-ms "> 尾页</a>
+									<a th:href="@{/bk/approve/basicInfoApprove(current=${page.pages})}" class="btn btn-success btn-ms "> 尾页</a>
 									<font size="3">共<font
 										color="red">[[${page.total}]]</font>条数据，当前<font color="#0000ff">[[${page.current}]]</font><font
 										color="red">/[[${page.pages}]]</font>页
