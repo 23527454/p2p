@@ -321,7 +321,20 @@ public class UsersController {
         }
         return map;
     }
-
+    @PostMapping(value = "/findByName")
+    @ResponseBody
+    public String findByName(String unickname){
+        QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+        if(unickname!=null){
+            queryWrapper.eq("unickname",unickname);
+        }
+        Users users=usersService.checkUsersByCondition(queryWrapper);
+        if (users!=null){
+            return "2";
+        }else{
+            return "1";
+        }
+    }
 
     //用户登录次数计数  redisKey 前缀
     private String SHIRO_LOGIN_COUNT = "shiro_login_count_";

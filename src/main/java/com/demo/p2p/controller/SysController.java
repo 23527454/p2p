@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Controller
@@ -125,14 +126,19 @@ public class SysController {
      */
     @ResponseBody
     @RequestMapping(value = "/register_ph")
-    public String zhuce1(String phone, Model model){
+    public Map<String,Object> zhuce1(String phone, Model model){
         Random rd=new Random();
         int sjs=(int)rd.nextInt(9999);
         String yzm=String.valueOf(sjs);
-        sendMessage.sendPhoneMessage(phone,yzm);
+        Map<String,Object> map = (Map<String, Object>) sendMessage.sendPhoneMessage(phone, yzm);
         //将设置的验证码发送给前台页面
-        model.addAttribute("yzm",yzm);
-        return yzm;
+        String messages = (String)map.get("messages");
+        if (messages != null && messages != ""){
+            model.addAttribute("messages",messages);
+        }else {
+            model.addAttribute("yzm",yzm);
+        }
+        return map;
     }
 
     /**
