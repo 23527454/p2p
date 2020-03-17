@@ -58,9 +58,12 @@ public class BackendController {
         if (employee!=null){
             RandomCharacterAndNumber randomCharacterAndNumber=new RandomCharacterAndNumber();
             String newPwd=randomCharacterAndNumber.getRandomCharacterAndNumber(3);
-            employee.setEpassword(newPwd);
-            employeeService.updateById(employee);
-            sendMessage.sendPhoneMessage(employee.getEphone(),newPwd);
+            Md5Hash md5Hash=new Md5Hash(newPwd);
+            employee.setEpassword(md5Hash.toString());
+            Map<String,Object> map2=(Map<String,Object>)sendMessage.sendPhoneMessage(employee.getEphone(),newPwd);
+            if(!(boolean)map2.get("result")){
+                return "出现错误，请检测手机号是否正常并联系管理人员！";
+            }
             try{
                 //创建一个复杂的消息邮件
                 MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -72,10 +75,14 @@ public class BackendController {
                 helper.setTo(employee.getEmail());
                 //发件人
                 helper.setFrom("23527454@qq.com");
+
+                employeeService.updateById(employee);
+
                 //发送邮件
                 mailSender.send(mimeMessage);
             }catch (Exception e){
                 e.printStackTrace();
+                return "出现错误，请检测邮箱是否正常并联系管理人员！";
             }
             return "密码已重置，新的密码已通过短信和邮件的方式发送到您的号码！";
         }else {

@@ -938,8 +938,12 @@
                 var email=$("#_email").val();
                 var name=$("#_name").val();
                 $.post("/users/sendEmail",{"email":email,"name":name},function (data) {
-                    alert("验证码已发送！");
-                    document.getElementById("yan").value=data.yzm;
+                    if(data.result){
+                        alert("验证码已发送！");
+                        document.getElementById("yan").value=data.yzm;
+                    }else{
+                        alert(data.messages);
+                    }
                 });
             }
 
@@ -949,8 +953,12 @@
                 var e=checkchangeEmailFormNewEmail();
                 if(e){
                     $.post("/users/sendEmail",{"email":email,"name":name},function (data) {
-                        alert("验证码已发送！");
-                        document.getElementById("yan").value=data.yzm;
+                        if(data.result){
+                            alert("验证码已发送！");
+                            document.getElementById("yan").value=data.yzm;
+                        }else{
+                            alert(data.messages);
+                        }
                     });
                 }
 
