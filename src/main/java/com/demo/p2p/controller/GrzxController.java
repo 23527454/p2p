@@ -317,7 +317,6 @@ public class GrzxController {
             return "redirect:/sys/login";
         } else {
             if(user.getUcertnumber() != null){
-                System.out.println(1);
                 List<Bankcard> list = bankcardService.getbank(user.getUid());
                 for (Bankcard ls: list
                 ) {
@@ -328,7 +327,6 @@ public class GrzxController {
                     ls.setCardid(cardid);
                 }
                 Certification certification = certificationService.getcserial(user.getUnickname());
-                System.out.println(certification.getCtotalmoney());
                 request.setAttribute("certification",certification);
                 request.setAttribute("bankls",list);
                 return "Withdraw";
