@@ -75,7 +75,8 @@ public class SendMessage {
             //异常返回输出错误码和错误信息
             System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
             map.put("result",false);
-            map.put("messages",result.get("statusMsg"));map.put("result",true);
+            map.put("code",result.get("statusCode"));
+            map.put("messages",result.get("statusMsg"));
             map.put("yzm",yzm);
         }
         return map;
