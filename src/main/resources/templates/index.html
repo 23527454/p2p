@@ -149,6 +149,9 @@
 				opacity : 1
 			}, 100);
 		});
+        function Select(items,param){//按条件查询
+            window.location.href="/invest/investSel?item="+items+"&param="+param;
+        }
 	</script>
 	
 	<div class="new-announcement">
@@ -204,13 +207,13 @@
 							<i class="icon icon-ttyx"></i>推荐项目
 						</h2>
 						<div class="fn-right f14 c-888">
-							常规发标时间每天<span class="c-555">10:00，13:00和20:00</span>，其余时间根据需要随机发
+							<!--常规发标时间每天<span class="c-555">10:00，13:00和20:00</span>，其余时间根据需要随机发-->
 						</div>
 					</div>
 					<div class="bd">
-						<div class="des">
+						<div class="des" >
 							<span class="fn-left">期限1-29天，期限短，收益见效快</span><a
-								th:href="@{/invest/investSel}" class="fn-right">查看更多&gt;&gt;</a>
+								th:href="@{/invest/investSel}"  class="fn-right">查看更多&gt;&gt;</a>
 						</div>
 						<div class="borrow-list">
 							<ul>
@@ -251,13 +254,10 @@
 														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i.id})}">立即投标</a>
 														</th:if></div>
 													<div th:if="${i.pstate== '2' }">
-														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i.id})}">还款中</a>
+														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i.id})}">募集完成</a>
 														</divth:if>	</div>
 													<div th:if="${i.pstate== '3' }">
-														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i.id})}">已失效</a>
-														</divth:if>	</div>
-													<div th:if="${i.pstate== '4' }">
-														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i.id})}">已筹完</a>
+														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i.id})}">还款中</a>
 														</divth:if>	</div>
 												</td>
 											</tr>
@@ -275,15 +275,16 @@
 							<span th:text="${biao.bname}"></span>
 						</h2>
 						<div class="fn-right f14 c-888">
-							参与人次：<span class="c-555">61.37万次</span>&nbsp;&nbsp;&nbsp;平均满标时间：<span
-								class="c-555">1小时24分11秒</span>
+							<!--参与人次：<span class="c-555">61.37万次</span>&nbsp;&nbsp;&nbsp;平均满标时间：<span-->
+								<!--class="c-555">1小时24分11秒</span>-->
 						</div>
 					</div>
 
 					<div class="bd">
-						<div class="des">
-							<span class="fn-left">期限1-12月，收益更高</span><a
-								th:href="@{/invest/investSel}" class="fn-right">查看更多&gt;&gt;</a>
+						<div class="des" th:if="${session.biaoId == biao.id+''?'active':''}">
+							<span class="fn-left">期限1-12月，收益更高</span>
+							<!--<a th:href="@{/invest/investSel}"  class="fn-right" >查看更多&gt;&gt;</a>-->
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a th:id="'post_type_car'+${biao.id}" th:class="${session.biaoId == biao.id+''?'active':''}" class="fn-right"  th:onclick="Select('itemtype',[[${biao.id}]]);" th:text="查看更多">查看更多</a>
 						</div>
 						<div class="borrow-list">
 							<ul>
@@ -325,13 +326,10 @@
 														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i2.id})}">立即投标</a>
 														</th:if></div>
 													<div th:if="${i2.pstate== '2' }">
-														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i2.id})}">还款中</a>
+														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i2.id})}">募集完成</a>
 														</divth:if>	</div>
 													<div th:if="${i2.pstate== '3' }">
-														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i2.id})}">已失效</a>
-														</divth:if>	</div>
-													<div th:if="${i2.pstate== '4' }">
-														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i2.id})}">已筹完</a>
+														<a class="ui-btn btn-gray" th:href="@{/investinfo/toInvestInfo(bmid=${i2.id})}">还款中</a>
 														</divth:if>	</div>
 												</td>
 											</tr>
