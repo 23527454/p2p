@@ -167,6 +167,7 @@ public class SysController {
         int sjs=(int)rd.nextInt(9999);
         String yzm=String.valueOf(sjs);
         sendMessage.sendPhoneMessage(phone,yzm);
+
         //将设置的验证码发送给前台页面
         model.addAttribute("yzm",yzm);
         model.addAttribute("uid",uid);
