@@ -19,7 +19,7 @@ public interface BankcardService extends IService<Bankcard> {
 
     public Bankcard getInfo(int bid);
 
-    public List<Bankcard> bankcardList();
+    public List<Bankcard> bankcardList(Integer id);
 
     public int savebankcard(Bankcard bankcard);
 

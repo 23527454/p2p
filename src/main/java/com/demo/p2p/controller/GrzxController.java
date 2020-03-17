@@ -297,8 +297,8 @@ public class GrzxController {
         Users users = (Users) session.getAttribute("loginUser");
         if (users.getUcertnumber() != null) {
             System.out.println(1);
-            List<Bankcard> bankcards = bankcardService.bankcardList();
-            request.setAttribute("bankcards", bankcards);
+                List<Bankcard> bankcards = bankcardService.bankcardList(users.getUid());
+                request.setAttribute("bankcards", bankcards);
             return "pay";
         }
         System.out.println(2);
