@@ -111,7 +111,6 @@ public class UsersController {
         Random rd=new Random();
         int sjs=(int)rd.nextInt(9999);
         String yzm=String.valueOf(sjs);
-        System.out.println("验证码："+yzm);
         try{
             //创建一个复杂的消息邮件
             MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -125,11 +124,12 @@ public class UsersController {
             helper.setFrom("23527454@qq.com");
             //发送邮件
             mailSender.send(mimeMessage);
+            System.out.println("验证码："+yzm);
             map.put("result",true);
             map.put("yzm",yzm);
         }catch (Exception e){
             map.put("result",false);
-            map.put("messages",e.getMessage());
+            map.put("messages","出现错误，请检测邮箱是否正常并联系客服！");
         }
         return map;
     }

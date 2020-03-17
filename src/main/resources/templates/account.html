@@ -289,18 +289,6 @@
               <span class="zhsz-span1">身份认证</span>
               <span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
             </div>
-            <!--<div th:if="${session.loginUser.ucardid==null || session.loginUser.ucardid==''}">
-              <i class="grzxbg p-danger"></i>
-              <input type="hidden" th:value="${list.aiid}"/>
-              <span class="zhsz-span1">[[${list.ainame}]]</span>
-              <span class="zhsz-span2">未认证</span><span class="zhsz-span3">
-              <a href="#" onclick="showSpan('alert-identity')">认证</a></span>
-            </div>
-            <div th:if="${session.loginUser.ucardid!=null &&session.loginUser.ucardid!=''}">
-              <i class="grzxbg p-right"></i>
-              <span class="zhsz-span1">身份认证</span>
-              <span class="zhsz-span2">已认证</span><span class="zhsz-span3"></span>
-             </div>-->
           </li>
           <script>
             function checkSfz(data) {
@@ -551,8 +539,12 @@
 		});
 			function check(){
 			    $.post("/users/sendMessages","phone="+[[${session.loginUser.uphonenumber}]],function (data) {
-                    alert("验证码已发送");
-                    document.getElementById("yan").value=data.yzm;
+			        if(data.result){
+                        alert("验证码已发送");
+                        document.getElementById("yan").value=data.yzm;
+                    }else{
+			            alert("出现错误，请联系管理人员！错误码："+data.code);
+                    }
                 });
 			}
 			function yanzhen(){
@@ -946,8 +938,12 @@
                 var email=$("#_email").val();
                 var name=$("#_name").val();
                 $.post("/users/sendEmail",{"email":email,"name":name},function (data) {
-                    alert("验证码已发送！");
-                    document.getElementById("yan").value=data.yzm;
+                    if(data.result){
+                        alert("验证码已发送！");
+                        document.getElementById("yan").value=data.yzm;
+                    }else{
+                        alert(data.messages);
+                    }
                 });
             }
 
@@ -957,8 +953,12 @@
                 var e=checkchangeEmailFormNewEmail();
                 if(e){
                     $.post("/users/sendEmail",{"email":email,"name":name},function (data) {
-                        alert("验证码已发送！");
-                        document.getElementById("yan").value=data.yzm;
+                        if(data.result){
+                            alert("验证码已发送！");
+                            document.getElementById("yan").value=data.yzm;
+                        }else{
+                            alert(data.messages);
+                        }
                     });
                 }
 
@@ -1073,6 +1073,7 @@
         </form>
       </div>
     </div>
+      <script type="text/javascript" src="/script/jquery.md5.js"></script>
     <script type="text/javascript">
 			//<![CDATA[
 			           //验证原密码
@@ -1166,7 +1167,6 @@
 			   		   }
 			           function checkupdatePassFormAll()
 			           {
-			        	   //checkupdatePassFormOldPassword();
                            password2();
 			        	   checkPassword2();
 			        	   checkRepassword2();
@@ -1176,8 +1176,9 @@
 			        	   return oldPasswordFlag&&passwordFlag&&repasswordFlag;
 			           }
 			          function password2(){
-			               var upwd=[[${session.loginUser.upassword}]];
-			        	  var password=$("#oldPassword").val();
+                          var upwd="[[${session.loginUser.upassword}]]";
+                          var p2=$("#oldPassword").val();
+                          var password=$.md5(p2);
 			        	  if(password!=upwd){
 			        		  document.getElementById("upassword").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;密码错误";
 			        	   	  return false; 
@@ -1259,7 +1260,7 @@
             }
             function checkPayupdatePassFormAll()
             {
-                var upwd=[[${session.loginUser.upwdZd}]];
+                var upwd="[[${session.loginUser.upwdZd}]]";
                 if(upwd!=null){
                     payPassword2();
                 }
@@ -1271,8 +1272,9 @@
                 return oldPasswordFlag&&passwordFlag&&repasswordFlag;
             }
             function payPassword2(){
-                var upwd=[[${session.loginUser.upwdZd}]];
-                var password=$("#oldPayPassword").val();
+                var upwd="[[${session.loginUser.upwdZd}]]";
+                var p2=$("#oldPayPassword").val();
+                var password=$.md5(p2);
                 if(password!=upwd){
                     document.getElementById("payupassword").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;密码错误";
                     return false;
@@ -1602,9 +1604,9 @@
       <div class="alert-450" id="alert-updatePayPass" style="display: none;">
         <div class="alert-title">
           <h3>修改交易密码</h3>
-          <span class="alert-close" onclick="displaySpan('alert-updatePass')"></span></div>
+          <span class="alert-close" onclick="displaySpan('alert-updatePayPass')"></span></div>
         <div class="alert-main">
-          <form id="updatePassForm" name="updatePassForm" method="post" action="/users/modifyPayPwd" enctype="application/x-www-form-urlencoded">
+          <form id="updatePayPassForm" name="updatePassForm" method="post" action="/users/modifyPayPwd" enctype="application/x-www-form-urlencoded">
             <input type="hidden" name="updatePassForm" value="updatePassForm">
             <input type="hidden" name="id" th:value="${session.loginUser.uid}">
             <ul>
