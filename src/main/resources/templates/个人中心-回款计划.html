@@ -26,8 +26,8 @@
         <form id="form" name="form" method="post" action="">
           <input type="hidden" name="form" value="form">
           <div class="back-money"> <span class="back-own"><b class="fb">待收本金</b><br>
-            <i th:text="${session.inmoney}"></i> 元</span> <span class="back-profit"><b class="fb">待收收益</b><br>
-            <i th:text="${session.profitmoney}"></i> 元</span> </div>
+            <i th:text="${session.inmoney}"></i><i th:if="${session.inmoney == null}" >0</i> 元</span> <span class="back-profit"><b class="fb">待收收益</b><br>
+            <i th:text="${session.profitmoney}"></i><i th:if="${session.profitmoney == null}" >0</i>  元</span> </div>
           <span id="form:dataTable">
           <div class="personal-backlist">
             <div class="pmain-contitle"> <span class="pmain-titledate fb">计划回款时间</span> <span class="pmain-titleproject fb">项目</span> <span class="pmain-titletype fb">类型</span> <span class="pmain-titlemoney fb">回款金额</span> </div>
