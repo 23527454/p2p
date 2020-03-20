@@ -1,6 +1,7 @@
 package com.demo.p2p.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.p2p.entity.*;
 import com.demo.p2p.mapper.TradeMapper;
 import com.demo.p2p.service.BankcardService;
@@ -53,17 +54,32 @@ public class WithdrawalController {
     public Object tixian(String actualMoney, String bankl, String id, String bankname, String bankhao,
                          HttpServletRequest request, HttpSession session) throws ParseException {
         System.out.println("tixian-------------------------------");
+
 //        System.out.println("bankl:" + bankl);
 //        System.out.println("bankname" + bankname);
 //        System.out.println("bankhao" + bankhao);
-
         Date time = new Date();//获取当前时间
         Map<String, Object> map = new HashMap<>();
+
         /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间*/
         Users user = (Users) session.getAttribute("loginUser");
         double sxf = Double.parseDouble(actualMoney) * 0.001; //手续费计算
         double dzmoney = Double.parseDouble(actualMoney) - sxf;  //到账金额
+
+        /**
+         * 判断余额是否足够
+         */
+        QueryWrapper<Certification> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",id);
+        List<Certification> certificationList = certificationService.list(queryWrapper);
+        for (Certification ls:certificationList
+                ) {
+            if((Double.parseDouble(ls.getCtotalmoney()) - dzmoney) < 0){
+                map.put("result","yebz");
+                return map;
+            }
+        }
     /*    int id = 0;
         String actualMoney = null;
         String bid = null;
@@ -120,7 +136,6 @@ public class WithdrawalController {
                 map.put("result","yhkcz");
                   return map;
             }
-            System.out.println(2222222);
             wl.setTxnum(bankhao);//提现银行卡号
             wl.setTxbank(bankname);//提现银行名称
         }
@@ -130,9 +145,6 @@ public class WithdrawalController {
         wl.setStatu("3");
         wl.setSxf(String.valueOf(sxf));
         wl.setDzmoney(String.valueOf(dzmoney));
-
-
-
 
         Poundage pe = new Poundage();
         pe.setuID(user.getUid());

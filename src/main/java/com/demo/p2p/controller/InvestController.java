@@ -136,4 +136,6 @@ public class InvestController {
         model.addAttribute("page",page);
         return "list";
     }
+
+
 }

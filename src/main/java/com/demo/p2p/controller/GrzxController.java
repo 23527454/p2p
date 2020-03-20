@@ -297,8 +297,8 @@ public class GrzxController {
         Users users = (Users) session.getAttribute("loginUser");
         if (users.getUcertnumber() != null) {
             System.out.println(1);
-            List<Bankcard> bankcards = bankcardService.bankcardList();
-            request.setAttribute("bankcards", bankcards);
+                List<Bankcard> bankcards = bankcardService.bankcardList(users.getUid());
+                request.setAttribute("bankcards", bankcards);
             return "pay";
         }
         System.out.println(2);
@@ -317,7 +317,6 @@ public class GrzxController {
             return "redirect:/sys/login";
         } else {
             if(user.getUcertnumber() != null){
-                System.out.println(1);
                 List<Bankcard> list = bankcardService.getbank(user.getUid());
                 for (Bankcard ls: list
                 ) {
@@ -328,7 +327,6 @@ public class GrzxController {
                     ls.setCardid(cardid);
                 }
                 Certification certification = certificationService.getcserial(user.getUnickname());
-                System.out.println(certification.getCtotalmoney());
                 request.setAttribute("certification",certification);
                 request.setAttribute("bankls",list);
                 return "Withdraw";

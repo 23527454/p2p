@@ -65,9 +65,9 @@
                 <div class="info-2"><span class="info-tit" id="yhk">银行卡号</span>
                   <span class="info2-input">
                   <select id="bankCardNo"  name="bankCardNo"  style="width: 130px;height:30px; position:absolute;top:20px; right:-130px;">
-                    <option id="xuanzhe">请选择</option>
+                    <option id="xuanzhe" >请选择</option>
                     <!--<option th:if="${i3.uid==session.loginUser.uid}" >111</option>-->
-                    <option th:each="bankcard:${bankcards}"  th:value="${bankcard.cardid}">[[${bankcard.khh}]][[${bankcard.cardid}]]</option>
+                    <option th:each="bankcard:${bankcards}" th:value="${bankcard.cardid}" >[[${bankcard.khh}]][[${bankcard.cardid}]]</option>
                   </select>
                   <em class="info2-bank" style="display: none;">
                   <label id="form:defaultBankName" style="font-size:16px;"> </label>

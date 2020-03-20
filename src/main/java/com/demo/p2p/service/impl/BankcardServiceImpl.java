@@ -34,8 +34,8 @@ public class BankcardServiceImpl extends ServiceImpl<BankcardMapper, Bankcard> i
     }
 
     @Override
-    public List<Bankcard> bankcardList() {
-        return this.baseMapper.bankcardList();
+    public List<Bankcard> bankcardList(Integer id) {
+        return this.baseMapper.bankcardList(id);
     }
 
     @Override

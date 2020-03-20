@@ -23,11 +23,11 @@ public interface BankcardMapper extends BaseMapper<Bankcard> {
     /**
      * 根据id查询账户
      */
-    @Select("SELECT * FROM bankcard WHERE bid =  #{bid}")
+    @Select("SELECT * FROM bankcard WHERE bid = #{bid}")
     public Bankcard getInfo(@Param("bid") int bid);
 
-    @Select("SELECT * FROM bankcard")
-    public List<Bankcard> bankcardList();
+    @Select("SELECT * FROM bankcard WHERE uID = #{uID}")
+    public List<Bankcard> bankcardList(Integer id);
 
     public int savebankcard(Bankcard bankcard);
 

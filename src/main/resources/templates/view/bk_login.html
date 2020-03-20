@@ -125,7 +125,7 @@
 
             if ((ename != null && ename != "") && (ebirth != null && ebirth != "") && (eidcard != null && eidcard != "" && (e.test(eidcard) == true)) && (ephone != null && ephone != "" && (ph.test(ephone) == true))
                 && (email != null && email != "" && (zz.test(email) == true)) && (edeptno != null && edeptno != "") && (epostno != null && epostno != "") && (epassword != null && epostno != "")) {
-                alert("进入ajax")
+                // alert("进入ajax")
                 $.ajax({
                     type: "GET",
                     url: "/bk/employee/addemp",
