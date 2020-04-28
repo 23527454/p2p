@@ -116,7 +116,7 @@ public class DopeController {
 
     @RequestMapping(value = "/userpay")
     @ResponseBody
-    public String userpay(Poundage po, HttpServletRequest request, HttpSession session){
+    public String userpay(Poundage po, HttpServletRequest request, HttpSession session,Integer id){
         Users users = (Users) session.getAttribute("loginUser");
         System.out.println("userpay============================");
         String code="200";
@@ -134,10 +134,12 @@ public class DopeController {
         po.setBookaccount(user.getUid()+"");
         po.setPaytype("快捷支付");
 
-        Certification certi = certificationMapper.selectById(users.getUid());
+        Certification certi = certificationMapper.getcserialSelectId(users.getUid());
         certi.setId(certi.getId()) ;
+//        certi.setCserial(users.getUid());
         //可用余额
         String cba11 = certi.getCbalance();
+
         String cbal ="";
         cbal =String.valueOf(cba11);
         String xmoney = po.getSxmoney();

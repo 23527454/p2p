@@ -86,4 +86,10 @@ public class CertificationServiceImpl extends ServiceImpl<CertificationMapper, C
         return certificationMapper.findCertificationByBmId2(bmid);
     }
 
+    @Override
+    public Certification getcserialSelectId(Integer id) {
+        return this.baseMapper.getcserialSelectId(id);
+    }
+
+
 }
