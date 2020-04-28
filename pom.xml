@@ -10,6 +10,7 @@
     </parent>
     <groupId>com.springboot</groupId>
     <artifactId>p2p</artifactId>
+    <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
