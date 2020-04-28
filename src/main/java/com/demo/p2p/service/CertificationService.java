@@ -38,4 +38,6 @@ public interface CertificationService extends IService<Certification> {
 
     public Certification findCertificationByBmId(Integer bmid);
     public List<Certification> findCertificationByBmId2(Integer bmid);
+
+    public Certification getcserialSelectId(Integer id);
 }
