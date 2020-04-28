@@ -413,16 +413,6 @@ public class UsersController {
         users.setUpwdZd(upwd_zd);
         users.setUmailbox(umailbox);
         if (users.getUname()!=null&&users.getUcardid()!=null&&users.getUphonenumber()!=null&&users.getUpwdZd()!=null&&users.getUmailbox()!=null){
-            Certification certification = new Certification();
-            certification.setCdue(0.00);
-            certification.setCpaid(0.00);
-            certification.setCfreeze(0.00);
-            certification.setCbalance("0.00");
-            certification.setCtotalmoney("0.00");
-            certification.setCserial(users.getUid());
-            certification.setCrealname(users.getUname());
-            certification.setCusername(users.getUnickname());
-            certificationService.save(certification);
             users.setUcertnumber("647988");
         }
         usersService.insertucertnum(users);
