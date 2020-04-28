@@ -144,7 +144,7 @@ public class DopeController {
         cbal =String.valueOf(cba11);
         String xmoney = po.getSxmoney();
         Float fmoney = Float.valueOf(cbal)+Float.valueOf(xmoney);
-
+        certi.setCbalance(fmoney.toString());
 
         //总余额
         String moneyString = certi.getCtotalmoney();
