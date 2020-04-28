@@ -36,6 +36,8 @@ public class Bk_ApproveitemController {
     @Resource
     private Bk_CertifrecordService certifrecordService;
     @Resource
+    private Bk_CertificationService certificationService;
+    @Resource
     private Bk_UserauditorService userauditorService;
     @Resource
     private Bk_UsersService usersService;
@@ -65,6 +67,16 @@ public class Bk_ApproveitemController {
             users.setUname(arr[0]);
             users.setUcardid(arr[1]);
             usersService.updateById(users);
+            if(certifrecord.getCraiid()==1){
+                System.out.println("1++++++++++++++++++++++++++++++++++++1");
+                System.out.println("1++++++++++++++++++++++++++++++++++++1"+users.getUname());
+                System.out.println("1++++++++++++++++++++++++++++++++++++1"+users.getUid());
+                UpdateWrapper<Certification> updateWrapper2=new UpdateWrapper<>();
+                updateWrapper2.set("crealname",users.getUname());
+                updateWrapper2.eq("cserial",users.getUid());
+                boolean b2=certificationService.update(updateWrapper2);
+                System.out.println("1++++++++++++++++++++++++++++++++++++1"+b2);
+            }
             return 200;
         }
         return 400;

@@ -208,8 +208,9 @@ public class DopeController {
         Users users = (Users) session.getAttribute("loginUser");
         Date date = new Date();
         Bankcard bankcard = new Bankcard();
+        List<Bankcard> bankcards=bankcardService.bankcardList(users.getUid());
         Bankcard bankcard1 = bankcardMapper.selectById(users.getUid());
-        bankcard.setuID(bankcard1.getuID());
+        bankcard.setuID(users.getUid());
         bankcard.setUname(users.getUnickname());
         bankcard.setZname(users.getUname());
         bankcard.setSfz(users.getUcardid());
@@ -217,7 +218,22 @@ public class DopeController {
         bankcard.setCardid(kahao);
         bankcard.setTjtime(date);
         bankcard.setStatu("成功");
-        if (!bankcard.getCardid().equals(bankcard1.getCardid())) {
+        boolean isok2=true;
+        if(bankcards!=null && bankcards.size()>0){
+            isok2=false;
+            boolean isok=false;
+            for (Bankcard b:bankcards){
+                if (bankcard.getCardid().equals(b.getCardid())) {
+                    isok=true;
+                    break;
+                }
+            }
+
+            if (isok){
+                out.print("<script>alert('已经添加过该银行卡！');window.location.href='/grzx/pay1';</script>");
+            }
+        }
+        if (isok2){
             if(bankcard.getSfz()!=null && !bankcard.getSfz().equals("")){
                 int savebankcard = bankcardService.savebankcard(bankcard);
                 if (savebankcard > 0) {
@@ -225,11 +241,9 @@ public class DopeController {
                 } else {
                     out.print("<script>alert('添加失败！');window.location.href='/grzx/pay1';</script>");
                 }
-          }else {
+            }else {
                 out.print("<script>alert('身份证为空,请先绑定身份证！');window.location.href='/grzx/pay1';</script>");
             }
-        } else {
-            out.print("<script>alert('已经添加过该银行卡！');window.location.href='/grzx/pay1';</script>");
         }
         out.flush();
         out.close();

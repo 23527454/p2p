@@ -20,7 +20,7 @@ public interface InvestinfoService extends IService<Investinfo> {
 
     /**
      * 首页累计投资金额
-     * @return
+     * @returnf
      */
     public Integer sumInmoney();
 

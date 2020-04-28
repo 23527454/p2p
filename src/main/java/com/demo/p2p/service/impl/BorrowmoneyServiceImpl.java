@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.p2p.entity.Borrowmoney;
 import com.demo.p2p.mapper.BorrowmoneyMapper;
 import com.demo.p2p.service.BorrowmoneyService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ public class BorrowmoneyServiceImpl extends ServiceImpl<BorrowmoneyMapper, Borro
     }
 
     @Override
-    public List<Borrowmoney> selHuanKuanList(Integer uid, Page<Borrowmoney> page) {
+    public List<Borrowmoney> selHuanKuanList(@Param("uid") Integer uid, @Param("page") Page<Borrowmoney> page) {
         return borrowmoneyMapper.selHuanKuanList(uid,page);
     }
 
